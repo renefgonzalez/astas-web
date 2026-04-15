@@ -162,10 +162,10 @@ const Hero = () => {
         >
           <span className="precision-badge mb-6">Firma de Ingeniería Vertical</span>
           <h1 className="font-headline font-black text-5xl md:text-7xl text-white leading-[0.95] tracking-[-0.04em] mb-8 uppercase">
-            Ingeniería de <span className="text-accent-blue">Astas Bandera</span> Monumentales
+            Fabricación e Instalación de <span className="text-accent-blue">Astas Banderas</span> en todo México
           </h1>
           <p className="text-steel-dim text-lg mb-10 max-w-lg leading-relaxed">
-            Estructuras de acero de alta precisión con anclaje estructural certificado y resistencia aerodinámica superior. Maquinado a la perfección, construido para resistir.
+            Servicio profesional en CDMX, Estado de México y envíos/montaje a toda la República. Ingeniería vertical con anclaje estructural certificado y cumplimiento de normatividad nacional.
           </p>
           <div className="flex flex-wrap gap-4">
             <button className="bg-white text-primary-navy px-10 py-5 rounded-lg font-headline font-black uppercase tracking-widest hover:-translate-y-1 transition-all ambient-shadow active:scale-95">
@@ -185,9 +185,9 @@ const Services = () => {
   const services = [
     {
       icon: <Construction className="w-12 h-12" />,
-      title: "Ingeniería Vertical",
-      desc: "Ensambles de acero estructural con anclaje certificado, diseñados para alturas extremas y resistencia aerodinámica avanzada.",
-      tag: "Precision Standard 404.2"
+      title: "Ingeniería y Cumplimiento",
+      desc: "Diseño bajo normatividad nacional con calidad de exportación. Estructuras con anclaje certificado para alturas extremas y resistencia aerodinámica avanzada.",
+      tag: "Norma Oficial Mexicana"
     },
     {
       icon: <Wrench className="w-12 h-12" />,
