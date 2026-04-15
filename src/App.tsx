@@ -50,16 +50,13 @@ const FloatingWhatsApp = () => {
           initial={{ opacity: 0, scale: 0, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0, y: 20 }}
-          href="https://wa.me/525660040372?text=Hola,%20solicito%20asesoría%20técnica%20para%20un%20proyecto%20de%20ASTAS%20Y%20MANTENIMIENTO"
-          target="_blank"
+          href="https://wa.me/525660040372" 
+          target="_blank" 
           rel="noopener noreferrer"
-          className="fixed bottom-8 right-8 z-[100] bg-[#25D366] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-transform active:scale-95 flex items-center justify-center group"
-          aria-label="Contactar por WhatsApp"
+          className="fixed bottom-10 right-10 z-50 p-4 bg-[#25D366] text-white rounded-full ambient-shadow hover:scale-110 transition-all duration-300"
+          aria-label="Contactar por WhatsApp a Astas y Mantenimiento"
         >
-          <MessageCircle className="w-8 h-8" />
-          <span className="absolute right-full mr-4 bg-white text-primary-navy px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-widest shadow-xl opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-outline-variant/10">
-            Asesoría Técnica Inmediata
-          </span>
+          <Phone className="w-6 h-6 rotate-90" aria-hidden="true" />
         </motion.a>
       )}
     </AnimatePresence>
@@ -108,7 +105,12 @@ const Navbar = () => {
         </nav>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-primary-navy" onClick={() => setIsOpen(!isOpen)}>
+        <button 
+          className="md:hidden text-primary-navy p-2 hover:bg-surface-low rounded transition-colors" 
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={isOpen}
+        >
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -143,9 +145,10 @@ const Hero = () => {
         <img 
           className="w-full h-full object-cover opacity-50 mix-blend-luminosity" 
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoeZVMEa0aHU_-DGSZnKSQH0BI-b6Y9Ubk8u1ECEOlaD4Cgs22IusfUCIPwuxKmOBYO-UUOaWUlvmsVO386H11J4WWDZ51P3eqWg_Dry8Hrr0a6InI7lrnZxdMgBJxNTPzDCYNBSTdVg4BTu97HH0LcyxmyXKjxd9RRxv-p2QaW2opa6PRsaiKs3NjFp8izawiaRy7Hm4ZoBtdJLM_TF4zZh5hZGrTFBNj7fZ1AUZ_Axe4-zg3BGHQT6Ehyr5jSJT1ovcq1fcUZru4"
-          alt="Asta bandera monumental ASTAS Y MANTENIMIENTO"
+          alt="Asta bandera monumental fabricada por ASTAS Y MANTENIMIENTO"
           referrerPolicy="no-referrer"
           loading="eager"
+          fetchPriority="high"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary-navy via-primary-navy/80 to-transparent"></div>
       </div>
@@ -221,8 +224,8 @@ const Services = () => {
                 {s.icon}
               </div>
               <h3 className="font-headline text-xl font-bold text-primary-navy mb-4 uppercase tracking-tight">{s.title}</h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed mb-6">{s.desc}</p>
-              <div className="text-[10px] font-bold tracking-widest text-accent-blue uppercase opacity-50">{s.tag}</div>
+              <p className="text-on-surface-variant/90 text-sm leading-relaxed mb-6 font-medium">{s.desc}</p>
+              <div className="text-[11px] font-black tracking-widest text-accent-blue uppercase">{s.tag}</div>
             </motion.div>
           ))}
         </div>
@@ -255,7 +258,7 @@ const Projects = () => {
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
             <span className="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.3em]">Project Archive</span>
-            <h2 className="font-headline text-5xl font-black text-primary-navy tracking-tighter uppercase mt-2">Proyectos Destacados</h2>
+            <h2 className="font-headline text-4xl md:text-6xl font-black text-primary-navy tracking-tighter uppercase mb-6">Proyectos <span className="text-accent-blue">Recientes</span></h2>
           </div>
           <div className="text-right">
             <span className="text-on-surface-variant text-xs font-mono uppercase">Filtered by: Monumental Scale</span>
@@ -284,7 +287,7 @@ const Projects = () => {
                   {p.tag}
                 </span>
                 <h3 className="font-headline text-4xl font-black uppercase mt-4 mb-2 tracking-tight">{p.title}</h3>
-                <p className="text-steel-dim text-sm max-w-sm">{p.desc}</p>
+                <p className="text-white/90 font-medium text-sm max-w-sm">{p.desc}</p>
               </div>
             </motion.div>
           ))}
@@ -374,12 +377,14 @@ const Contact = () => {
     window.open(whatsappUrl, '_blank');
   };
 
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
   return (
     <section id="contacto" className="bg-white py-32">
       <div className="max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
         <div>
-          <h2 className="font-headline text-5xl font-black text-primary-navy tracking-tighter uppercase mb-8 leading-tight">
-            Inicie su Proyecto de Ingeniería
+          <h2 className="font-headline text-3xl md:text-5xl font-black text-primary-navy tracking-tighter uppercase leading-none mb-8">
+            Soluciones<br />Municipales <span className="text-accent-blue">y Privadas</span>
           </h2>
           <p className="text-on-surface-variant text-lg mb-12 leading-relaxed">
             Nuestros especialistas técnicos están disponibles para realizar levantamientos en sitio y análisis estructurales precisos en CDMX, Edomex y todo México.
@@ -434,10 +439,16 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Nombre</label>
+                <label 
+                  htmlFor="contact-name"
+                  className="block text-[10px] font-black uppercase tracking-widest text-primary-navy mb-2"
+                >
+                  Nombre Completo
+                </label>
                 <input 
+                  id="contact-name"
                   required
-                  className="w-full bg-white border-none rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
+                  className="w-full bg-white border border-outline-variant/10 rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
                   placeholder="Escriba su nombre" 
                   type="text"
                   value={formData.name}
@@ -445,10 +456,16 @@ const Contact = () => {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Empresa</label>
+                <label 
+                  htmlFor="contact-company"
+                  className="block text-[10px] font-black uppercase tracking-widest text-primary-navy mb-2"
+                >
+                  Empresa u Organización
+                </label>
                 <input 
+                  id="contact-company"
                   required
-                  className="w-full bg-white border-none rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
+                  className="w-full bg-white border border-outline-variant/10 rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
                   placeholder="Nombre de la empresa" 
                   type="text"
                   value={formData.company}
@@ -457,9 +474,15 @@ const Contact = () => {
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Tipo de Proyecto</label>
+              <label 
+                htmlFor="contact-type"
+                className="block text-[10px] font-black uppercase tracking-widest text-primary-navy mb-2"
+              >
+                Tipo de Requerimiento Técnico
+              </label>
               <select 
-                className="w-full bg-white border-none rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none appearance-none"
+                id="contact-type"
+                className="w-full bg-white border border-outline-variant/10 rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none appearance-none"
                 value={formData.type}
                 onChange={(e) => setFormData({...formData, type: e.target.value})}
               >
@@ -470,10 +493,16 @@ const Contact = () => {
               </select>
             </div>
             <div>
-              <label className="block text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-2">Teléfono</label>
+              <label 
+                htmlFor="contact-phone"
+                className="block text-[10px] font-black uppercase tracking-widest text-primary-navy mb-2"
+              >
+                Teléfono de Contacto
+              </label>
               <input 
+                id="contact-phone"
                 required
-                className="w-full bg-white border-none rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
+                className="w-full bg-white border border-outline-variant/10 rounded p-4 text-primary-navy focus:ring-2 focus:ring-accent-blue outline-none" 
                 placeholder="+52 (00) 0000 0000" 
                 type="tel"
                 value={formData.phone}
