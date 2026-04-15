@@ -145,6 +145,7 @@ const Hero = () => {
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoeZVMEa0aHU_-DGSZnKSQH0BI-b6Y9Ubk8u1ECEOlaD4Cgs22IusfUCIPwuxKmOBYO-UUOaWUlvmsVO386H11J4WWDZ51P3eqWg_Dry8Hrr0a6InI7lrnZxdMgBJxNTPzDCYNBSTdVg4BTu97HH0LcyxmyXKjxd9RRxv-p2QaW2opa6PRsaiKs3NjFp8izawiaRy7Hm4ZoBtdJLM_TF4zZh5hZGrTFBNj7fZ1AUZ_Axe4-zg3BGHQT6Ehyr5jSJT1ovcq1fcUZru4"
           alt="Asta bandera monumental ASTAS Y MANTENIMIENTO"
           referrerPolicy="no-referrer"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary-navy via-primary-navy/80 to-transparent"></div>
       </div>
@@ -275,6 +276,7 @@ const Projects = () => {
                 src={p.img} 
                 alt={p.title}
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary-navy via-transparent to-transparent"></div>
               <div className="absolute bottom-10 left-10 text-white">
@@ -285,6 +287,71 @@ const Projects = () => {
                 <p className="text-steel-dim text-sm max-w-sm">{p.desc}</p>
               </div>
             </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const FAQ = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "¿Realizan envíos e instalaciones en toda la República Mexicana?",
+      answer: "Sí, contamos con cobertura nacional. Realizamos la fabricación en nuestra planta y nos trasladamos a cualquier estado para la cimentación e instalación técnica de astas monumentales."
+    },
+    {
+      question: "¿Qué tipo de mantenimiento requiere un asta monumental?",
+      answer: "El mantenimiento incluye la revisión de la integridad estructural, lubricación de sistemas de izaje, inspección de anclajes y, en zonas costeras, aplicación de recubrimientos contra la corrosión salina."
+    },
+    {
+      question: "¿Sus astas cumplen con las normativas oficiales?",
+      answer: "Nuestras estructuras están diseñadas bajo normas de ingeniería estructural y resistencia al viento, utilizando acero de alta calidad y procesos de soldadura certificados."
+    },
+    {
+      question: "¿Venden banderas de diferentes tamaños?",
+      answer: "Fabricamos banderas reglamentarias en textiles de alta resistencia como nylon y poliéster reforzado, diseñadas específicamente para resistir las cargas dinámicas del viento en astas de gran altura."
+    }
+  ];
+
+  return (
+    <section className="bg-surface-low py-32">
+      <div className="max-w-3xl mx-auto px-6 md:px-12">
+        <div className="text-center mb-16">
+          <span className="text-accent-blue text-[10px] font-bold uppercase tracking-[0.3em] block mb-4">Preguntas Frecuentes</span>
+          <h2 className="font-headline text-4xl font-black text-primary-navy tracking-tighter uppercase">Asesoría Técnica</h2>
+        </div>
+
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div key={i} className="bg-white rounded-lg border border-outline-variant/10 overflow-hidden">
+              <button 
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="w-full p-6 text-left flex justify-between items-center group"
+              >
+                <span className="font-headline font-bold text-primary-navy group-hover:text-accent-blue transition-colors">{faq.question}</span>
+                <motion.div
+                  animate={{ rotate: openIndex === i ? 180 : 0 }}
+                  className="text-accent-blue"
+                >
+                  <ArrowRight className="w-4 h-4 rotate-90" />
+                </motion.div>
+              </button>
+              <AnimatePresence>
+                {openIndex === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="px-6 pb-6 text-on-surface-variant text-sm leading-relaxed"
+                  >
+                    {faq.answer}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           ))}
         </div>
       </div>
@@ -526,6 +593,7 @@ export default function App() {
         <Hero />
         <Services />
         <Projects />
+        <FAQ />
         <Contact />
       </main>
       <Footer />
