@@ -108,10 +108,10 @@ const Navbar = () => {
         <button 
           className="md:hidden text-primary-navy p-2 hover:bg-surface-low rounded transition-colors" 
           onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-label={isOpen ? "Cerrar menú principal" : "Abrir menú principal"}
           aria-expanded={isOpen}
         >
-          {isOpen ? <X /> : <Menu />}
+          {isOpen ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
         </button>
       </div>
 
