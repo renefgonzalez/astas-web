@@ -168,12 +168,18 @@ const Hero = () => {
             Servicio profesional en CDMX, Estado de México y envíos/montaje a toda la República. Ingeniería vertical con anclaje estructural certificado y cumplimiento de normatividad nacional.
           </p>
           <div className="flex flex-wrap gap-4">
-            <button className="bg-white text-primary-navy px-10 py-5 rounded-lg font-headline font-black uppercase tracking-widest hover:-translate-y-1 transition-all ambient-shadow active:scale-95">
+            <a 
+              href="#contacto"
+              className="bg-white text-primary-navy px-10 py-5 rounded-lg font-headline font-black uppercase tracking-widest hover:-translate-y-1 transition-all ambient-shadow active:scale-95 text-center flex items-center justify-center shrink-0"
+            >
               Solicitar Cotización
-            </button>
-            <button className="border border-white/20 text-white px-10 py-5 rounded-lg font-headline font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">
+            </a>
+            <a 
+              href="#proyectos"
+              className="border border-white/20 text-white px-10 py-5 rounded-lg font-headline font-black uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95 text-center flex items-center justify-center shrink-0"
+            >
               Ver Proyectos
-            </button>
+            </a>
           </div>
         </motion.div>
       </div>
