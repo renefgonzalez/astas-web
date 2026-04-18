@@ -113,8 +113,28 @@ const Navbar = () => {
             </div>
           </div>
 
-          <a href="/#proyectos" className="text-on-surface-variant hover:text-primary-navy font-headline font-bold uppercase text-xs tracking-widest transition-colors">Proyectos</a>
-          <a href="/#contacto" className="text-on-surface-variant hover:text-primary-navy font-headline font-bold uppercase text-xs tracking-widest transition-colors">Contacto</a>
+          <Link 
+            to="/#proyectos" 
+            className="text-on-surface-variant hover:text-primary-navy font-headline font-bold uppercase text-xs tracking-widest transition-colors"
+            onClick={() => {
+              if (location.pathname === '/') {
+                document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Proyectos
+          </Link>
+          <Link 
+            to="/#contacto" 
+            className="text-on-surface-variant hover:text-primary-navy font-headline font-bold uppercase text-xs tracking-widest transition-colors"
+            onClick={() => {
+              if (location.pathname === '/') {
+                document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
+            Contacto
+          </Link>
           
           <a 
             href="https://wa.me/525660040372?text=Hola,%20solicito%20información%20técnica"
@@ -152,8 +172,30 @@ const Navbar = () => {
                   <Link key={s.path} to={s.path} className="text-on-surface-variant font-headline font-bold uppercase text-sm tracking-widest pl-4" onClick={() => setIsOpen(false)}>{s.name}</Link>
                 ))}
               </div>
-              <a href="/#proyectos" className="text-primary-navy font-headline font-bold uppercase text-sm tracking-widest" onClick={() => setIsOpen(false)}>Proyectos</a>
-              <a href="/#contacto" className="text-primary-navy font-headline font-bold uppercase text-sm tracking-widest" onClick={() => setIsOpen(false)}>Contacto</a>
+              <Link 
+                to="/#proyectos" 
+                className="text-primary-navy font-headline font-bold uppercase text-sm tracking-widest" 
+                onClick={() => {
+                  setIsOpen(false);
+                  if (location.pathname === '/') {
+                    document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                Proyectos
+              </Link>
+              <Link 
+                to="/#contacto" 
+                className="text-primary-navy font-headline font-bold uppercase text-sm tracking-widest" 
+                onClick={() => {
+                  setIsOpen(false);
+                  if (location.pathname === '/') {
+                    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                Contacto
+              </Link>
             </div>
           </motion.div>
         )}
@@ -197,8 +239,28 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary-navy">Empresa</h4>
             <ul className="space-y-2">
-              <li><a href="/#contacto" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Contacto</a></li>
-              <li><a href="/#proyectos" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Proyectos</a></li>
+              <li><Link 
+                to="/#contacto" 
+                className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm"
+                onClick={() => {
+                  if (location.pathname === '/') {
+                    document.getElementById('contacto')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                Contacto
+              </Link></li>
+              <li><Link 
+                to="/#proyectos" 
+                className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm"
+                onClick={() => {
+                  if (location.pathname === '/') {
+                    document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                Proyectos
+              </Link></li>
               <li><Link to="/banderas-reglamentarias" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Banderas</Link></li>
             </ul>
           </div>
