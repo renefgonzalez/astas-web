@@ -1,4 +1,7 @@
+# Robots.txt - Astas y Mantenimiento
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
 
 Sitemap: https://astasymantenimiento.com/sitemap.xml
