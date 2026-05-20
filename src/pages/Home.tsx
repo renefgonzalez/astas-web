@@ -35,15 +35,16 @@ const Hero = () => {
   return (
     <section id="inicio" className="relative min-h-screen flex items-center overflow-hidden bg-primary-navy pt-20">
       <div className="absolute inset-0 z-0">
-        <img 
-          className="w-full h-full object-cover opacity-50 mix-blend-luminosity" 
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoeZVMEa0aHU_-DGSZnKSQH0BI-b6Y9Ubk8u1ECEOlaD4Cgs22IusfUCIPwuxKmOBYO-UUOaWUlvmsVO386H11J4WWDZ51P3eqWg_Dry8Hrr0a6InI7lrnZxdMgBJxNTPzDCYNBSTdVg4BTu97HH0LcyxmyXKjxd9RRxv-p2QaW2opa6PRsaiKs3NjFp8izawiaRy7Hm4ZoBtdJLM_TF4zZh5hZGrTFBNj7fZ1AUZ_Axe4-zg3BGHQT6Ehyr5jSJT1ovcq1fcUZru4"
-          alt="Asta bandera monumental fabricada por ASTAS Y MANTENIMIENTO"
-          referrerPolicy="no-referrer"
+        <img
+          className="w-full h-full object-cover object-right opacity-90"
+          src="/hero-bg.png"
+          alt="Asta bandera monumental instalada en plaza cívica — ASTAS Y MANTENIMIENTO México"
           loading="eager"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-navy via-primary-navy/80 to-transparent"></div>
+        {/* Gradiente en 3 paradas: navy sólido (izq) → semitransparente (centro) → casi invisible (der) */}
+        {/* Garantiza legibilidad del texto sin ocultar el asta y la bandera del lado derecho */}
+        <div className="absolute inset-0 bg-gradient-to-r from-primary-navy via-primary-navy/75 to-primary-navy/10"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 grid grid-cols-1 lg:grid-cols-2 gap-12">
