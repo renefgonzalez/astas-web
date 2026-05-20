@@ -1,41 +1,97 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
-    <!-- Google tag (gtag.js) -->
+    <!-- ============================================================
+         GOOGLE ANALYTICS 4 (GA4) — Tracking ID: G-P7B2BGPYCR
+         Posición: Primer elemento del <head> para máxima cobertura
+         Verificar en: https://analytics.google.com
+    =============================================================== -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7B2BGPYCR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
-      gtag('config', 'G-P7B2BGPYCR');
+      gtag('config', 'G-P7B2BGPYCR', {
+        'page_location': window.location.href,
+        'page_title': document.title,
+        'send_page_view': true
+      });
     </script>
+
+    <!-- Preconexiones de rendimiento -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
-    
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+
     <link rel="preload" as="image" href="https://lh3.googleusercontent.com/aida-public/AB6AXuBoeZVMEa0aHU_-DGSZnKSQH0BI-b6Y9Ubk8u1ECEOlaD4Cgs22IusfUCIPwuxKmOBYO-UUOaWUlvmsVO386H11J4WWDZ51P3eqWg_Dry8Hrr0a6InI7lrnZxdMgBJxNTPzDCYNBSTdVg4BTu97HH0LcyxmyXKjxd9RRxv-p2QaW2opa6PRsaiKs3NjFp8izawiaRy7Hm4ZoBtdJLM_TF4zZh5hZGrTFBNj7fZ1AUZ_Axe4-zg3BGHQT6Ehyr5jSJT1ovcq1fcUZru4" fetchpriority="high">
 
+    <!-- ============================================================
+         METADATOS ESENCIALES
+    =============================================================== -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Astas y Mantenimiento | Fabricación e Instalación de Astas Monumentales</title>
     <meta name="description" content="Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en el Estado de México, CDMX y toda la República. Ingeniería de alta calidad y cumplimiento normativo. ¡Cotiza tu proyecto hoy!">
     <meta name="keywords" content="astas banderas México, fabricación de astas, mantenimiento de astas monumentales, instalación de astas en CDMX, astas para banderas Estado de México, mantenimiento correctivo de astas, ingeniería de astas monumentales, astas banderas nacionales, licitaciones de astas México">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="author" content="Astas y Mantenimiento">
+    <meta name="geo.region" content="MX-MEX">
+    <meta name="geo.placename" content="Chalco, Estado de México">
+    <meta name="geo.position" content="19.2585;-98.8997">
+    <meta name="ICBM" content="19.2585, -98.8997">
+    <link rel="canonical" href="https://astasymantenimiento.com/" />
+
+    <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Astas y Mantenimiento | Expertos en Astas Banderas en todo México" />
     <meta property="og:description" content="Venta, instalación y mantenimiento profesional de astas banderas monumentales. Servicio en CDMX, EdoMex y toda la República." />
     <meta property="og:url" content="https://astasymantenimiento.com" />
     <meta property="og:image" content="https://astasymantenimiento.com/logo.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Astas y Mantenimiento - Fabricación e instalación de astas monumentales en México" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="Astas y Mantenimiento" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Astas y Mantenimiento | Expertos en Astas Banderas en todo México" />
+    <meta name="twitter:description" content="Fabricación, instalación y mantenimiento de astas banderas monumentales. Cobertura nacional. ¡Cotiza hoy!" />
+    <meta name="twitter:image" content="https://astasymantenimiento.com/logo.png" />
+    <meta name="twitter:image:alt" content="Astas y Mantenimiento - Astas monumentales en México" />
+
+    <!-- ============================================================
+         SCHEMA MARKUP — JSON-LD
+         Tipo: LocalBusiness + Organization (dual-type)
+         Verificar en: https://search.google.com/test/rich-results
+         Validar en:   https://validator.schema.org
+    =============================================================== -->
+
+    <!-- Schema 1: LocalBusiness + Organization (Negocio Principal) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": ["LocalBusiness", "Organization"],
+      "@id": "https://astasymantenimiento.com/#organization",
       "name": "Astas y Mantenimiento",
-      "image": "https://astasymantenimiento.com/src/logo-astas.png",
-      "description": "Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en todo México.",
+      "alternateName": "Astas y Mantenimiento México",
+      "legalName": "Astas y Mantenimiento S.A. de C.V.",
+      "image": [
+        "https://astasymantenimiento.com/logo.png",
+        "https://astasymantenimiento.com/src/logo-astas.png"
+      ],
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://astasymantenimiento.com/src/logo-astas.png",
+        "width": 400,
+        "height": 120
+      },
+      "description": "Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en todo México. Ingeniería de alta calidad, cumplimiento normativo y cobertura nacional.",
       "url": "https://astasymantenimiento.com",
-      "telephone": "5660040372",
+      "telephone": "+52-56-6004-0372",
+      "email": "contacto@astasymantenimiento.com",
+      "foundingDate": "2010",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Libertad 10, La Conchita Covarrubias",
@@ -44,23 +100,127 @@
         "postalCode": "56600",
         "addressCountry": "MX"
       },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "19.2585",
+        "longitude": "-98.8997"
+      },
       "areaServed": [
-        {"@type": "State", "name": "Estado de México"},
-        {"@type": "City", "name": "Ciudad de México"},
-        {"@type": "Country", "name": "México"}
+        {
+          "@type": "State",
+          "name": "Estado de México",
+          "sameAs": "https://www.wikidata.org/wiki/Q61"
+        },
+        {
+          "@type": "City",
+          "name": "Ciudad de México",
+          "sameAs": "https://www.wikidata.org/wiki/Q1489"
+        },
+        {
+          "@type": "Country",
+          "name": "México",
+          "sameAs": "https://www.wikidata.org/wiki/Q96"
+        }
       ],
       "priceRange": "$$",
-      "openingHours": "Mo-Fr 09:00-18:00",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+52-56-6004-0372",
-        "contactType": "technical support",
-        "areaServed": "MX",
-        "availableLanguage": ["Spanish"]
-      }
+      "currenciesAccepted": "MXN",
+      "paymentAccepted": "Efectivo, Transferencia bancaria, Tarjeta de crédito",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "18:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": "Saturday",
+          "opens": "09:00",
+          "closes": "14:00"
+        }
+      ],
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "telephone": "+52-56-6004-0372",
+          "contactType": "sales",
+          "areaServed": "MX",
+          "availableLanguage": ["Spanish"],
+          "hoursAvailable": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "opens": "09:00",
+            "closes": "18:00"
+          }
+        },
+        {
+          "@type": "ContactPoint",
+          "telephone": "+52-56-6004-0372",
+          "contactType": "technical support",
+          "areaServed": "MX",
+          "availableLanguage": ["Spanish"]
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Catálogo de Servicios — Astas y Mantenimiento",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Fabricación de Astas Monumentales",
+              "description": "Diseño y fabricación de astas banderas monumentales en acero de alta resistencia, desde 6m hasta 50m de altura.",
+              "url": "https://astasymantenimiento.com/fabricacion-astas-bandera-mexico"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Instalación de Astas Banderas",
+              "description": "Cimentación e instalación técnica de astas banderas en todo el territorio nacional con cumplimiento de normas estructurales.",
+              "url": "https://astasymantenimiento.com/astas-monumentales"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Mantenimiento de Astas",
+              "description": "Mantenimiento preventivo y correctivo de astas banderas: lubricación de sistemas de izaje, inspección estructural y recubrimientos anticorrosivos.",
+              "url": "https://astasymantenimiento.com/mantenimiento-astas-bandera"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Astas de Escritorio",
+              "description": "Astas de escritorio para uso institucional, gubernamental y corporativo con acabados de alta calidad.",
+              "url": "https://astasymantenimiento.com/astas-escritorio"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Banderas Reglamentarias",
+              "description": "Fabricación de banderas reglamentarias nacionales y empresariales bajo normas oficiales mexicanas.",
+              "url": "https://astasymantenimiento.com/banderas-reglamentarias"
+            }
+          }
+        ]
+      },
+      "sameAs": [
+        "https://www.facebook.com/astasymantenimiento",
+        "https://www.instagram.com/astasymantenimiento",
+        "https://astasymantenimiento.com"
+      ]
     }
     </script>
 
+    <!-- Schema 2: BreadcrumbList (Navegación estructurada) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -70,24 +230,43 @@
           "@type": "ListItem",
           "position": 1,
           "name": "Inicio",
-          "item": "https://astasymantenimiento.com"
+          "item": "https://astasymantenimiento.com/"
         },
         {
           "@type": "ListItem",
           "position": 2,
-          "name": "Soluciones Técnicas",
-          "item": "https://astasymantenimiento.com#soluciones"
+          "name": "Fabricación de Astas",
+          "item": "https://astasymantenimiento.com/fabricacion-astas-bandera-mexico"
         },
         {
           "@type": "ListItem",
           "position": 3,
-          "name": "Proyectos Monumentales",
-          "item": "https://astasymantenimiento.com#proyectos"
+          "name": "Astas Monumentales",
+          "item": "https://astasymantenimiento.com/astas-monumentales"
+        },
+        {
+          "@type": "ListItem",
+          "position": 4,
+          "name": "Mantenimiento de Astas",
+          "item": "https://astasymantenimiento.com/mantenimiento-astas-bandera"
+        },
+        {
+          "@type": "ListItem",
+          "position": 5,
+          "name": "Astas de Escritorio",
+          "item": "https://astasymantenimiento.com/astas-escritorio"
+        },
+        {
+          "@type": "ListItem",
+          "position": 6,
+          "name": "Banderas Reglamentarias",
+          "item": "https://astasymantenimiento.com/banderas-reglamentarias"
         }
       ]
     }
     </script>
 
+    <!-- Schema 3: FAQPage (Rich Snippets de preguntas frecuentes) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -98,7 +277,7 @@
           "name": "¿Realizan envíos e instalaciones en toda la República Mexicana?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sí, contamos con cobertura nacional. Realizamos la fabricación en nuestra planta y nos trasladamos a cualquier estado para la cimentación e instalación técnica de astas monumentales."
+            "text": "Sí, contamos con cobertura nacional. Realizamos la fabricación en nuestra planta en Chalco, Estado de México, y nos trasladamos a cualquier estado para la cimentación e instalación técnica de astas monumentales."
           }
         },
         {
@@ -106,7 +285,7 @@
           "name": "¿Qué tipo de mantenimiento requiere un asta monumental?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "El mantenimiento incluye la revisión de la integridad estructural, lubricación de sistemas de izaje, inspección de anclajes y, en zonas costeras, aplicación de recubrimientos contra la corrosión salina."
+            "text": "El mantenimiento incluye la revisión de la integridad estructural, lubricación de sistemas de izaje, inspección de anclajes y, en zonas costeras, aplicación de recubrimientos contra la corrosión salina. Recomendamos mantenimiento preventivo anual."
           }
         },
         {
@@ -116,14 +295,30 @@
             "@type": "Answer",
             "text": "Nuestras estructuras están diseñadas bajo normas de ingeniería estructural y resistencia al viento, utilizando acero de alta calidad y procesos de soldadura certificados."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Cuánto tiempo tarda la fabricación e instalación de un asta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "El tiempo varía según la altura y tipo de asta. Para astas estándar de hasta 12m, el proceso completo es de 2 a 4 semanas. Para astas monumentales de mayor altura, puede extenderse de 4 a 8 semanas. Solicita tu cotización para un tiempo estimado personalizado."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "¿Ofrecen servicio de mantenimiento preventivo con contrato?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sí, ofrecemos contratos de mantenimiento preventivo anual o semestral para astas instaladas. Esto garantiza el correcto funcionamiento del sistema de izaje y la durabilidad de la estructura."
+          }
         }
       ]
     }
     </script>
+
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
