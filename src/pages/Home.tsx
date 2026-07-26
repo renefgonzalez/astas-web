@@ -15,9 +15,10 @@ import {
   CheckCircle2,
   MessageCircle
 } from 'lucide-react';
+import { SEOHead } from '../components/SEOHead';
 
 const FlagIcon = () => (
-  <svg 
+  <svg
     viewBox="0 0 24 24" 
     fill="none" 
     stroke="currentColor" 
@@ -437,6 +438,11 @@ export default function Home() {
 
   return (
     <>
+      <SEOHead
+        title="Astas y Mantenimiento | Fabricación e Instalación de Astas Monumentales"
+        description="Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en el Estado de México, CDMX y toda la República. Ingeniería de alta calidad y cumplimiento normativo. ¡Cotiza tu proyecto hoy!"
+        path="/"
+      />
       <Hero />
       <Services />
       <Projects />

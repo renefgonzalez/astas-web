@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Flag, CheckCircle2, Scissors, ArrowRight, Sun, MapPin, Ruler, Package } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
+import { SEOHead } from '../components/SEOHead';
 
 const tiposBanderas = [
   {
@@ -51,8 +53,40 @@ const medidasOficiales = [
 const zonas = ['CDMX', 'Estado de México', 'Guerrero', 'Veracruz', 'Yucatán', 'Baja California', 'Toda la República'];
 
 const Banderas = () => {
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Banderas Reglamentarias',
+      content_category: 'Servicio',
+    });
+  }, []);
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Banderas Reglamentarias Nacionales y Corporativas — Astas y Mantenimiento',
+    provider: { '@id': 'https://astasymantenimiento.com/#organization' },
+    description: 'Fabricación de banderas nacionales, estatales y corporativas con textiles de alta resistencia: nylon ripstop y poliéster con protección UV. Diseños reglamentarios y personalizados para astas monumentales y escritorio.',
+    url: 'https://astasymantenimiento.com/banderas-reglamentarias',
+    serviceType: 'Manufactura Textil',
+    areaServed: { '@type': 'Country', 'name': 'México' },
+    availableLanguage: 'Spanish',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
-    <div className="bg-white">
+    <>
+      <SEOHead
+        title="Banderas Reglamentarias Oficiales y Corporativas"
+        description="Fabricación de banderas nacionales, estatales y corporativas con textiles de alta resistencia: nylon ripstop y poliéster con protección UV. Diseños reglamentarios y personalizados para astas monumentales y escritorio."
+        path="/banderas-reglamentarias"
+        keywords="banderas México, banderas reglamentarias, fabricación de banderas, banderas nacionales, banderas corporativas, banderas para astas, banderas de gala, nylon ripstop, banderas poliéster UV"
+        schema={serviceSchema}
+      />
+      <div className="bg-white">
       {/* Hero Section */}
       <section className="relative py-24 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -230,6 +264,7 @@ const Banderas = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

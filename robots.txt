@@ -1,6 +1,6 @@
 # robots.txt — Astas y Mantenimiento
 # https://astasymantenimiento.com
-# Última actualización: 2026-05-20
+# Última actualización: 2026-07-26
 
 # Permitir rastreo a todos los motores de búsqueda
 User-agent: *
@@ -10,6 +10,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /private/
 Disallow: /*.json$
+Disallow: /demo-carrito
 
 # Crawl-delay para bots agresivos (segundos)
 Crawl-delay: 10
@@ -19,12 +20,14 @@ User-agent: Googlebot
 Allow: /
 Disallow: /admin/
 Disallow: /private/
+Disallow: /demo-carrito
 
 # Bingbot
 User-agent: Bingbot
 Allow: /
 Disallow: /admin/
 Disallow: /private/
+Disallow: /demo-carrito
 
 # Sitemap
 Sitemap: https://astasymantenimiento.com/sitemap.xml

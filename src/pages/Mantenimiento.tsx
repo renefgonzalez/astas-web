@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Wrench, CheckCircle2, ShieldCheck, ArrowRight, MapPin, Clock, AlertTriangle, Zap } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
+import { SEOHead } from '../components/SEOHead';
 
 const tiposMantenimiento = [
   {
@@ -34,8 +36,70 @@ const incluye = [
 const zonas = ['Ciudad de México (CDMX)', 'Estado de México', 'Puebla', 'Querétaro', 'Jalisco', 'Nuevo León', 'Toda la República Mexicana'];
 
 const Mantenimiento = () => {
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Mantenimiento de Astas',
+      content_category: 'Servicio',
+    });
+  }, []);
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Mantenimiento de Astas Bandera — Astas y Mantenimiento',
+    provider: { '@id': 'https://astasymantenimiento.com/#organization' },
+    description: 'Servicio especializado en mantenimiento preventivo, correctivo y predictivo de astas banderas monumentales en CDMX, Estado de México y toda la República Mexicana.',
+    url: 'https://astasymantenimiento.com/mantenimiento-astas-bandera',
+    serviceType: 'Mantenimiento y Reparación',
+    areaServed: { '@type': 'Country', 'name': 'México' },
+    availableLanguage: 'Spanish',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+    },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Tipos de Mantenimiento',
+      itemListElement: [
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Mantenimiento Preventivo',
+            description: 'Inspección periódica programada que incluye lubricación de sistemas de izaje, revisión de drizas, verificación de anclajes y aplicación de recubrimientos protectores.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Mantenimiento Correctivo',
+            description: 'Intervención inmediata ante fallas detectadas: reparación de grietas estructurales, sustitución de cables rotos, enderezado de fustes doblados y rehabilitación de bases dañadas.',
+          },
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'Mantenimiento Predictivo',
+            description: 'Inspección ultrasónica para detectar adelgazamientos de pared, medición de recubrimientos con galvanómetro y análisis de corrosión antes de que comprometan la integridad estructural.',
+          },
+        },
+      ],
+    },
+  };
+
   return (
-    <div className="bg-white">
+    <>
+      <SEOHead
+        title="Mantenimiento de Astas Bandera en CDMX y EdoMex"
+        description="Servicio especializado en mantenimiento preventivo y correctivo de astas banderas monumentales en CDMX, Estado de México y toda la República. Protocolo MS-9000, certificación estructural. ¡Solicita tu diagnóstico técnico!"
+        path="/mantenimiento-astas-bandera"
+        keywords="mantenimiento de astas bandera, mantenimiento astas monumentales, reparación de astas, mantenimiento preventivo astas, mantenimiento correctivo astas, protocolo MS-9000, astas banderas CDMX"
+        schema={serviceSchema}
+      />
+      <div className="bg-white">
       {/* Hero Section */}
       <section className="relative py-24 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -176,6 +240,7 @@ const Mantenimiento = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

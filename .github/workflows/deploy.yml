@@ -40,6 +40,10 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+        env:
+          VITE_META_PIXEL_ID: ${{ secrets.VITE_META_PIXEL_ID }}
+          VITE_GA4_ID: ${{ secrets.VITE_GA4_ID }}
+          VITE_SITE_URL: https://astasymantenimiento.com
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Construction, CheckCircle2, Factory, ArrowRight, Shield, MapPin, Layers, Gauge } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
+import { SEOHead } from '../components/SEOHead';
 
 const etapasFabricacion = [
   {
@@ -44,8 +46,40 @@ const especificaciones = [
 const zonas = ['Ciudad de México (CDMX)', 'Estado de México', 'Morelos', 'Hidalgo', 'Guerrero', 'Toda la República'];
 
 const Fabricacion = () => {
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Fabricación de Astas',
+      content_category: 'Servicio',
+    });
+  }, []);
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Fabricación de Astas Banderas — Astas y Mantenimiento',
+    provider: { '@id': 'https://astasymantenimiento.com/#organization' },
+    description: 'Fabricación de astas banderas con acero estructural certificado ASTM A36 y A572. Ingeniería de alta precisión, soldadura AWS D1.1, galvanizado y acabados industriales.',
+    url: 'https://astasymantenimiento.com/fabricacion-astas-bandera-mexico',
+    serviceType: 'Fabricación y Manufactura',
+    areaServed: { '@type': 'Country', 'name': 'México' },
+    availableLanguage: 'Spanish',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
-    <div className="bg-white">
+    <>
+      <SEOHead
+        title="Fabricación de Astas Banderas en México"
+        description="Fabricación de astas banderas con acero estructural certificado ASTM A36 y A572. Ingeniería de alta precisión, soldadura AWS D1.1, galvanizado y acabados industriales. ¡Cotiza tu proyecto de asta bandera!"
+        path="/fabricacion-astas-bandera-mexico"
+        keywords="fabricación de astas, fabricación de astas bandera, astas de acero, astas México, astas estructurales, fabricación de astas monumentales, astas banderas CDMX, astas para licitaciones"
+        schema={serviceSchema}
+      />
+      <div className="bg-white">
       {/* Hero Section */}
       <section className="relative py-24 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -198,6 +232,7 @@ const Fabricacion = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

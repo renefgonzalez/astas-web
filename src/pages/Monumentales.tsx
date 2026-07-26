@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Construction, CheckCircle2, Landmark, ArrowRight, Ruler, MapPin, HardHat, Building2 } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
+import { SEOHead } from '../components/SEOHead';
 
 const fasesProyecto = [
   {
@@ -51,8 +53,40 @@ const proyectosTipo = [
 const zonas = ['CDMX', 'Estado de México', 'Puebla', 'Hidalgo', 'Tlaxcala', 'Oaxaca', 'Toda la República'];
 
 const Monumentales = () => {
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Astas Monumentales',
+      content_category: 'Servicio',
+    });
+  }, []);
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Astas Monumentales — Instalación y Cimentación — Astas y Mantenimiento',
+    provider: { '@id': 'https://astasymantenimiento.com/#organization' },
+    description: 'Fabricación e instalación de astas monumentales de 6m hasta 50m de altura. Cimentación técnica, estudio de mecánica de suelos, y memoria de cálculo para licitaciones. Cobertura nacional.',
+    url: 'https://astasymantenimiento.com/astas-monumentales',
+    serviceType: 'Construcción e Instalación',
+    areaServed: { '@type': 'Country', 'name': 'México' },
+    availableLanguage: 'Spanish',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
-    <div className="bg-white">
+    <>
+      <SEOHead
+        title="Astas Monumentales — Fabricación e Instalación"
+        description="Fabricación e instalación de astas monumentales de 6m hasta 50m de altura. Cimentación técnica, estudio de mecánica de suelos, y memoria de cálculo para licitaciones. Cobertura nacional."
+        path="/astas-monumentales"
+        keywords="astas monumentales, astas de gran altura, instalación de astas monumentales, cimentación para astas, astas banderas México, astas para gobierno, astas municipales"
+        schema={serviceSchema}
+      />
+      <div className="bg-white">
       {/* Hero Section */}
       <section className="relative py-24 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -193,6 +227,7 @@ const Monumentales = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 

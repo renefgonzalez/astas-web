@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astas y Mantenimiento | Redirigiendo...</title>
+    <meta name="robots" content="noindex, nofollow">
+    <!--
+      ================================================================
+      REDIRECT PARA GITHUB PAGES + SPA (React Router)
+      ================================================================
+      GitHub Pages devuelve 404 para rutas que no son archivos físicos.
+      Este script redirige al usuario al index.html preservando la URL
+      para que React Router pueda procesar la ruta correctamente.
+      
+      Basado en el hack de spa-github-pages:
+      https://github.com/rafgraph/spa-github-pages
+      ================================================================
+    -->
+    <script>
+      // Preservar la ruta completa en sessionStorage y redirigir al raíz
+      var segmentCount = 0; // 0 para dominio personalizado (custom domain)
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body>
+    <p>Redirigiendo...</p>
+  </body>
+</html>

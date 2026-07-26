@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Flag, 
-  MapPin, 
-  Mail, 
-  Phone, 
-  Menu, 
+import {
+  Flag,
+  MapPin,
+  Mail,
+  Phone,
+  Menu,
   X,
   ChevronDown
 } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
 
 const FlagIcon = () => (
   <svg 
@@ -41,9 +42,10 @@ const FloatingWhatsApp = () => {
           initial={{ opacity: 0, scale: 0, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0, y: 20 }}
-          href="https://wa.me/525660040372" 
-          target="_blank" 
+          href="https://wa.me/525660040372"
+          target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackMetaEvent('Contact')}
           className="fixed bottom-10 right-10 z-50 p-4 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 transition-all duration-300"
           aria-label="Contactar por WhatsApp a Astas y Mantenimiento"
         >
@@ -136,10 +138,11 @@ const Navbar = () => {
             Contacto
           </Link>
           
-          <a 
+          <a
             href="https://wa.me/525660040372?text=Hola,%20solicito%20información%20técnica"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => trackMetaEvent('Contact')}
             className="machined-gradient text-white px-6 py-3 rounded-lg font-headline font-bold uppercase text-xs tracking-widest hover:opacity-90 transition-all active:scale-95"
           >
             WhatsApp
@@ -281,6 +284,10 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    // Meta Pixel: PageView en cada cambio de ruta (SPA)
+    if (window.fbq) {
+      window.fbq('track', 'PageView');
+    }
   }, [pathname]);
 
   return (

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Briefcase, CheckCircle2, Award, ArrowRight, ShieldCheck, MapPin, Star, Package } from 'lucide-react';
+import { trackMetaEvent } from '../utils/metaPixel';
+import { SEOHead } from '../components/SEOHead';
 
 const materiales = [
   {
@@ -48,8 +50,40 @@ const clientesTipo = [
 ];
 
 const Escritorio = () => {
+  useEffect(() => {
+    trackMetaEvent('ViewContent', {
+      content_name: 'Astas de Escritorio',
+      content_category: 'Servicio',
+    });
+  }, []);
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Astas de Escritorio Institucionales y Corporativas — Astas y Mantenimiento',
+    provider: { '@id': 'https://astasymantenimiento.com/#organization' },
+    description: 'Astas de escritorio en latón, acero inoxidable AISI 304 y madera noble para uso institucional, gubernamental y corporativo. Acabados premium con contrapeso de zinc para máxima estabilidad.',
+    url: 'https://astasymantenimiento.com/astas-escritorio',
+    serviceType: 'Manufactura y Venta',
+    areaServed: { '@type': 'Country', 'name': 'México' },
+    availableLanguage: 'Spanish',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+    },
+  };
+
   return (
-    <div className="bg-white">
+    <>
+      <SEOHead
+        title="Astas de Escritorio Institucionales y Corporativas"
+        description="Astas de escritorio en latón, acero inoxidable AISI 304 y madera noble para uso institucional, gubernamental y corporativo. Acabados premium con contrapeso de zinc para máxima estabilidad."
+        path="/astas-escritorio"
+        keywords="astas de escritorio, astas para oficina, astas institucionales, astas de latón, astas para gobierno, astas corporativas, astas de acero inoxidable, banderas de escritorio México"
+        schema={serviceSchema}
+      />
+      <div className="bg-white">
       {/* Hero Section */}
       <section className="relative py-24 bg-slate-900 overflow-hidden">
         <div className="absolute inset-0 opacity-20">
@@ -190,6 +224,7 @@ const Escritorio = () => {
         </div>
       </section>
     </div>
+    </>
   );
 };
 
