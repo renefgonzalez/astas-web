@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ShoppingCart, Plus, Minus, X, Check, ArrowRight } from 'lucide-react';
 import { SEOHead } from '../components/SEOHead';
-import { SEOHead } from '../components/SEOHead';
 
 interface CartItem {
   id: string;

@@ -275,7 +275,7 @@ const Contact = () => {
     e.preventDefault();
     const message = `Hola ASTAS Y MANTENIMIENTO, mi nombre es ${formData.name} de la empresa ${formData.company}. Me interesa información sobre: ${formData.type}. Mi teléfono es ${formData.phone}.`;
     const whatsappUrl = `https://wa.me/525660040372?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, '_blank');
+    setTimeout(() => { window.location.href = whatsappUrl; }, 300);
   };
 
   return (
@@ -436,12 +436,68 @@ export default function Home() {
     }
   }, [hash]);
 
+  const homeSchema = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': 'https://astasymantenimiento.com/#organization',
+        name: 'Astas y Mantenimiento',
+        url: 'https://astasymantenimiento.com',
+        logo: 'https://astasymantenimiento.com/logo.png',
+        description: 'Fabricación e instalación de astas banderas monumentales en CDMX, Estado de México y toda la República Mexicana.',
+        email: 'astasymantenimiento@gmail.com',
+        telephone: '+525660040372',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Libertad 10, La Conchita Covarrubias',
+          addressLocality: 'Chalco de Díaz Covarrubias',
+          addressRegion: 'Estado de México',
+          postalCode: '56600',
+          addressCountry: 'MX',
+        },
+        sameAs: [
+          'https://www.instagram.com/astasymantenimiento/',
+        ],
+      },
+      {
+        '@type': 'LocalBusiness',
+        '@id': 'https://astasymantenimiento.com/#localbusiness',
+        name: 'Astas y Mantenimiento',
+        image: 'https://astasymantenimiento.com/hero-bg.png',
+        url: 'https://astasymantenimiento.com',
+        telephone: '+525660040372',
+        priceRange: '$$',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Libertad 10, La Conchita Covarrubias',
+          addressLocality: 'Chalco de Díaz Covarrubias',
+          addressRegion: 'México',
+          postalCode: '56600',
+          addressCountry: 'MX',
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 19.2500,
+          longitude: -98.9000,
+        },
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+          opens: '09:00',
+          closes: '18:00',
+        },
+      },
+    ],
+  };
+
   return (
     <>
       <SEOHead
         title="Astas y Mantenimiento | Fabricación e Instalación de Astas Monumentales"
         description="Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en el Estado de México, CDMX y toda la República. Ingeniería de alta calidad y cumplimiento normativo. ¡Cotiza tu proyecto hoy!"
         path="/"
+        schema={homeSchema}
       />
       <Hero />
       <Services />
