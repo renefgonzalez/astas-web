@@ -43,7 +43,7 @@ const Mantenimiento = () => {
     });
   }, []);
 
-  const serviceSchema = {
+const serviceSchema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
     name: 'Mantenimiento de Astas Bandera — Astas y Mantenimiento',
@@ -75,7 +75,7 @@ const Mantenimiento = () => {
           itemOffered: {
             '@type': 'Service',
             name: 'Mantenimiento Correctivo',
-            description: 'Intervención inmediata ante fallas detectadas: reparación de grietas estructurales, sustitución de cables rotos, enderezado de fustes doblados y rehabilitación de bases dañadas.',
+            description: 'Intervención inmediata ante fallas detectadas: reparación de grietas estructurales, sustitución de cables rotos, enderezado de fustes doblados y rehabilitación de bases dañadas por corrosión o sismos.',
           },
         },
         {
@@ -88,6 +88,48 @@ const Mantenimiento = () => {
         },
       ],
     },
+    faq: [
+      {
+        '@type': 'Question',
+        name: '¿Cada cuánto se debe dar mantenimiento a un asta monumental?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Recomendamos mantenimiento preventivo semestral (cada 6 meses) y una inspección anual completa. En zonas costeras o de alta contaminación (CDMX, corredores industriales), recomendamos ciclos trimestrales con recubrimientos de grado marino.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué incluye el mantenimiento preventivo de un asta bandera?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Incluye lubricación técnica de poleas, roldanas y mecanismos de rotación; inspección ultrasónica de soldaduras y espesores; revisión y cambio de drizas con cables certificados; limpieza industrial y pintura con esmalte epóxico o poliuretano marino; verificación de anclajes, pernos y cimentación; y aplicación de recubrimientos anticorrosivos.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Atienen emergencias de reparación de astas bandera?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, contamos con servicio de mantenimiento correctivo de respuesta rápida para emergencias: drizas reventadas, poleas bloqueadas, fustes con desplazamiento, corrosión avanzada o sistemas de motorización con fallas. Respondemos en tiempos récord para restablecer la operatividad.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué es el mantenimiento predictivo y cuándo se recomienda?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'El mantenimiento predictivo utiliza inspección ultrasónica para detectar adelgazamientos de pared, medición de recubrimientos con galvanómetro y análisis de corrosión antes de que comprometan la integridad estructural. Se recomienda anualmente en astas monumentales o tras eventos sísmicos/meteorológicos severos.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Emiten certificación al terminar el mantenimiento?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, al término de cada intervención emitimos una certificación de operatividad firmada por perito estructural, con fotografías antes/después y recomendaciones puntuales. Este certificado es válido para trámites municipales y auditorías de seguridad.',
+        },
+      },
+    ],
   };
 
   return (

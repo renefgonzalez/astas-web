@@ -10,6 +10,8 @@ import Monumentales from './pages/Monumentales';
 import Escritorio from './pages/Escritorio';
 import Banderas from './pages/Banderas';
 import DemoCarrito from './pages/DemoCarrito';
+import Reparacion from './pages/Reparacion';
+import Pintura from './pages/Pintura';
 
 export default function App() {
   return (
@@ -25,6 +27,8 @@ export default function App() {
             <Route path="/astas-escritorio" element={<Escritorio />} />
             <Route path="/banderas-reglamentarias" element={<Banderas />} />
             <Route path="/demo-carrito" element={<DemoCarrito />} />
+            <Route path="/reparacion-astas-bandera" element={<Reparacion />} />
+            <Route path="/pintura-astas-bandera" element={<Pintura />} />
           </Routes>
         </Layout>
       </Router>

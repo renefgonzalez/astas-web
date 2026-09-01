@@ -68,6 +68,60 @@ const Fabricacion = () => {
       priceCurrency: 'MXN',
       availability: 'https://schema.org/InStock',
     },
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Especificaciones de Fabricación',
+      itemListElement: especificaciones.map((item, i) => ({
+        '@type': 'Offer',
+        position: i + 1,
+        itemOffered: {
+          '@type': 'Service',
+          name: item,
+        },
+      })),
+    },
+    faq: [
+      {
+        '@type': 'Question',
+        name: '¿Qué tipo de acero utilizan para fabricar las astas bandera?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Utilizamos acero estructural ASTM A36 y ASTM A572 Grado 50, que ofrecen alta resistencia mecánica y soldabilidad. Para ambientes corrosivos, ofrecemos acero inoxidable AISI 304.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cuánto tiempo tarda la fabricación de un asta bandera?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'El tiempo de fabricación es de 2 a 4 semanas dependiendo de la altura, el acabado y la carga de producción actual. Para astas monumentales (30-50m) el tiempo puede extenderse a 5-6 semanas.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Realizan envíos e instalación en todo México?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, contamos con cobertura nacional. Realizamos la fabricación en nuestra planta en Chalco, Estado de México, y coordinamos el envío en plataformas especializadas y la instalación técnica en cualquier estado de la República.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué normativa cumplen las astas bandera que fabrican?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Cumplimos con la normativa mexicana de construcción (NTC-2020), las Normas Técnicas Complementarias de la CDMX, la CFE para diseño de viento, y la soldadura bajo norma AWS D1.1. La memoria de cálculo es firmada por perito estructural.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué acabados ofrecen para las astas bandera?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Ofrecemos galvanizado por inmersión en caliente (HDG) como base anticorrosiva, seguido de pintura electrostática en polvo, esmalte de poliuretano alifático resistente a UV, o acabado galvanizado natural. Para zonas costeras recomendamos sistema multicapa grado marino.',
+        },
+      },
+    ],
   };
 
   return (

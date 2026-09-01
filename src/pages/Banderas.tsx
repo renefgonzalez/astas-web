@@ -75,6 +75,48 @@ const Banderas = () => {
       priceCurrency: 'MXN',
       availability: 'https://schema.org/InStock',
     },
+    faq: [
+      {
+        '@type': 'Question',
+        name: '¿Qué tipo de tela utilizan para las banderas reglamentarias?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Utilizamos nylon ripstop y poliéster 150D con tratamiento de repelencia a la humedad y protección UV de alta solidez. Estas telas han sido seleccionadas por su comportamiento aerodinámico y resistencia al desflecado en los bordes.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cumplen con la normativa oficial de la bandera nacional?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, fabricamos bajo la Ley sobre el Escudo, la Bandera y el Himno Nacionales. Respetamos fielmente las proporciones oficiales, colores Pantone oficiales establecidos por la Secretaría de Gobernación, y el diseño heráldico del escudo nacional.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué medidas de banderas fabrican?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Fabricamos todas las medidas oficiales: Escritorio (60×100 cm), Salón/Despacho (90×150 cm), Fachada Corporativa (150×250 cm), Plaza Pública (300×500 cm), Monumental (600×1000 cm o superior). También fabricamos medidas personalizadas.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Ofrecen banderas de estados y municipios?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, fabricamos reproducción fiel de los escudos estatales y municipales de México mediante impresión digital de alta definición o bordado heráldico sobre tela técnica de alta resistencia.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cuánto duran los colores de las banderas a la intemperie?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Nuestras telas tienen protección UV de alta solidez que conserva los colores por más de 3 años de exposición continua. Utilizamos tintas de alta penetración con solidez al frote y a la luz solar.',
+        },
+      },
+    ],
   };
 
   return (

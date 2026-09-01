@@ -72,6 +72,48 @@ const Escritorio = () => {
       priceCurrency: 'MXN',
       availability: 'https://schema.org/InStock',
     },
+    faq: [
+      {
+        '@type': 'Question',
+        name: '¿Qué materiales están disponibles para astas de escritorio?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Ofrecemos cuatro líneas: Latón Brillante (pulido espejo, ideal para gobierno y embajadas), Acero Inoxidable AISI 304 (satinado o espejo, alta resistencia a corrosión), Madera Noble con Herrajes (base torneada con remates en latón/acero), y Aluminio Anodizado (ligero y portátil para eventos).',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué tamaños de bandera son compatibles con las astas de escritorio?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Nuestras astas de escritorio son compatibles con banderas en formatos de 60×100 cm hasta 90×150 cm, que son los formatos reglamentarios para uso en escritorio y oficina.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Cómo garantizan la estabilidad de las astas de escritorio?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Todas nuestras astas de escritorio cuentan con bases de contrapeso interno en zinc o plomo fundido que eliminan el riesgo de volcaduras. Los remates superiores son torneados con precisión milimétrica y reciben cromado o lacado UV.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Ofrecen precios especiales para pedidos institucionales en volumen?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí. Para instituciones que requieren suministros en volumen —municipios, universidades, corporativos multi-sucursal— ofrecemos precios especiales por pedido mayorista con tiempos de entrega de 48 a 72 horas en CDMX y Estado de México.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Pueden personalizar las astas con el escudo o logotipo institucional?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, ofrecemos personalización con grabado de logotipo institucional o escudo en la base de la asta. El grabado se realiza con precisión milimétrica y recibe protección anticorrosiva.',
+        },
+      },
+    ],
   };
 
   return (

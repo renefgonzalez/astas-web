@@ -75,6 +75,48 @@ const Monumentales = () => {
       priceCurrency: 'MXN',
       availability: 'https://schema.org/InStock',
     },
+    faq: [
+      {
+        '@type': 'Question',
+        name: '¿Qué altura máxima pueden alcanzar las astas monumentales?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Fabricamos e instalamos astas monumentales desde 12 metros hasta 50 metros de altura. Para alturas superiores a 30 metros, se requiere diseño especial de cimentación y sistemas de izaje motorizados con frenos de seguridad.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué incluye un proyecto de asta monumental?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Incluye estudio de mecánica de suelos, memoria de cálculo estructural firmada por perito, fabricación en planta con acero ASTM A572, cimentación de concreto reforzado con parrilla de anclaje, instalación con grúas telescópicas, sistemas de izaje motorizados con frenos de seguridad, iluminación LED perimetral, protección contra rayos (DPS) y certificado de instalación firmado por perito estructural.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué tipo de cimentación requieren las astas monumentales?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'La cimentación es el elemento crítico. Realizamos estudio de mecánica de suelos previo y diseñamos cimentaciones de concreto reforzado con parrillas de anclaje de acero de alta resistencia, garantizando estabilidad ante cargas sísmicas y eólicas extremas según NTC-2020.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Participan en licitaciones gubernamentales?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Sí, participamos activamente en licitaciones municipales, estatales y federales. Generamos toda la documentación técnica requerida: memorias de cálculo firmadas por perito estructural, planos estructurales, especificaciones técnicas y expedientes completos para trámites de licencia de obra.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: '¿Qué sistemas de izaje instalan en astas monumentales?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Instalamos sistemas de izaje motorizados con motores de corriente alterna con variador de frecuencia, frenos electromagnéticos de seguridad y respaldo manual para operación sin energía eléctrica. Incluyen iluminación perimetral LED con sensor crepuscular y protección contra descargas eléctricas (DPS).',
+        },
+      },
+    ],
   };
 
   return (

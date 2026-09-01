@@ -436,7 +436,7 @@ export default function Home() {
     }
   }, [hash]);
 
-  const homeSchema = {
+const homeSchema = {
     '@context': 'https://schema.org',
     '@graph': [
       {
@@ -472,7 +472,7 @@ export default function Home() {
           '@type': 'PostalAddress',
           streetAddress: 'Libertad 10, La Conchita Covarrubias',
           addressLocality: 'Chalco de Díaz Covarrubias',
-          addressRegion: 'México',
+          addressRegion: 'Estado de México',
           postalCode: '56600',
           addressCountry: 'MX',
         },
@@ -487,6 +487,43 @@ export default function Home() {
           opens: '09:00',
           closes: '18:00',
         },
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: '¿Realizan envíos e instalaciones en toda la República Mexicana?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Sí, contamos con cobertura nacional. Realizamos la fabricación en nuestra planta y nos trasladamos a cualquier estado para la cimentación e instalación técnica de astas monumentales.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Qué tipo de mantenimiento requiere un asta monumental?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'El mantenimiento incluye la revisión de la integridad estructural, lubricación de sistemas de izaje, inspección de anclajes y, en zonas costeras, aplicación de recubrimientos contra la corrosión salina.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Sus astas cumplen con las normativas oficiales?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Nuestras estructuras están diseñadas bajo normas de ingeniería estructural y resistencia al viento, utilizando acero de alta calidad y procesos de soldadura certificados.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: '¿Venden banderas de diferentes tamaños?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Fabricamos banderas reglamentarias en textiles de alta resistencia como nylon y poliéster reforzado, diseñadas específicamente para resistir las cargas dinámicas del viento en astas de gran altura.',
+            },
+          },
+        ],
       },
     ],
   };
