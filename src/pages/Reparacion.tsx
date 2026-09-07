@@ -163,7 +163,7 @@ const Reparacion = () => {
   return (
     <>
       <SEOHead
-        title="Reparación de Astas Bandera — Emergencia 24/7 | Astas y Mantenimiento"
+        title="Reparación de Astas Bandera — Emergencia 24/7"
         description="Reparación estructural y de emergencia de astas banderas monumentales en CDMX, EdoMex y todo México. Respuesta 2-4 horas. Soldadura certificada, cambio de drizas, motorizados. ¡Atención inmediata!"
         path="/reparacion-astas-bandera"
         keywords="reparación asta bandera, reparación asta monumental, reparación estructural asta, cambio driza asta, reparación motorizado asta, emergencia asta bandera, reparación asta CDMX"

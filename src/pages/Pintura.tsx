@@ -152,7 +152,7 @@ const Pintura = () => {
   return (
     <>
       <SEOHead
-        title="Pintura y Recubrimiento Industrial de Astas Bandera | Astas y Mantenimiento"
+        title="Pintura y Recubrimiento Industrial de Astas Bandera"
         description="Pintura y recubrimiento industrial certificado para astas banderas monumentales: sistemas multicapa grado marino, poliuretano alifático UV, galvanizado + epóxica. Aplicación certificada ISO 12944 en CDMX, EdoMex y toda la República."
         path="/pintura-astas-bandera"
         keywords="pintura asta bandera, pintura asta monumental, recubrimiento asta bandera, galvanizado asta bandera, pintura epóxica asta, poliuretano alifático asta, recubrimiento anticorrosivo asta, mantenimiento pintura asta"
