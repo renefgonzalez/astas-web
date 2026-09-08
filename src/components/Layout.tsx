@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -45,7 +45,7 @@ const FloatingWhatsApp = () => {
           href="https://wa.me/525660040372"
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => trackMetaEvent('Contact')}
+          onClick={() => { trackMetaEvent('Contact'); if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'clic_whatsapp'); }}
           className="fixed bottom-10 right-10 z-50 p-4 bg-[#25D366] text-white rounded-full shadow-lg hover:scale-110 transition-all duration-300"
           aria-label="Contactar por WhatsApp a Astas y Mantenimiento"
         >
@@ -63,7 +63,7 @@ const Navbar = () => {
 
   const services = [
     { name: 'Mantenimiento', path: '/mantenimiento-astas-bandera' },
-    { name: 'Fabricación', path: '/fabricacion-astas-bandera-mexico' },
+    { name: 'FabricaciÃ³n', path: '/fabricacion-astas-bandera-mexico' },
     { name: 'Monumentales', path: '/astas-monumentales' },
     { name: 'Escritorio', path: '/astas-escritorio' },
     { name: 'Banderas', path: '/banderas-reglamentarias' },
@@ -139,10 +139,10 @@ const Navbar = () => {
           </Link>
           
           <a
-            href="https://wa.me/525660040372?text=Hola,%20solicito%20información%20técnica"
+            href="https://wa.me/525660040372?text=Hola,%20solicito%20informaciÃ³n%20tÃ©cnica"
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => trackMetaEvent('Contact')}
+            onClick={() => { trackMetaEvent('Contact'); if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'clic_whatsapp'); }}
             className="machined-gradient text-white px-6 py-3 rounded-lg font-headline font-bold uppercase text-xs tracking-widest hover:opacity-90 transition-all active:scale-95"
           >
             WhatsApp
@@ -226,7 +226,7 @@ const Footer = () => {
             </div>
           </div>
           <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm">
-            Fabricación de astas bandera de alta precisión y servicios especializados de mantenimiento estructural en todo México.
+            FabricaciÃ³n de astas bandera de alta precisiÃ³n y servicios especializados de mantenimiento estructural en todo MÃ©xico.
           </p>
         </div>
         
@@ -235,7 +235,7 @@ const Footer = () => {
             <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary-navy">Servicios</h4>
             <ul className="space-y-2">
               <li><Link to="/mantenimiento-astas-bandera" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Mantenimiento</Link></li>
-              <li><Link to="/fabricacion-astas-bandera-mexico" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Fabricación</Link></li>
+              <li><Link to="/fabricacion-astas-bandera-mexico" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">FabricaciÃ³n</Link></li>
               <li><Link to="/astas-monumentales" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Monumentales</Link></li>
             </ul>
           </div>
@@ -272,7 +272,7 @@ const Footer = () => {
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-outline-variant/10 text-center md:text-left">
         <p className="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">
-          © {new Date().getFullYear()} ASTAS Y MANTENIMIENTO. Machined to Perfection.
+          Â© {new Date().getFullYear()} ASTAS Y MANTENIMIENTO. Machined to Perfection.
         </p>
       </div>
     </footer>
