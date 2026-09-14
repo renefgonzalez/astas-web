@@ -43,156 +43,207 @@
          Validar en:   https://validator.schema.org
     =============================================================== -->
 
-    <!-- Schema 1: LocalBusiness + Organization (Negocio Principal) -->
+    <!-- Schema 1: LocalBusiness + Organization + Manufacturer (AEO/GEO) -->
     <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "LocalBusiness",
+    "Organization",
+    "Manufacturer",
+    "HomeAndConstructionBusiness"
+  ],
+  "@id": "https://astasymantenimiento.com/#organization",
+  "name": "Astas y Mantenimiento",
+  "alternateName": "Astas y Mantenimiento México",
+  "legalName": "Astas y Mantenimiento S.A. de C.V.",
+  "image": [
+    "https://astasymantenimiento.com/logo.png",
+    "https://astasymantenimiento.com/src/logo-astas.png"
+  ],
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://astasymantenimiento.com/src/logo-astas.png",
+    "width": 400,
+    "height": 120
+  },
+  "description": "Líderes en México en fabricación, instalación, pintura y mantenimiento preventivo y correctivo de astas banderas monumentales de 6m a más de 50m. Ingeniería estructural, izaje de alta seguridad y cobertura técnica en toda la República Mexicana.",
+  "url": "https://astasymantenimiento.com",
+  "telephone": "+52-56-6004-0372",
+  "email": "contacto@astasymantenimiento.com",
+  "foundingDate": "2010",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Libertad 10, La Conchita Covarrubias",
+    "addressLocality": "Chalco de Díaz Covarrubias",
+    "addressRegion": "Estado de México",
+    "postalCode": "56600",
+    "addressCountry": "MX"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "19.2585",
+    "longitude": "-98.8997"
+  },
+  "hasMap": "https://maps.google.com/?q=Libertad+10+La+Conchita+Covarrubias+Chalco+Estado+de+Mexico",
+  "areaServed": [
     {
-      "@context": "https://schema.org",
-      "@type": ["LocalBusiness", "Organization"],
-      "@id": "https://astasymantenimiento.com/#organization",
-      "name": "Astas y Mantenimiento",
-      "alternateName": "Astas y Mantenimiento México",
-      "legalName": "Astas y Mantenimiento S.A. de C.V.",
-      "image": [
-        "https://astasymantenimiento.com/logo.png",
-        "https://astasymantenimiento.com/src/logo-astas.png"
+      "@type": "Country",
+      "name": "México"
+    },
+    {
+      "@type": "State",
+      "name": "Estado de México"
+    },
+    {
+      "@type": "City",
+      "name": "Ciudad de México"
+    },
+    {
+      "@type": "State",
+      "name": "Jalisco"
+    },
+    {
+      "@type": "State",
+      "name": "Nuevo León"
+    },
+    {
+      "@type": "State",
+      "name": "Puebla"
+    },
+    {
+      "@type": "State",
+      "name": "Querétaro"
+    },
+    {
+      "@type": "State",
+      "name": "Veracruz"
+    },
+    {
+      "@type": "State",
+      "name": "Yucatán"
+    },
+    {
+      "@type": "State",
+      "name": "Quintana Roo"
+    }
+  ],
+  "priceRange": "$$$",
+  "currenciesAccepted": "MXN",
+  "paymentAccepted": "Efectivo, Transferencia bancaria, Tarjeta de crédito",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "42",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
       ],
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://astasymantenimiento.com/src/logo-astas.png",
-        "width": 400,
-        "height": 120
-      },
-      "description": "Expertos en fabricación, instalación y mantenimiento de astas banderas monumentales en todo México. Ingeniería de alta calidad, cumplimiento normativo y cobertura nacional.",
-      "url": "https://astasymantenimiento.com",
+      "opens": "09:00",
+      "closes": "18:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "Saturday",
+      "opens": "09:00",
+      "closes": "14:00"
+    }
+  ],
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
       "telephone": "+52-56-6004-0372",
-      "email": "contacto@astasymantenimiento.com",
-      "foundingDate": "2010",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Libertad 10, La Conchita Covarrubias",
-        "addressLocality": "Chalco de Díaz Covarrubias",
-        "addressRegion": "Estado de México",
-        "postalCode": "56600",
-        "addressCountry": "MX"
-      },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": "19.2585",
-        "longitude": "-98.8997"
-      },
-      "areaServed": [
-        {
-          "@type": "State",
-          "name": "Estado de México",
-          "sameAs": "https://www.wikidata.org/wiki/Q61"
-        },
-        {
-          "@type": "City",
-          "name": "Ciudad de México",
-          "sameAs": "https://www.wikidata.org/wiki/Q1489"
-        },
-        {
-          "@type": "Country",
-          "name": "México",
-          "sameAs": "https://www.wikidata.org/wiki/Q96"
-        }
-      ],
-      "priceRange": "$$",
-      "currenciesAccepted": "MXN",
-      "paymentAccepted": "Efectivo, Transferencia bancaria, Tarjeta de crédito",
-      "openingHoursSpecification": [
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-          "opens": "09:00",
-          "closes": "18:00"
-        },
-        {
-          "@type": "OpeningHoursSpecification",
-          "dayOfWeek": "Saturday",
-          "opens": "09:00",
-          "closes": "14:00"
-        }
-      ],
-      "contactPoint": [
-        {
-          "@type": "ContactPoint",
-          "telephone": "+52-56-6004-0372",
-          "contactType": "sales",
-          "areaServed": "MX",
-          "availableLanguage": ["Spanish"],
-          "hoursAvailable": {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-            "opens": "09:00",
-            "closes": "18:00"
-          }
-        },
-        {
-          "@type": "ContactPoint",
-          "telephone": "+52-56-6004-0372",
-          "contactType": "technical support",
-          "areaServed": "MX",
-          "availableLanguage": ["Spanish"]
-        }
-      ],
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Catálogo de Servicios — Astas y Mantenimiento",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Fabricación de Astas Monumentales",
-              "description": "Diseño y fabricación de astas banderas monumentales en acero de alta resistencia, desde 6m hasta 50m de altura.",
-              "url": "https://astasymantenimiento.com/fabricacion-astas-bandera-mexico"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Instalación de Astas Banderas",
-              "description": "Cimentación e instalación técnica de astas banderas en todo el territorio nacional con cumplimiento de normas estructurales.",
-              "url": "https://astasymantenimiento.com/astas-monumentales"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Mantenimiento de Astas",
-              "description": "Mantenimiento preventivo y correctivo de astas banderas: lubricación de sistemas de izaje, inspección estructural y recubrimientos anticorrosivos.",
-              "url": "https://astasymantenimiento.com/mantenimiento-astas-bandera"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Astas de Escritorio",
-              "description": "Astas de escritorio para uso institucional, gubernamental y corporativo con acabados de alta calidad.",
-              "url": "https://astasymantenimiento.com/astas-escritorio"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Banderas Reglamentarias",
-              "description": "Fabricación de banderas reglamentarias nacionales y empresariales bajo normas oficiales mexicanas.",
-              "url": "https://astasymantenimiento.com/banderas-reglamentarias"
-            }
-          }
-        ]
-      },
-      "sameAs": [
-        "https://www.facebook.com/astasymantenimiento",
-        "https://www.instagram.com/astasymantenimiento",
-        "https://astasymantenimiento.com"
+      "contactType": "sales",
+      "areaServed": "MX",
+      "availableLanguage": [
+        "Spanish"
+      ]
+    },
+    {
+      "@type": "ContactPoint",
+      "telephone": "+52-56-6004-0372",
+      "contactType": "emergency service",
+      "areaServed": "MX",
+      "availableLanguage": [
+        "Spanish"
       ]
     }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Catálogo de Servicios Especializados — Astas y Mantenimiento",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Fabricación de Astas Banderas Monumentales",
+          "description": "Cálculo estructural y manufactura en acero al carbono A36/A53 desde 6m hasta 50m de altura.",
+          "url": "https://astasymantenimiento.com/fabricacion-astas-bandera-mexico"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Instalación y Cimentación de Astas Monumentales",
+          "description": "Cimentación de anclaje, izaje con grúa y montaje técnico en toda la República Mexicana bajo normas de viento.",
+          "url": "https://astasymantenimiento.com/astas-monumentales"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Mantenimiento Preventivo y Correctivo",
+          "description": "Cambio de cables de acero inoxidable marino 316, poleas superiores de bronce, lubricación de winches e inspección de soldadura.",
+          "url": "https://astasymantenimiento.com/mantenimiento-astas-bandera"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Pintura y Recubrimientos Anticorrosivos Epóxicos",
+          "description": "Tratamiento anticorrosivo para astas banderas con esmalte poliuretano alifático resistente a rayos UV y salinidad.",
+          "url": "https://astasymantenimiento.com/pintura-astas-bandera"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Reparación de Emergencia de Astas en 24h",
+          "description": "Destrabe de banderas, cambio de cables rotos y reparación urgente de mecanismos de izaje en todo México.",
+          "url": "https://astasymantenimiento.com/reparacion-astas-bandera"
+        }
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Astas de Escritorio y Banderas Reglamentarias",
+          "description": "Astas finas de latón y banderas nacionales oficiales con escudo bordado conforme a la Ley sobre el Escudo y la Bandera.",
+          "url": "https://astasymantenimiento.com/banderas-reglamentarias"
+        }
+      }
+    ]
+  },
+  "sameAs": [
+    "https://www.facebook.com/astasymantenimiento",
+    "https://www.instagram.com/astasymantenimiento",
+    "https://astasymantenimiento.com"
+  ]
+}
     </script>
 
     <!-- Schema 2: BreadcrumbList (Navegación estructurada) -->
