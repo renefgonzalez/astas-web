@@ -6,6 +6,7 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /private/
+Disallow: /cotizador-astas/
 Disallow: /*.json$
 Disallow: /demo-carrito
 
@@ -41,12 +42,14 @@ User-agent: Googlebot
 Allow: /
 Disallow: /admin/
 Disallow: /private/
+Disallow: /cotizador-astas/
 Disallow: /demo-carrito
 
 User-agent: Bingbot
 Allow: /
 Disallow: /admin/
 Disallow: /private/
+Disallow: /cotizador-astas/
 Disallow: /demo-carrito
 
 # Documentación para Modelos de Lenguaje (LLMs)
