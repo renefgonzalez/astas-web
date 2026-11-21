@@ -322,8 +322,10 @@ function poblarSelectoresFijos() {
     (p) => `<option value="${p.label}" data-extra="${p.extraPct}">${p.label}${p.extraPct ? ` (+${p.extraPct}% sugerido)` : ''}</option>`
   ).join('');
 
-  const dlCol = document.getElementById('lista-colores');
-  dlCol.innerHTML = COLORES_SUGERIDOS.map((c) => `<option value="${c}"></option>`).join('');
+  const selCol = document.getElementById('cot-color');
+  selCol.innerHTML =
+    COLORES_SUGERIDOS.map((c) => `<option value="${c}">${c}</option>`).join('') +
+    `<option value="__custom__">✏️ Otro color personalizado...</option>`;
 
   const selRuta = document.getElementById('viaje-ruta');
   selRuta.innerHTML = RUTAS_DESDE_CHALCO.map((r) => `<option value="${r.id}">${r.nombre}</option>`).join('');
@@ -401,7 +403,18 @@ function volcarCotizacionAInputs() {
   if ([...selPin.options].some((o) => o.value === cotActual.tipo_pintura)) {
     selPin.value = cotActual.tipo_pintura;
   }
-  document.getElementById('cot-color').value = cotActual.color_acabado || 'Color a elegir';
+  const selCol = document.getElementById('cot-color');
+  const inpColCustom = document.getElementById('cot-color-custom');
+  const colorActual = cotActual.color_acabado || 'Color a elegir';
+  if (COLORES_SUGERIDOS.includes(colorActual)) {
+    selCol.value = colorActual;
+    inpColCustom.hidden = true;
+    inpColCustom.value = '';
+  } else {
+    selCol.value = '__custom__';
+    inpColCustom.hidden = false;
+    inpColCustom.value = colorActual;
+  }
 
   document.getElementById('cot-anticipo').value = cotActual.anticipo_pct ?? 75;
   document.getElementById('cot-vigencia').value = cotActual.vigencia_dias ?? 30;
@@ -1235,7 +1248,6 @@ function enlazarEventosUI() {
     ['cot-telefono', 'cliente_telefono'],
     ['cot-correo', 'cliente_correo'],
     ['cot-material', 'material_principal'],
-    ['cot-color', 'color_acabado'],
     ['cot-entrega', 'tiempo_entrega'],
     ['cot-garantia', 'garantia'],
     ['cot-notas-internas', 'notas_internas'],
@@ -1247,6 +1259,24 @@ function enlazarEventosUI() {
       cotActual[prop] = el.value;
       recalcularTotalesCotizacion();
     });
+  });
+
+  // Selector de color con opción personalizada
+  document.getElementById('cot-color').addEventListener('change', (e) => {
+    const inpCustom = document.getElementById('cot-color-custom');
+    if (e.target.value === '__custom__') {
+      inpCustom.hidden = false;
+      inpCustom.focus();
+      cotActual.color_acabado = inpCustom.value.trim() || 'Color personalizado';
+    } else {
+      inpCustom.hidden = true;
+      cotActual.color_acabado = e.target.value;
+    }
+    recalcularTotalesCotizacion();
+  });
+  document.getElementById('cot-color-custom').addEventListener('input', (e) => {
+    cotActual.color_acabado = e.target.value.trim() || 'Color personalizado';
+    recalcularTotalesCotizacion();
   });
 
   // Cambio entre Pintura Normal vs Pintura Epóxica
