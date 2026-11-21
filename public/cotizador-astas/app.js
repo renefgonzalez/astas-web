@@ -1459,6 +1459,15 @@ function enlazarEventosUI() {
     rec.start();
   });
 
+  // Borrado rápido del texto del asistente
+  document.getElementById('btn-ai-limpiar').addEventListener('click', () => {
+    const box = document.getElementById('ai-street-prompt');
+    box.value = '';
+    const fb = document.getElementById('ai-street-feedback');
+    if (fb) fb.hidden = true;
+    box.focus();
+  });
+
   // Armar cotización rápida con Soporte IA
   document.getElementById('btn-ai-armar').addEventListener('click', async () => {
     const prompt = document.getElementById('ai-street-prompt').value.trim();
