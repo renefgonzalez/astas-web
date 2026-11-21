@@ -59,7 +59,7 @@ function crearCotizacionEnBlanco() {
     folio: `COT-${new Date().getFullYear()}-001`,
     fecha: hoyISO(),
     estado: 'Enviada',
-    titulo_proyecto: 'Cotización de Asta Bandera 10m en Acero al Carbón',
+    titulo_proyecto: '',
     cliente_nombre: 'A quien corresponda',
     cliente_empresa: '',
     cliente_ciudad: '',
@@ -72,21 +72,7 @@ function crearCotizacionEnBlanco() {
     vigencia_dias: 30,
     tiempo_entrega: '10 a 15 días hábiles a partir de anticipo',
     garantia: '12 meses contra defectos de fabricación',
-    partidas: [
-      {
-        id: uid(),
-        categoria: 'Fabricación',
-        concepto: PLANTILLAS_RAPIDAS[0].concepto,
-        descripcion: PLANTILLAS_RAPIDAS[0].descripcion,
-        cantidad: 1,
-        unidad: 'pieza',
-        costo_unitario_directo: 4157.00,
-        factor: 3.5,
-        precio_unitario_venta: +(4157.00 * 3.5).toFixed(2),
-        es_estimado_ia: false,
-        nota_interna: 'Base taller asta 10m',
-      },
-    ],
+    partidas: [],
     viaje: {
       activo: false,
       ruta_id: 'puebla',
@@ -1231,9 +1217,13 @@ function enlazarEventosUI() {
     cotActual.folio = generarSiguienteFolio();
     cotActual.anticipo_pct = ajustes.anticipo_default || 75;
     cotActual.vigencia_dias = ajustes.vigencia_default || 30;
+    const promptBox = document.getElementById('ai-street-prompt');
+    if (promptBox) promptBox.value = '';
+    const fbBox = document.getElementById('ai-street-feedback');
+    if (fbBox) fbBox.hidden = true;
     volcarCotizacionAInputs();
     cambiarPestana('cotizar');
-    mostrarToast(`Nueva cotización ${cotActual.folio}`);
+    mostrarToast(`Nueva cotización en blanco (${cotActual.folio})`);
   });
 
   // Campos generales de la cotización
