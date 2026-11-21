@@ -353,8 +353,20 @@ function poblarSelectoresFijos() {
         factor,
         precio_unitario_venta: +(costoFinal * factor).toFixed(2),
         es_estimado_ia: false,
+        plantilla_id: pl.id,
         nota_interna: extraEpox ? 'Incluye ajuste por pintura epóxica' : 'Desde plantilla rápida',
       });
+      if (pl.id === 'canastilla_sola') {
+        cotActual.clausulas.cimentacion_canastilla = true;
+        cotActual.clausulas.cimentacion_completa = false;
+        document.getElementById('cl-cimentacion').checked = true;
+        document.getElementById('cl-cimentacion-completa').checked = false;
+      } else if (pl.id === 'cimentacion_completa') {
+        cotActual.clausulas.cimentacion_completa = true;
+        cotActual.clausulas.cimentacion_canastilla = false;
+        document.getElementById('cl-cimentacion-completa').checked = true;
+        document.getElementById('cl-cimentacion').checked = false;
+      }
       renderPartidas();
       recalcularTotalesCotizacion();
       mostrarToast(`Agregada: ${pl.boton}`);
@@ -1299,18 +1311,55 @@ function enlazarEventosUI() {
     recalcularTotalesCotizacion();
   });
 
-  // Cláusulas de 1 clic
+  // Cláusulas de 1 clic (las de cimentación además agregan/quitan su partida automáticamente)
+  const sincronizarPartidaCimentacion = (plantillaId, activar) => {
+    cotActual.partidas = cotActual.partidas.filter((p) => p.plantilla_id !== 'canastilla_sola' && p.plantilla_id !== 'cimentacion_completa');
+    if (activar) {
+      const pl = PLANTILLAS_RAPIDAS.find((x) => x.id === plantillaId);
+      if (pl) {
+        let costo = pl.costo_unitario_directo;
+        if (plantillaId === 'canastilla_sola') {
+          const ref = insumos.find((i) => i.codigo === 'AC-CANASTILLA');
+          if (ref) costo = Number(ref.costo_sin_iva);
+        }
+        cotActual.partidas.push({
+          id: uid(),
+          categoria: pl.categoria,
+          concepto: pl.concepto,
+          descripcion: pl.descripcion,
+          cantidad: 1,
+          unidad: pl.unidad,
+          costo_unitario_directo: costo,
+          factor: pl.factor,
+          precio_unitario_venta: +(costo * pl.factor).toFixed(2),
+          es_estimado_ia: false,
+          plantilla_id: pl.id,
+          nota_interna: 'Agregada desde cláusula de cimentación',
+        });
+      }
+    }
+    renderPartidas();
+    recalcularTotalesCotizacion();
+  };
+
   const bindCheck = (id, key) => {
     document.getElementById(id).addEventListener('change', (e) => {
       cotActual.clausulas[key] = e.target.checked;
-      if (id === 'cl-cimentacion' && e.target.checked) {
-        cotActual.clausulas.cimentacion_completa = false;
-        document.getElementById('cl-cimentacion-completa').checked = false;
-      } else if (id === 'cl-cimentacion-completa' && e.target.checked) {
-        cotActual.clausulas.cimentacion_canastilla = false;
-        document.getElementById('cl-cimentacion').checked = false;
+      if (id === 'cl-cimentacion') {
+        if (e.target.checked) {
+          cotActual.clausulas.cimentacion_completa = false;
+          document.getElementById('cl-cimentacion-completa').checked = false;
+        }
+        sincronizarPartidaCimentacion('canastilla_sola', e.target.checked);
+      } else if (id === 'cl-cimentacion-completa') {
+        if (e.target.checked) {
+          cotActual.clausulas.cimentacion_canastilla = false;
+          document.getElementById('cl-cimentacion').checked = false;
+        }
+        sincronizarPartidaCimentacion('cimentacion_completa', e.target.checked);
+      } else {
+        guardarRespaldoLocal();
       }
-      guardarRespaldoLocal();
     });
   };
   bindCheck('cl-cimentacion', 'cimentacion_canastilla');
