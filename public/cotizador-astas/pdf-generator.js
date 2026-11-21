@@ -366,7 +366,12 @@ async function construirDocumentoPDF(cot, ajustes) {
   }
   if (cl.cimentacion_canastilla) {
     listaNotas.push(
-      '• Cimentación: Incluye suministro de canastilla de anclaje y plano técnico. No incluye obra civil (excavación ni colado de concreto f\'c 250 kg/cm²), la cual ejecuta el cliente en sitio con mínimo 7 días de fraguado previo al montaje.'
+      '• Cimentación (Solo Canastilla): Incluye suministro de canastilla de anclaje y plano técnico. No incluye obra civil (perforación/excavación ni colado de concreto f\'c 250 kg/cm²), la cual ejecuta el cliente en sitio con mínimo 7 días de fraguado previo al montaje.'
+    );
+  }
+  if (cl.cimentacion_completa) {
+    listaNotas.push(
+      '• Cimentación Completa: Incluye perforación/excavación en sitio, colocación nivelada de canastilla de anclaje y colado de dado de concreto f\'c 250 kg/cm². El montaje del asta se realiza tras cumplir 7 días naturales de fraguado.'
     );
   }
   if (cl.no_incluye_flete) {

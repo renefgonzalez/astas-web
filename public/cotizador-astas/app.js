@@ -410,6 +410,7 @@ function volcarCotizacionAInputs() {
 
   const cl = cotActual.clausulas || {};
   document.getElementById('cl-cimentacion').checked = !!cl.cimentacion_canastilla;
+  document.getElementById('cl-cimentacion-completa').checked = !!cl.cimentacion_completa;
   document.getElementById('cl-flete').checked = cl.no_incluye_flete !== false;
   document.getElementById('cl-grua').checked = !!cl.no_incluye_grua;
   document.getElementById('cl-trifasica').checked = !!cl.requiere_trifasica;
@@ -1282,10 +1283,18 @@ function enlazarEventosUI() {
   const bindCheck = (id, key) => {
     document.getElementById(id).addEventListener('change', (e) => {
       cotActual.clausulas[key] = e.target.checked;
+      if (id === 'cl-cimentacion' && e.target.checked) {
+        cotActual.clausulas.cimentacion_completa = false;
+        document.getElementById('cl-cimentacion-completa').checked = false;
+      } else if (id === 'cl-cimentacion-completa' && e.target.checked) {
+        cotActual.clausulas.cimentacion_canastilla = false;
+        document.getElementById('cl-cimentacion').checked = false;
+      }
       guardarRespaldoLocal();
     });
   };
   bindCheck('cl-cimentacion', 'cimentacion_canastilla');
+  bindCheck('cl-cimentacion-completa', 'cimentacion_completa');
   bindCheck('cl-flete', 'no_incluye_flete');
   bindCheck('cl-grua', 'no_incluye_grua');
   bindCheck('cl-trifasica', 'requiere_trifasica');

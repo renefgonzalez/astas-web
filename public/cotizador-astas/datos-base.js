@@ -379,4 +379,30 @@ const PLANTILLAS_RAPIDAS = [
     costo_unitario_directo: 980.00,
     factor: 2.5,
   },
+  {
+    id: 'canastilla_sola',
+    icono: '🧱',
+    boton: 'Solo Canastilla + Plano',
+    categoria: 'Fabricación',
+    concepto: 'Fabricación de Canastilla de Anclaje y Plano Técnico de Cimentación',
+    descripcion: `- Juego de anclas en acero de alta resistencia con tuercas niveladoras y plantilla guía
+- Plano técnico estructural con dimensiones y especificaciones para colado en sitio (concreto f'c 250 kg/cm²)
+- No incluye excavación ni obra civil`,
+    unidad: 'juego',
+    costo_unitario_directo: 1450.00,
+    factor: 2.5,
+  },
+  {
+    id: 'cimentacion_completa',
+    icono: '⛏️',
+    boton: 'Cimentación (Perforación + Colado)',
+    categoria: 'Instalación',
+    concepto: 'Obra Civil de Cimentación: Perforación, Canastilla de Anclaje y Colado de Dado',
+    descripcion: `- Trazo, excavación / perforación en sitio según especificación estructural del asta
+- Suministro y colocación nivelada de canastilla de anclaje con pernos de alta resistencia
+- Cimbrado y colado de dado de cimentación con concreto f'c 250 kg/cm² (requiere 7 días de fraguado previo al montaje)`,
+    unidad: 'servicio',
+    costo_unitario_directo: 4500.00,
+    factor: 2.0,
+  },
 ];
