@@ -448,6 +448,16 @@ const INSUMOS_INICIALES = [
     proveedor: 'Línea Institucional',
     notas: 'Para despachos, municipios y salas de juntas',
   },
+  {
+    codigo: 'ESC-ASTA-REG',
+    categoria: 'Banderas y Escritorio',
+    altura_asta: 'General / Todas',
+    nombre: 'Asta Reglamentaria para Escolta (2.20 m con lanza/moharra y regatón)',
+    unidad: 'pieza',
+    costo_sin_iva: 550.00,
+    proveedor: 'Línea Institucional',
+    notas: 'Costo $550 · Venta sugerida $850 s/IVA (escoltas escolares/cívicas)',
+  },
 ];
 
 // Rutas frecuentes saliendo de Chalco de Díaz Covarrubias, Edo. Méx.
@@ -568,6 +578,20 @@ const PLANTILLAS_RAPIDAS = [
     unidad: 'pieza',
     costo_unitario_directo: 980.00,
     factor: 2.5,
+  },
+  {
+    id: 'asta_escolta',
+    icono: '🎖️',
+    boton: 'Asta Escolta ($850)',
+    categoria: 'Banderas / Escritorio',
+    concepto: 'Suministro de Asta Reglamentaria para Escolta (2.20 m con Lanza/Moharra y Regatón)',
+    descripcion: `- Asta reglamentaria para escolta escolar o institucional de 2.20 m
+- Incluye remate superior (lanza/moharra) y regatón inferior metálico
+- Compatible con bandera reglamentaria de 90 × 150 cm`,
+    unidad: 'pieza',
+    costo_unitario_directo: 550.00,
+    factor: 1.5455,
+    precio_venta_fijo: 850.00,
   },
   {
     id: 'canastilla_sola',

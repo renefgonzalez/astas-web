@@ -412,11 +412,15 @@ function poblarSelectoresFijos() {
       } else if (pl.id === 'asta_30ft') {
         const ref = insumos.find((i) => i.codigo === 'BASE-ASTA-914');
         if (ref) costoReal = Number(ref.costo_sin_iva);
+      } else if (pl.id === 'asta_escolta') {
+        const ref = insumos.find((i) => i.codigo === 'ESC-ASTA-REG');
+        if (ref) costoReal = Number(ref.costo_sin_iva);
       }
       // Si tiene seleccionada pintura epóxica, sumar suplemento sugerido al costo si es fabricación
       const extraEpox = cotActual.tipo_pintura.toLowerCase().includes('epóxica') && pl.categoria === 'Fabricación' ? 1150 : 0;
       const costoFinal = +(costoReal + extraEpox).toFixed(2);
       const factor = Number(pl.factor) || Number(ajustes.factor_default) || 3.5;
+      const ventaUnit = pl.precio_venta_fijo ? Number(pl.precio_venta_fijo) : +(costoFinal * factor).toFixed(2);
 
       cotActual.partidas.push({
         id: uid(),
@@ -427,7 +431,7 @@ function poblarSelectoresFijos() {
         unidad: pl.unidad,
         costo_unitario_directo: costoFinal,
         factor,
-        precio_unitario_venta: +(costoFinal * factor).toFixed(2),
+        precio_unitario_venta: ventaUnit,
         es_estimado_ia: false,
         plantilla_id: pl.id,
         nota_interna: extraEpox ? 'Incluye ajuste por pintura epóxica' : 'Desde plantilla rápida',
@@ -869,7 +873,10 @@ function renderInsumos() {
         </td>
         <td>${badgeVig}</td>
         <td>
-          <button type="button" class="btn btn-primary btn-sm" data-saveins="${escaparAttr(i.codigo)}">Actualizar</button>
+          <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" data-saveins="${escaparAttr(i.codigo)}">Actualizar</button>
+            <button type="button" class="btn btn-secondary btn-sm" data-cotins="${escaparAttr(i.codigo)}" title="Mandar directo a la cotización">+ Cotizar</button>
+          </div>
         </td>
       </tr>`;
     })
@@ -885,6 +892,33 @@ function renderInsumos() {
       const nuevoProv = inpProv.value.trim() || '-';
       const nuevaAlt = selAlt ? selAlt.value : 'General / Todas';
       await actualizarPrecioInsumo(cod, nuevoCosto, nuevoProv, 'Edición manual', { altura_asta: nuevaAlt });
+    });
+  });
+
+  tbody.querySelectorAll('[data-cotins]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const ins = insumos.find((x) => x.codigo === btn.dataset.cotins);
+      if (!ins) return;
+      const esEscolta = ins.codigo === 'ESC-ASTA-REG';
+      const f = esEscolta ? 1.5455 : ins.categoria.includes('Banderas') ? 2.0 : Number(ajustes.factor_default) || 3.5;
+      const venta = esEscolta && Number(ins.costo_sin_iva) === 550 ? 850.00 : +((Number(ins.costo_sin_iva) || 0) * f).toFixed(2);
+      cotActual.partidas.push({
+        id: uid(),
+        categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : ins.categoria.includes('Banderas') ? 'Banderas / Escritorio' : 'Fabricación',
+        concepto: ins.nombre,
+        descripcion: `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
+        cantidad: 1,
+        unidad: ins.unidad,
+        costo_unitario_directo: Number(ins.costo_sin_iva) || 0,
+        factor: f,
+        precio_unitario_venta: venta,
+        es_estimado_ia: false,
+        nota_interna: `Desde catálogo: ${ins.codigo}`,
+      });
+      renderPartidas();
+      recalcularTotalesCotizacion();
+      cambiarPestana('cotizar');
+      mostrarToast(`Agregado a cotización: ${ins.codigo}`);
     });
   });
 
