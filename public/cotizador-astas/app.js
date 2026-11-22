@@ -106,6 +106,50 @@ function crearCotizacionEnBlanco() {
   };
 }
 
+// ── HELPERS DE ALTURA DE ASTA Y MERGE DE NUEVOS INSUMOS ──────────────────────
+function extraerAlturaDeNotas(notas, codigo) {
+  const m = String(notas || '').match(/\[Asta:\s*([^\]]+)\]/i);
+  if (m && ALTURAS_ASTA.includes(m[1].trim())) return m[1].trim();
+  const base = INSUMOS_INICIALES.find((x) => x.codigo === codigo);
+  return base?.altura_asta || 'General / Todas';
+}
+
+function limpiarTagAlturaDeNotas(notas) {
+  return String(notas || '').replace(/\[Asta:\s*[^\]]+\]\s*/i, '').trim();
+}
+
+function codificarNotasConAltura(altura, notas) {
+  const limpia = limpiarTagAlturaDeNotas(notas);
+  const alt = ALTURAS_ASTA.includes(altura) ? altura : 'General / Todas';
+  return `[Asta: ${alt}]${limpia ? ' ' + limpia : ''}`;
+}
+
+function normalizarInsumo(item) {
+  const altura = item.altura_asta && ALTURAS_ASTA.includes(item.altura_asta)
+    ? item.altura_asta
+    : extraerAlturaDeNotas(item.notas, item.codigo);
+  return {
+    ...item,
+    altura_asta: altura,
+    notas: codificarNotasConAltura(altura, item.notas || ''),
+  };
+}
+
+function fusionarInsumosFaltantes() {
+  const ahora = new Date().toISOString();
+  const existentes = new Set(insumos.map((i) => i.codigo));
+  const agregados = [];
+  INSUMOS_INICIALES.forEach((m) => {
+    if (!existentes.has(m.codigo)) {
+      const norm = normalizarInsumo({ ...m, id: uid(), actualizado_en: ahora });
+      insumos.push(norm);
+      agregados.push(norm);
+    }
+  });
+  insumos = insumos.map(normalizarInsumo);
+  return agregados;
+}
+
 // ── CARGA Y SINCRONIZACIÓN CON SUPABASE ──────────────────────────────────────
 function cargarRespaldoLocal() {
   const ajLocal = JSON.parse(localStorage.getItem(STORAGE_KEYS.ajustes) || 'null');
@@ -114,11 +158,12 @@ function cargarRespaldoLocal() {
   const insLocal = JSON.parse(localStorage.getItem(STORAGE_KEYS.insumos) || 'null');
   if (Array.isArray(insLocal) && insLocal.length > 0) {
     insumos = insLocal;
+    fusionarInsumosFaltantes();
   } else {
     const ahora = new Date().toISOString();
-    insumos = INSUMOS_INICIALES.map((m) => ({ ...m, id: uid(), actualizado_en: ahora }));
-    localStorage.setItem(STORAGE_KEYS.insumos, JSON.stringify(insumos));
+    insumos = INSUMOS_INICIALES.map((m) => normalizarInsumo({ ...m, id: uid(), actualizado_en: ahora }));
   }
+  localStorage.setItem(STORAGE_KEYS.insumos, JSON.stringify(insumos));
 
   historialInsumos = JSON.parse(localStorage.getItem(STORAGE_KEYS.historialInsumos) || '[]');
   cotizaciones = JSON.parse(localStorage.getItem(STORAGE_KEYS.cotizaciones) || '[]');
@@ -181,7 +226,22 @@ async function sincronizarDesdeSupabase() {
         .select('*');
       if (insertados && insertados.length) insumos = insertados;
     } else if (Array.isArray(resIns.data) && resIns.data.length > 0) {
-      insumos = resIns.data;
+      insumos = resIns.data.map(normalizarInsumo);
+      const nuevos = fusionarInsumosFaltantes();
+      if (nuevos.length > 0) {
+        const filasNuevas = nuevos.map((m) => ({
+          user_id: usuarioActual.id,
+          codigo: m.codigo,
+          categoria: m.categoria,
+          nombre: m.nombre,
+          unidad: m.unidad,
+          costo_sin_iva: Number(m.costo_sin_iva) || 0,
+          proveedor: m.proveedor || '-',
+          notas: m.notas || '',
+          actualizado_en: m.actualizado_en || new Date().toISOString(),
+        }));
+        await sb.from('astas_insumos').upsert(filasNuevas, { onConflict: 'user_id,codigo' });
+      }
     }
 
     if (!resHist.error && Array.isArray(resHist.data)) {
@@ -315,6 +375,22 @@ function poblarSelectoresFijos() {
 
   const selRuta = document.getElementById('viaje-ruta');
   selRuta.innerHTML = RUTAS_DESDE_CHALCO.map((r) => `<option value="${r.id}">${r.nombre}</option>`).join('');
+
+  const selFiltroAlt = document.getElementById('filtro-altura-insumo');
+  if (selFiltroAlt) {
+    selFiltroAlt.innerHTML = `<option value="TODAS">📏 Todas las alturas</option>` +
+      ALTURAS_ASTA.map((a) => `<option value="${a}">${a}</option>`).join('');
+  }
+  const selNiAlt = document.getElementById('ni-altura');
+  if (selNiAlt) {
+    selNiAlt.innerHTML = ALTURAS_ASTA.map((a) => `<option value="${a}">${a}</option>`).join('');
+  }
+  const selDespAlt = document.getElementById('desp-altura');
+  if (selDespAlt) {
+    selDespAlt.innerHTML = ALTURAS_ASTA.filter((a) => a !== 'General / Todas')
+      .map((a) => `<option value="${a}" ${a === '10m' ? 'selected' : ''}>Asta de ${a}</option>`)
+      .join('');
+  }
 
   const chips = document.getElementById('chips-plantillas');
   chips.innerHTML = PLANTILLAS_RAPIDAS.map(
@@ -754,11 +830,14 @@ function revisarVigenciaAceroBanner() {
 function renderInsumos() {
   const tbody = document.getElementById('tbody-insumos');
   const filtro = (document.getElementById('buscar-insumo')?.value || '').toLowerCase().trim();
+  const filtroAltura = document.getElementById('filtro-altura-insumo')?.value || 'TODAS';
   const limite = Number(ajustes.dias_alerta_acero) || 18;
 
   const filtrados = insumos.filter((i) => {
+    const alt = i.altura_asta || 'General / Todas';
+    if (filtroAltura !== 'TODAS' && alt !== filtroAltura) return false;
     if (!filtro) return true;
-    return `${i.codigo} ${i.categoria} ${i.nombre} ${i.proveedor}`.toLowerCase().includes(filtro);
+    return `${i.codigo} ${i.categoria} ${alt} ${i.nombre} ${i.proveedor}`.toLowerCase().includes(filtro);
   });
 
   tbody.innerHTML = filtrados
@@ -770,16 +849,23 @@ function renderInsumos() {
       } else if (dias >= limite) {
         badgeVig = `<span class="badge badge-warn">⏱ Hace ${dias}d</span>`;
       }
+      const altActual = i.altura_asta || 'General / Todas';
+      const notaLimpia = limpiarTagAlturaDeNotas(i.notas);
 
       return `
       <tr>
         <td><strong>${escaparHTML(i.codigo)}</strong><br/><span style="font-size:0.74rem;color:var(--muted);">${escaparHTML(i.categoria)}</span></td>
-        <td>${escaparHTML(i.nombre)}<br/><span style="font-size:0.74rem;color:var(--muted);">Unidad: ${escaparHTML(i.unidad)}</span></td>
+        <td>${escaparHTML(i.nombre)}<br/><span style="font-size:0.74rem;color:var(--muted);">Unidad: ${escaparHTML(i.unidad)}${notaLimpia ? ' · ' + escaparHTML(notaLimpia) : ''}</span></td>
         <td>
-          <input type="number" step="0.01" min="0" value="${i.costo_sin_iva}" data-editcosto="${escaparAttr(i.codigo)}" style="max-width: 125px; font-weight:700;" />
+          <select data-editalt="${escaparAttr(i.codigo)}" style="max-width: 140px; font-size: 0.8rem; padding: 0.35rem 0.45rem;">
+            ${ALTURAS_ASTA.map((a) => `<option value="${a}" ${a === altActual ? 'selected' : ''}>${a}</option>`).join('')}
+          </select>
         </td>
         <td>
-          <input type="text" value="${escaparAttr(i.proveedor || '-')}" data-editprov="${escaparAttr(i.codigo)}" style="max-width: 145px;" />
+          <input type="number" step="0.01" min="0" value="${i.costo_sin_iva}" data-editcosto="${escaparAttr(i.codigo)}" style="max-width: 120px; font-weight:700;" />
+        </td>
+        <td>
+          <input type="text" value="${escaparAttr(i.proveedor || '-')}" data-editprov="${escaparAttr(i.codigo)}" style="max-width: 140px;" />
         </td>
         <td>${badgeVig}</td>
         <td>
@@ -794,9 +880,11 @@ function renderInsumos() {
       const cod = btn.dataset.saveins;
       const inpCosto = tbody.querySelector(`[data-editcosto="${CSS.escape(cod)}"]`);
       const inpProv = tbody.querySelector(`[data-editprov="${CSS.escape(cod)}"]`);
+      const selAlt = tbody.querySelector(`[data-editalt="${CSS.escape(cod)}"]`);
       const nuevoCosto = Number(inpCosto.value) || 0;
       const nuevoProv = inpProv.value.trim() || '-';
-      await actualizarPrecioInsumo(cod, nuevoCosto, nuevoProv, 'Edición manual');
+      const nuevaAlt = selAlt ? selAlt.value : 'General / Todas';
+      await actualizarPrecioInsumo(cod, nuevoCosto, nuevoProv, 'Edición manual', { altura_asta: nuevaAlt });
     });
   });
 
@@ -813,19 +901,25 @@ async function actualizarPrecioInsumo(codigo, nuevoCosto, proveedor, origen = 'M
   if (item) {
     item.costo_sin_iva = +nuevoCosto.toFixed(2);
     item.proveedor = proveedor || item.proveedor;
+    if (datosNuevos?.altura_asta) {
+      item.altura_asta = datosNuevos.altura_asta;
+      item.notas = codificarNotasConAltura(datosNuevos.altura_asta, item.notas);
+    }
     item.actualizado_en = ahora;
   } else if (datosNuevos) {
-    item = {
+    const altura = datosNuevos.altura_asta || 'General / Todas';
+    item = normalizarInsumo({
       id: uid(),
       codigo,
       categoria: datosNuevos.categoria || 'Acero y Tubería',
+      altura_asta: altura,
       nombre: datosNuevos.nombre || codigo,
       unidad: datosNuevos.unidad || 'pieza',
       costo_sin_iva: +nuevoCosto.toFixed(2),
       proveedor: proveedor || '-',
-      notas: datosNuevos.notas || '',
+      notas: codificarNotasConAltura(altura, datosNuevos.notas || ''),
       actualizado_en: ahora,
-    };
+    });
     insumos.unshift(item);
   } else {
     return;
@@ -1620,6 +1714,98 @@ function enlazarEventosUI() {
   // Filtros en Historial e Insumos
   document.getElementById('buscar-historial').addEventListener('input', renderHistorial);
   document.getElementById('buscar-insumo').addEventListener('input', renderInsumos);
+  document.getElementById('filtro-altura-insumo').addEventListener('change', renderInsumos);
+
+  // Calculadora de Despiece Exacto por Altura (Acero + Soldadura/Discos + Solera + Poleas)
+  const renderDespieceLista = () => {
+    const alturaSel = document.getElementById('desp-altura').value;
+    const cont = document.getElementById('desp-lista-materiales');
+    const candidatos = insumos.filter((i) => {
+      if (i.codigo.startsWith('BASE-ASTA-')) return false;
+      const alt = i.altura_asta || 'General / Todas';
+      return alt === alturaSel || alt === 'General / Todas';
+    });
+
+    cont.innerHTML = candidatos
+      .map((i) => {
+        const esConsumibleDefault = i.categoria.includes('Consumibles') || i.codigo === 'SOLERA-AGUILON';
+        return `
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; padding:0.42rem 0.5rem; border-bottom:1px solid #f1f5f9; font-size:0.82rem;">
+          <label style="display:flex; align-items:center; gap:0.45rem; cursor:pointer; flex:1;">
+            <input type="checkbox" class="desp-chk" data-cod="${escaparAttr(i.codigo)}" ${esConsumibleDefault ? 'checked' : ''} style="width:16px; height:16px;" />
+            <span>
+              <strong>${escaparHTML(i.nombre)}</strong>
+              <span style="display:block; font-size:0.72rem; color:var(--muted);">${escaparHTML(i.categoria)} · ${escaparHTML(i.altura_asta || 'General')} · ${moneda(i.costo_sin_iva)} / ${escaparHTML(i.unidad)}</span>
+            </span>
+          </label>
+          <input type="number" class="desp-qty" data-cod="${escaparAttr(i.codigo)}" min="0.5" step="0.5" value="1" style="width:68px; padding:0.25rem 0.4rem; font-size:0.84rem;" />
+        </div>`;
+      })
+      .join('');
+
+    const recalcularDespiece = () => {
+      let suma = 0;
+      cont.querySelectorAll('.desp-chk:checked').forEach((ch) => {
+        const cod = ch.dataset.cod;
+        const ins = insumos.find((x) => x.codigo === cod);
+        const qty = Number(cont.querySelector(`.desp-qty[data-cod="${CSS.escape(cod)}"]`)?.value) || 1;
+        if (ins) suma += (Number(ins.costo_sin_iva) || 0) * qty;
+      });
+      const fac = Math.max(1, Number(document.getElementById('desp-factor').value) || 3.5);
+      document.getElementById('desp-resumen-costo').textContent = `Costo: ${moneda(suma)} · Venta (×${fac}): ${moneda(suma * fac)}`;
+    };
+
+    cont.querySelectorAll('.desp-chk, .desp-qty').forEach((el) => el.addEventListener('input', recalcularDespiece));
+    cont.querySelectorAll('.desp-chk').forEach((el) => el.addEventListener('change', recalcularDespiece));
+    document.getElementById('desp-factor').oninput = recalcularDespiece;
+    recalcularDespiece();
+  };
+
+  document.getElementById('btn-abrir-despiece').addEventListener('click', () => {
+    document.getElementById('box-despiece').hidden = false;
+    renderDespieceLista();
+  });
+  document.getElementById('btn-cerrar-despiece').addEventListener('click', () => {
+    document.getElementById('box-despiece').hidden = true;
+  });
+  document.getElementById('desp-altura').addEventListener('change', renderDespieceLista);
+  document.getElementById('btn-insertar-despiece').addEventListener('click', () => {
+    const alturaSel = document.getElementById('desp-altura').value;
+    const fac = Math.max(1, Number(document.getElementById('desp-factor').value) || 3.5);
+    const cont = document.getElementById('desp-lista-materiales');
+    let suma = 0;
+    const detalles = [];
+    cont.querySelectorAll('.desp-chk:checked').forEach((ch) => {
+      const cod = ch.dataset.cod;
+      const ins = insumos.find((x) => x.codigo === cod);
+      const qty = Number(cont.querySelector(`.desp-qty[data-cod="${CSS.escape(cod)}"]`)?.value) || 1;
+      if (ins) {
+        suma += (Number(ins.costo_sin_iva) || 0) * qty;
+        detalles.push(`- ${qty} ${ins.unidad} × ${ins.nombre}`);
+      }
+    });
+    if (suma <= 0) {
+      mostrarToast('Marca al menos un material del despiece');
+      return;
+    }
+    cotActual.partidas.push({
+      id: uid(),
+      categoria: 'Fabricación',
+      concepto: `Fabricación de Asta Bandera de ${alturaSel} (${cotActual.material_principal})`,
+      descripcion: `- Asta bandera estructural de ${alturaSel} fabricada con soldadura bajo norma AWS\n- Incluye placas base, aguilón con solera/poleas, sistema de izaje y acabado en ${cotActual.color_acabado}`,
+      cantidad: 1,
+      unidad: 'pieza',
+      costo_unitario_directo: +suma.toFixed(2),
+      factor: fac,
+      precio_unitario_venta: +(suma * fac).toFixed(2),
+      es_estimado_ia: false,
+      nota_interna: `Despiece real (${detalles.length} insumos incl. soldadura/discos)`,
+    });
+    document.getElementById('box-despiece').hidden = true;
+    renderPartidas();
+    recalcularTotalesCotizacion();
+    mostrarToast(`Partida de ${alturaSel} agregada con costo exacto`);
+  });
 
   // Nuevo insumo manual
   document.getElementById('btn-nuevo-insumo').addEventListener('click', () => {
@@ -1638,6 +1824,7 @@ function enlazarEventosUI() {
     }
     await actualizarPrecioInsumo(cod, costo, document.getElementById('ni-proveedor').value.trim(), 'Alta manual', {
       categoria: document.getElementById('ni-categoria').value,
+      altura_asta: document.getElementById('ni-altura').value,
       nombre: nom,
       unidad: document.getElementById('ni-unidad').value.trim() || 'pieza',
     });

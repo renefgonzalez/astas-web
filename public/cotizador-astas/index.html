@@ -12,7 +12,7 @@
   <link rel="icon" href="assets/favicon.ico" />
   <link rel="apple-touch-icon" href="assets/icon-astas.jpg" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=20261120d" />
+  <link rel="stylesheet" href="styles.css?v=20261122a" />
 </head>
 <body>
 
@@ -215,6 +215,7 @@
         <div class="card-header">
           <h3 class="card-title">🏗️ Partidas de la Cotización (Agrega lo que necesites)</h3>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-dark btn-sm" id="btn-abrir-despiece">🧮 Armar por Despiece (Acero + Soldadura/Discos)</button>
             <button type="button" class="btn btn-secondary btn-sm" id="btn-agregar-desde-insumo">+ Desde mi Catálogo Acero</button>
             <button type="button" class="btn btn-primary btn-sm" id="btn-agregar-vacia">+ Partida Libre</button>
           </div>
@@ -225,6 +226,40 @@
             ⚡ TOCA PARA AGREGAR PLANTILLA RÁPIDA:
           </span>
           <div id="chips-plantillas" class="chips-row"></div>
+        </div>
+
+        <!-- Calculadora de Despiece Exacto por Altura (Acero + Placas + Herrajes + Soldadura/Discos) -->
+        <div id="box-despiece" style="background: #f8fafc; border: 1.5px solid #1d4ed8; padding: 0.9rem; border-radius: 10px; margin-bottom: 0.95rem;" hidden>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.7rem;">
+            <div>
+              <strong style="font-size:0.95rem;">🧮 Calculadora de Costo Directo por Despiece</strong>
+              <span style="display:block; font-size:0.78rem; color:var(--muted);">Filtra tus materiales por altura del asta + suma soldadura con gas, discos de corte, discos de pulimento y solera.</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-cerrar-despiece">Cerrar</button>
+          </div>
+
+          <div class="grid-3" style="margin-bottom:0.75rem;">
+            <div class="field">
+              <label for="desp-altura">📏 Altura del Asta a fabricar</label>
+              <select id="desp-altura"></select>
+            </div>
+            <div class="field">
+              <label for="desp-factor">Factor margen a aplicar</label>
+              <input type="number" id="desp-factor" min="1" step="0.1" value="3.5" />
+            </div>
+            <div class="field" style="justify-content:flex-end;">
+              <label>Resumen en tiempo real</label>
+              <div id="desp-resumen-costo" style="padding:0.52rem 0.7rem; background:#0f172a; color:#fff; border-radius:8px; font-size:0.84rem; font-weight:700;">
+                Costo: $0.00 · Venta: $0.00
+              </div>
+            </div>
+          </div>
+
+          <div id="desp-lista-materiales" style="max-height: 290px; overflow-y: auto; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; padding: 0.45rem;"></div>
+
+          <div style="margin-top:0.7rem; display:flex; justify-content:flex-end; gap:0.5rem; flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-insertar-despiece">✅ Insertar Partida con este Costo Exacto</button>
+          </div>
         </div>
 
         <!-- Selector rápido de insumo cuando toca "+ Desde mi Catálogo Acero" -->
@@ -442,15 +477,16 @@
       <!-- Catálogo editable de materiales -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">🔩 Mi Catálogo Base de Acero, Herrajes y Motores (Costos sin IVA)</h3>
+          <h3 class="card-title">🔩 Mi Catálogo Base de Acero, Herrajes y Consumibles (Costos sin IVA)</h3>
           <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
-            <input type="text" id="buscar-insumo" placeholder="Filtrar material..." style="max-width: 220px;" />
+            <select id="filtro-altura-insumo" style="max-width: 175px;"></select>
+            <input type="text" id="buscar-insumo" placeholder="Filtrar material..." style="max-width: 200px;" />
             <button type="button" class="btn btn-primary btn-sm" id="btn-nuevo-insumo">+ Nuevo Material</button>
           </div>
         </div>
 
         <div id="form-nuevo-insumo" style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem; margin-bottom: 0.9rem;" hidden>
-          <div class="grid-3">
+          <div class="grid-4">
             <div class="field">
               <label>Código corto</label>
               <input type="text" id="ni-codigo" placeholder="Ej. AC-TUB-8C40" />
@@ -459,11 +495,17 @@
               <label>Categoría</label>
               <select id="ni-categoria">
                 <option>Acero y Tubería</option>
+                <option>Placas, Aros y Solera</option>
+                <option>Consumibles Taller (Soldadura/Discos)</option>
                 <option>Izaje y Herrajes</option>
                 <option>Motorización</option>
                 <option>Pintura y Recubrimientos</option>
                 <option>Banderas y Escritorio</option>
               </select>
+            </div>
+            <div class="field">
+              <label>📏 Aplica para Asta</label>
+              <select id="ni-altura"></select>
             </div>
             <div class="field">
               <label>Unidad</label>
@@ -481,7 +523,7 @@
             </div>
             <div class="field">
               <label>Proveedor</label>
-              <input type="text" id="ni-proveedor" placeholder="Ej. Aceros / Mairsa" />
+              <input type="text" id="ni-proveedor" placeholder="Ej. Aceros / Los Volcanes" />
             </div>
           </div>
           <div style="margin-top: 0.65rem; display: flex; gap: 0.45rem;">
@@ -496,6 +538,7 @@
               <tr>
                 <th>Código / Categoría</th>
                 <th>Material</th>
+                <th>Aplica Asta</th>
                 <th>Costo s/IVA ($)</th>
                 <th>Proveedor</th>
                 <th>Vigencia Acero</th>
@@ -704,9 +747,9 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
-  <script src="config.js?v=20261120d"></script>
-  <script src="datos-base.js?v=20261120d"></script>
-  <script src="pdf-generator.js?v=20261120d"></script>
-  <script src="app.js?v=20261120d"></script>
+  <script src="config.js?v=20261122a"></script>
+  <script src="datos-base.js?v=20261122a"></script>
+  <script src="pdf-generator.js?v=20261122a"></script>
+  <script src="app.js?v=20261122a"></script>
 </body>
 </html>
