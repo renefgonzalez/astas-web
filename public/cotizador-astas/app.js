@@ -460,20 +460,12 @@ function poblarSelectoresFijos() {
         document.getElementById('cl-cimentacion-completa').checked = true;
         document.getElementById('cl-cimentacion').checked = false;
       } else if (pl.id === 'asta_escolta' && cotActual.partidas.length === 1) {
-        cotActual.material_principal = 'Latón Brillante / Uso Institucional de Interior';
-        cotActual.tipo_pintura = 'Acabado Pulido Espejo / Satinado (Latón o Inoxidable)';
-        cotActual.color_acabado = 'Bronce / Latonado';
-        cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
-        cotActual.garantia = 'Garantía contra defectos de origen';
+        aplicarPerfilArticuloVenta('laton');
         volcarCotizacionAInputs();
         mostrarToast(`Agregada: ${pl.boton}`);
         return;
       } else if (pl.id === 'bandera_reglamentaria' && cotActual.partidas.length === 1) {
-        cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
-        cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
-        cotActual.color_acabado = 'Color a elegir';
-        cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
-        cotActual.garantia = 'Garantía contra defectos de confección';
+        aplicarPerfilArticuloVenta('textil');
         volcarCotizacionAInputs();
         mostrarToast(`Agregada: ${pl.boton}`);
         return;
@@ -939,6 +931,22 @@ function renderInsumos() {
     });
   });
 
+function aplicarPerfilArticuloVenta(tipo) {
+  if (tipo === 'laton') {
+    cotActual.material_principal = 'Latón';
+    cotActual.tipo_pintura = 'Acabado Brilloso (Pulido / Lacado UV)';
+    cotActual.color_acabado = 'Latonado / Dorado';
+    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+    cotActual.garantia = 'Garantía contra defectos de origen';
+  } else if (tipo === 'textil') {
+    cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
+    cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
+    cotActual.color_acabado = 'Color a elegir';
+    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+    cotActual.garantia = 'Garantía contra defectos de confección';
+  }
+}
+
 function construirPartidaDesdeInsumo(ins) {
   const esEscolta = ins.codigo === 'ESC-ASTA-REG';
   const esArticuloVenta = ins.categoria.includes('Banderas') || ins.categoria.includes('Venta Terminado');
@@ -967,8 +975,11 @@ function construirPartidaDesdeInsumo(ins) {
       const ins = insumos.find((x) => x.codigo === btn.dataset.cotins);
       if (!ins) return;
       cotActual.partidas.push(construirPartidaDesdeInsumo(ins));
-      renderPartidas();
-      recalcularTotalesCotizacion();
+      if (cotActual.partidas.length === 1) {
+        if (ins.codigo === 'ESC-ASTA-REG' || ins.codigo === 'ESC-LATON-KIT') aplicarPerfilArticuloVenta('laton');
+        else if (ins.codigo.startsWith('BAN-')) aplicarPerfilArticuloVenta('textil');
+      }
+      volcarCotizacionAInputs();
       cambiarPestana('cotizar');
       mostrarToast(`Agregado a cotización: ${ins.codigo}`);
     });
@@ -1602,9 +1613,12 @@ function enlazarEventosUI() {
     const ins = insumos.find((x) => x.codigo === cod);
     if (!ins) return;
     cotActual.partidas.push(construirPartidaDesdeInsumo(ins));
+    if (cotActual.partidas.length === 1) {
+      if (ins.codigo === 'ESC-ASTA-REG' || ins.codigo === 'ESC-LATON-KIT') aplicarPerfilArticuloVenta('laton');
+      else if (ins.codigo.startsWith('BAN-')) aplicarPerfilArticuloVenta('textil');
+    }
     document.getElementById('box-selector-insumo').hidden = true;
-    renderPartidas();
-    recalcularTotalesCotizacion();
+    volcarCotizacionAInputs();
   });
 
   // Calculadora de viaje desde Chalco

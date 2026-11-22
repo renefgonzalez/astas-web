@@ -44,7 +44,7 @@ const OPCIONES_MATERIAL = [
   'Acero Inoxidable Grado Marino AISI 316',
   'Aluminio Estructural Anodizado',
   'Acero Galvanizado por Inmersión en Caliente (HDG)',
-  'Latón Brillante / Uso Institucional de Interior',
+  'Latón',
   'Textil Reglamentario Nylon Ripstop / Poliéster UV',
 ];
 
@@ -53,17 +53,18 @@ const OPCIONES_PINTURA = [
   { id: 'epoxica', label: 'Pintura Epóxica + Poliuretano Alifático Alta Resistencia UV', extraPct: 12 },
   { id: 'electrostatica', label: 'Pintura Electrostática Horneada en Polvo', extraPct: 10 },
   { id: 'galvanizado_epoxico', label: 'Sistema Marino: Primario Rico en Zinc + Epóxico + Poliuretano', extraPct: 18 },
-  { id: 'pulido_inox', label: 'Acabado Pulido Espejo / Satinado (Latón o Inoxidable)', extraPct: 0 },
+  { id: 'brilloso_laton', label: 'Acabado Brilloso (Pulido / Lacado UV)', extraPct: 0 },
+  { id: 'pulido_inox', label: 'Acabado Satinado / Pulido Espejo (Acero Inoxidable)', extraPct: 0 },
   { id: 'sin_pintura', label: 'Sin recubrimiento / Acero natural o textil', extraPct: 0 },
 ];
 
 const COLORES_SUGERIDOS = [
   'Color a elegir',
+  'Latonado / Dorado',
   'Blanco Institucional',
   'Gris Acero / Plata Metálico',
   'Negro Mate Estructural',
   'Verde Institucional',
-  'Bronce / Latonado',
   'Pulido Natural Inoxidable',
 ];
 
