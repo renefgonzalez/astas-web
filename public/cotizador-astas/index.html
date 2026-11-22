@@ -12,7 +12,7 @@
   <link rel="icon" href="assets/favicon.ico" />
   <link rel="apple-touch-icon" href="assets/icon-astas.jpg" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=20261122d" />
+  <link rel="stylesheet" href="styles.css?v=20261122e" />
 </head>
 <body>
 
@@ -367,7 +367,8 @@
           </div>
           <div class="field">
             <label for="cot-entrega">Tiempo de entrega</label>
-            <input type="text" id="cot-entrega" value="10 a 15 días hábiles a partir de anticipo" />
+            <select id="cot-entrega"></select>
+            <input type="text" id="cot-entrega-custom" placeholder="Escribe el tiempo de entrega..." style="margin-top: 0.4rem;" hidden />
           </div>
           <div class="field">
             <label for="cot-garantia">Garantía por escrito</label>
@@ -505,6 +506,7 @@
                 <option>Motorización</option>
                 <option>Pintura y Recubrimientos</option>
                 <option>Banderas y Escritorio</option>
+                <option>Artículo de Venta Terminado</option>
               </select>
             </div>
             <div class="field">
@@ -751,9 +753,9 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
-  <script src="config.js?v=20261122d"></script>
-  <script src="datos-base.js?v=20261122d"></script>
-  <script src="pdf-generator.js?v=20261122d"></script>
-  <script src="app.js?v=20261122d"></script>
+  <script src="config.js?v=20261122e"></script>
+  <script src="datos-base.js?v=20261122e"></script>
+  <script src="pdf-generator.js?v=20261122e"></script>
+  <script src="app.js?v=20261122e"></script>
 </body>
 </html>

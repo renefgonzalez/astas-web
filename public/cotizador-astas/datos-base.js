@@ -76,6 +76,14 @@ const ALTURAS_ASTA = [
   '25m+',
 ];
 
+const TIEMPOS_ENTREGA_SUGERIDOS = [
+  'Entrega inmediata (sujeto a existencia)',
+  '1 a 5 días hábiles (artículo de venta / sobre pedido)',
+  '3 a 5 días hábiles',
+  '10 a 15 días hábiles a partir de anticipo',
+  '15 a 25 días hábiles (fabricación especial / monumental)',
+];
+
 // Catálogo inicial con tus costos reales sin IVA (actualizables 1-2 veces al mes)
 const INSUMOS_INICIALES = [
   {

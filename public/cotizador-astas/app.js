@@ -379,6 +379,13 @@ function poblarSelectoresFijos() {
     COLORES_SUGERIDOS.map((c) => `<option value="${c}">${c}</option>`).join('') +
     `<option value="__custom__">✏️ Otro color personalizado...</option>`;
 
+  const selEnt = document.getElementById('cot-entrega');
+  if (selEnt) {
+    selEnt.innerHTML =
+      TIEMPOS_ENTREGA_SUGERIDOS.map((t) => `<option value="${t}">${t}</option>`).join('') +
+      `<option value="__custom__">✏️ Escribir otro tiempo de entrega...</option>`;
+  }
+
   const selRuta = document.getElementById('viaje-ruta');
   selRuta.innerHTML = RUTAS_DESDE_CHALCO.map((r) => `<option value="${r.id}">${r.nombre}</option>`).join('');
 
@@ -456,13 +463,19 @@ function poblarSelectoresFijos() {
         cotActual.material_principal = 'Latón Brillante / Uso Institucional de Interior';
         cotActual.tipo_pintura = 'Acabado Pulido Espejo / Satinado (Latón o Inoxidable)';
         cotActual.color_acabado = 'Bronce / Latonado';
+        cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+        cotActual.garantia = 'Garantía contra defectos de origen';
         volcarCotizacionAInputs();
+        mostrarToast(`Agregada: ${pl.boton}`);
         return;
       } else if (pl.id === 'bandera_reglamentaria' && cotActual.partidas.length === 1) {
         cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
         cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
         cotActual.color_acabado = 'Color a elegir';
+        cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+        cotActual.garantia = 'Garantía contra defectos de confección';
         volcarCotizacionAInputs();
+        mostrarToast(`Agregada: ${pl.boton}`);
         return;
       }
       renderPartidas();
@@ -514,7 +527,18 @@ function volcarCotizacionAInputs() {
 
   document.getElementById('cot-anticipo').value = cotActual.anticipo_pct ?? 75;
   document.getElementById('cot-vigencia').value = cotActual.vigencia_dias ?? 30;
-  document.getElementById('cot-entrega').value = cotActual.tiempo_entrega || '';
+  const selEnt = document.getElementById('cot-entrega');
+  const inpEntCustom = document.getElementById('cot-entrega-custom');
+  const entregaActual = cotActual.tiempo_entrega || '10 a 15 días hábiles a partir de anticipo';
+  if (TIEMPOS_ENTREGA_SUGERIDOS.includes(entregaActual)) {
+    selEnt.value = entregaActual;
+    inpEntCustom.hidden = true;
+    inpEntCustom.value = '';
+  } else {
+    selEnt.value = '__custom__';
+    inpEntCustom.hidden = false;
+    inpEntCustom.value = entregaActual;
+  }
   document.getElementById('cot-garantia').value = cotActual.garantia || '';
 
   const cl = cotActual.clausulas || {};
@@ -917,14 +941,17 @@ function renderInsumos() {
 
 function construirPartidaDesdeInsumo(ins) {
   const esEscolta = ins.codigo === 'ESC-ASTA-REG';
+  const esArticuloVenta = ins.categoria.includes('Banderas') || ins.categoria.includes('Venta Terminado');
   const costo = Number(ins.costo_sin_iva) || 0;
-  const f = esEscolta ? 1.5455 : ins.categoria.includes('Banderas') ? 2.0 : Number(ajustes.factor_default) || 3.5;
+  const f = esEscolta ? 1.5455 : esArticuloVenta ? 1.8 : Number(ajustes.factor_default) || 3.5;
   const venta = esEscolta && costo === 550 ? 850.00 : +(costo * f).toFixed(2);
   return {
     id: uid(),
-    categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : ins.categoria.includes('Banderas') ? 'Banderas / Escritorio' : 'Fabricación',
+    categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : esArticuloVenta ? 'Banderas / Escritorio' : 'Fabricación',
     concepto: ins.nombre,
-    descripcion: `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
+    descripcion: esArticuloVenta
+      ? `- Artículo terminado: ${ins.nombre}\n- Unidad: ${ins.unidad}`
+      : `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
     cantidad: 1,
     unidad: ins.unidad,
     costo_unitario_directo: costo,
@@ -1403,7 +1430,6 @@ function enlazarEventosUI() {
     ['cot-telefono', 'cliente_telefono'],
     ['cot-correo', 'cliente_correo'],
     ['cot-material', 'material_principal'],
-    ['cot-entrega', 'tiempo_entrega'],
     ['cot-garantia', 'garantia'],
     ['cot-notas-internas', 'notas_internas'],
   ];
@@ -1414,6 +1440,24 @@ function enlazarEventosUI() {
       cotActual[prop] = el.value;
       recalcularTotalesCotizacion();
     });
+  });
+
+  // Selector de tiempo de entrega con opción personalizada
+  document.getElementById('cot-entrega').addEventListener('change', (e) => {
+    const inpCustom = document.getElementById('cot-entrega-custom');
+    if (e.target.value === '__custom__') {
+      inpCustom.hidden = false;
+      inpCustom.focus();
+      cotActual.tiempo_entrega = inpCustom.value.trim() || 'A convenir';
+    } else {
+      inpCustom.hidden = true;
+      cotActual.tiempo_entrega = e.target.value;
+    }
+    recalcularTotalesCotizacion();
+  });
+  document.getElementById('cot-entrega-custom').addEventListener('input', (e) => {
+    cotActual.tiempo_entrega = e.target.value.trim() || 'A convenir';
+    recalcularTotalesCotizacion();
   });
 
   // Selector de color con opción personalizada
