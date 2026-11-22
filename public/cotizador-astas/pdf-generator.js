@@ -171,31 +171,56 @@ async function construirDocumentoPDF(cot, ajustes) {
     doc.text('P R E S E N T E', col1X, cursorY + 21.8);
   }
 
-  // Columna Derecha: Material, Tipo de Pintura (Normal vs Epóxica) y Color
+  // Columna Derecha: Material, Tipo de Pintura (Normal vs Epóxica) y Color — u oculta si no aplica
   const col2X = marginX + contentW * 0.52 + 4;
   const maxSpecW = contentW * 0.48 - 7;
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(7.5);
-  doc.setTextColor(...BLUE);
-  doc.text('ESPECIFICACIÓN GENERAL DE MATERIAL Y ACABADO', col2X, cursorY + 5.5);
+  const ocultarEspec = !!(cot.clausulas && cot.clausulas.ocultar_especificacion);
 
-  doc.setFontSize(8.1);
-  doc.setTextColor(...NAVY);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Material: ', col2X, cursorY + 11);
-  doc.setFont('helvetica', 'normal');
-  doc.text(doc.splitTextToSize(cot.material_principal || 'Acero al Carbón Cédula 40', maxSpecW - 15)[0], col2X + 15, cursorY + 11);
+  if (ocultarEspec) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...BLUE);
+    doc.text('RESUMEN DE CONDICIONES', col2X, cursorY + 5.5);
 
-  doc.setFont('helvetica', 'bold');
-  doc.text('Recubrimiento: ', col2X, cursorY + 16.5);
-  doc.setFont('helvetica', 'normal');
-  doc.text(doc.splitTextToSize(cot.tipo_pintura || 'Esmalte Anticorrosivo', maxSpecW - 23)[0], col2X + 23, cursorY + 16.5);
+    doc.setFontSize(8.1);
+    doc.setTextColor(...NAVY);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Anticipo / Pago: ', col2X, cursorY + 11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${cot.anticipo_pct || 75}% anticipo · ${100 - (cot.anticipo_pct || 75)}% contra entrega`, col2X + 24, cursorY + 11);
 
-  doc.setFont('helvetica', 'bold');
-  doc.text('Color / Entrega: ', col2X, cursorY + 21.8);
-  doc.setFont('helvetica', 'normal');
-  const colorYEntrega = `${cot.color_acabado || 'Color a elegir'}  ·  ${cot.tiempo_entrega || '10 a 15 días hábiles'}`;
-  doc.text(doc.splitTextToSize(colorYEntrega, maxSpecW - 24)[0], col2X + 24, cursorY + 21.8);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Vigencia: ', col2X, cursorY + 16.5);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${cot.vigencia_dias || 30} días naturales`, col2X + 16, cursorY + 16.5);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('Entrega: ', col2X, cursorY + 21.8);
+    doc.setFont('helvetica', 'normal');
+    doc.text(doc.splitTextToSize(cot.tiempo_entrega || 'A convenir', maxSpecW - 15)[0], col2X + 15, cursorY + 21.8);
+  } else {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...BLUE);
+    doc.text('ESPECIFICACIÓN GENERAL DE MATERIAL Y ACABADO', col2X, cursorY + 5.5);
+
+    doc.setFontSize(8.1);
+    doc.setTextColor(...NAVY);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Material: ', col2X, cursorY + 11);
+    doc.setFont('helvetica', 'normal');
+    doc.text(doc.splitTextToSize(cot.material_principal || 'Acero al Carbón Cédula 40', maxSpecW - 15)[0], col2X + 15, cursorY + 11);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('Acabado: ', col2X, cursorY + 16.5);
+    doc.setFont('helvetica', 'normal');
+    doc.text(doc.splitTextToSize(cot.tipo_pintura || 'Esmalte Anticorrosivo', maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('Color: ', col2X, cursorY + 21.8);
+    doc.setFont('helvetica', 'normal');
+    doc.text(doc.splitTextToSize(cot.color_acabado || 'Color a elegir', maxSpecW - 12)[0], col2X + 12, cursorY + 21.8);
+  }
 
   cursorY += boxH + 5;
 

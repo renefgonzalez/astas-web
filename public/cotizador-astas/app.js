@@ -452,6 +452,18 @@ function poblarSelectoresFijos() {
         cotActual.clausulas.cimentacion_canastilla = false;
         document.getElementById('cl-cimentacion-completa').checked = true;
         document.getElementById('cl-cimentacion').checked = false;
+      } else if (pl.id === 'asta_escolta' && cotActual.partidas.length === 1) {
+        cotActual.material_principal = 'Latón Brillante / Uso Institucional de Interior';
+        cotActual.tipo_pintura = 'Acabado Pulido Espejo / Satinado (Latón o Inoxidable)';
+        cotActual.color_acabado = 'Bronce / Latonado';
+        volcarCotizacionAInputs();
+        return;
+      } else if (pl.id === 'bandera_reglamentaria' && cotActual.partidas.length === 1) {
+        cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
+        cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
+        cotActual.color_acabado = 'Color a elegir';
+        volcarCotizacionAInputs();
+        return;
       }
       renderPartidas();
       recalcularTotalesCotizacion();
@@ -512,6 +524,8 @@ function volcarCotizacionAInputs() {
   document.getElementById('cl-grua').checked = !!cl.no_incluye_grua;
   document.getElementById('cl-trifasica').checked = !!cl.requiere_trifasica;
   document.getElementById('cl-banco').checked = !!cl.mostrar_datos_bancarios;
+  const chkOcultarEspec = document.getElementById('cl-ocultar-especificacion');
+  if (chkOcultarEspec) chkOcultarEspec.checked = !!cl.ocultar_especificacion;
   document.getElementById('cl-nota-extra').value = cl.nota_extra || '';
   document.getElementById('cot-notas-internas').value = cotActual.notas_internas || '';
 
@@ -1507,6 +1521,7 @@ function enlazarEventosUI() {
   bindCheck('cl-grua', 'no_incluye_grua');
   bindCheck('cl-trifasica', 'requiere_trifasica');
   bindCheck('cl-banco', 'mostrar_datos_bancarios');
+  bindCheck('cl-ocultar-especificacion', 'ocultar_especificacion');
   document.getElementById('cl-nota-extra').addEventListener('input', (e) => {
     cotActual.clausulas.nota_extra = e.target.value;
     guardarRespaldoLocal();

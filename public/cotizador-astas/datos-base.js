@@ -53,7 +53,7 @@ const OPCIONES_PINTURA = [
   { id: 'epoxica', label: 'Pintura Epóxica + Poliuretano Alifático Alta Resistencia UV', extraPct: 12 },
   { id: 'electrostatica', label: 'Pintura Electrostática Horneada en Polvo', extraPct: 10 },
   { id: 'galvanizado_epoxico', label: 'Sistema Marino: Primario Rico en Zinc + Epóxico + Poliuretano', extraPct: 18 },
-  { id: 'pulido_inox', label: 'Acabado Satinado / Pulido Espejo (Acero Inoxidable)', extraPct: 0 },
+  { id: 'pulido_inox', label: 'Acabado Pulido Espejo / Satinado (Latón o Inoxidable)', extraPct: 0 },
   { id: 'sin_pintura', label: 'Sin recubrimiento / Acero natural o textil', extraPct: 0 },
 ];
 

@@ -12,7 +12,7 @@
   <link rel="icon" href="assets/favicon.ico" />
   <link rel="apple-touch-icon" href="assets/icon-astas.jpg" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=20261122c" />
+  <link rel="stylesheet" href="styles.css?v=20261122d" />
 </head>
 <body>
 
@@ -400,6 +400,10 @@
             <input type="checkbox" id="cl-banco" />
             <span><strong>🏦 Mostrar datos bancarios en el PDF:</strong> Imprime banco, titular y CLABE configurados en Ajustes.</span>
           </label>
+          <label class="clause-check">
+            <input type="checkbox" id="cl-ocultar-especificacion" />
+            <span><strong>📄 Ocultar cuadro de Material/Pintura en PDF:</strong> Útil para escoltas, banderas o artículos mixtos donde no aplica una sola pintura.</span>
+          </label>
         </div>
 
         <div class="grid-2" style="margin-top: 0.75rem;">
@@ -747,9 +751,9 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
-  <script src="config.js?v=20261122c"></script>
-  <script src="datos-base.js?v=20261122c"></script>
-  <script src="pdf-generator.js?v=20261122c"></script>
-  <script src="app.js?v=20261122c"></script>
+  <script src="config.js?v=20261122d"></script>
+  <script src="datos-base.js?v=20261122d"></script>
+  <script src="pdf-generator.js?v=20261122d"></script>
+  <script src="app.js?v=20261122d"></script>
 </body>
 </html>
