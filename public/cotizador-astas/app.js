@@ -144,6 +144,12 @@ function fusionarInsumosFaltantes() {
       const norm = normalizarInsumo({ ...m, id: uid(), actualizado_en: ahora });
       insumos.push(norm);
       agregados.push(norm);
+    } else if (m.codigo === 'ESC-ASTA-REG') {
+      const idx = insumos.findIndex((i) => i.codigo === 'ESC-ASTA-REG');
+      if (idx >= 0 && Number(insumos[idx].costo_sin_iva) === 850) {
+        insumos[idx].costo_sin_iva = 550.00;
+        insumos[idx].notas = m.notas;
+      }
     }
   });
   insumos = insumos.map(normalizarInsumo);
@@ -895,26 +901,31 @@ function renderInsumos() {
     });
   });
 
+function construirPartidaDesdeInsumo(ins) {
+  const esEscolta = ins.codigo === 'ESC-ASTA-REG';
+  const costo = Number(ins.costo_sin_iva) || 0;
+  const f = esEscolta ? 1.5455 : ins.categoria.includes('Banderas') ? 2.0 : Number(ajustes.factor_default) || 3.5;
+  const venta = esEscolta && costo === 550 ? 850.00 : +(costo * f).toFixed(2);
+  return {
+    id: uid(),
+    categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : ins.categoria.includes('Banderas') ? 'Banderas / Escritorio' : 'Fabricación',
+    concepto: ins.nombre,
+    descripcion: `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
+    cantidad: 1,
+    unidad: ins.unidad,
+    costo_unitario_directo: costo,
+    factor: f,
+    precio_unitario_venta: venta,
+    es_estimado_ia: false,
+    nota_interna: `Desde catálogo: ${ins.codigo}`,
+  };
+}
+
   tbody.querySelectorAll('[data-cotins]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const ins = insumos.find((x) => x.codigo === btn.dataset.cotins);
       if (!ins) return;
-      const esEscolta = ins.codigo === 'ESC-ASTA-REG';
-      const f = esEscolta ? 1.5455 : ins.categoria.includes('Banderas') ? 2.0 : Number(ajustes.factor_default) || 3.5;
-      const venta = esEscolta && Number(ins.costo_sin_iva) === 550 ? 850.00 : +((Number(ins.costo_sin_iva) || 0) * f).toFixed(2);
-      cotActual.partidas.push({
-        id: uid(),
-        categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : ins.categoria.includes('Banderas') ? 'Banderas / Escritorio' : 'Fabricación',
-        concepto: ins.nombre,
-        descripcion: `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
-        cantidad: 1,
-        unidad: ins.unidad,
-        costo_unitario_directo: Number(ins.costo_sin_iva) || 0,
-        factor: f,
-        precio_unitario_venta: venta,
-        es_estimado_ia: false,
-        nota_interna: `Desde catálogo: ${ins.codigo}`,
-      });
+      cotActual.partidas.push(construirPartidaDesdeInsumo(ins));
       renderPartidas();
       recalcularTotalesCotizacion();
       cambiarPestana('cotizar');
@@ -1531,20 +1542,7 @@ function enlazarEventosUI() {
     const cod = document.getElementById('sel-insumo-catalogo').value;
     const ins = insumos.find((x) => x.codigo === cod);
     if (!ins) return;
-    const f = Number(ajustes.factor_default) || 3.5;
-    cotActual.partidas.push({
-      id: uid(),
-      categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : ins.categoria.includes('Bandera') ? 'Banderas / Escritorio' : 'Fabricación',
-      concepto: ins.nombre,
-      descripcion: `- Suministro e integración de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
-      cantidad: 1,
-      unidad: ins.unidad,
-      costo_unitario_directo: Number(ins.costo_sin_iva) || 0,
-      factor: f,
-      precio_unitario_venta: +((Number(ins.costo_sin_iva) || 0) * f).toFixed(2),
-      es_estimado_ia: false,
-      nota_interna: `Código catálogo: ${ins.codigo}`,
-    });
+    cotActual.partidas.push(construirPartidaDesdeInsumo(ins));
     document.getElementById('box-selector-insumo').hidden = true;
     renderPartidas();
     recalcularTotalesCotizacion();
