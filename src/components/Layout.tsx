@@ -270,9 +270,20 @@ const Footer = () => {
         </div>
       </div>
       
-      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-outline-variant/10 text-center md:text-left">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
         <p className="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">
           Â© {new Date().getFullYear()} ASTAS Y MANTENIMIENTO. Machined to Perfection.
+        </p>
+        <p className="text-on-surface-variant/70 text-[10px] uppercase tracking-widest">
+          Diseño web:{' '}
+          <a
+            href="https://imagineandstamp.site/paginas-web/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-primary-navy hover:text-accent-blue transition-colors"
+          >
+            Imagine &amp; Stamp
+          </a>
         </p>
       </div>
     </footer>
