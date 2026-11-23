@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Construction, CheckCircle2, Factory, ArrowRight, Shield, MapPin, Layers, Gauge } from 'lucide-react';
+import { Construction, CheckCircle2, Factory, ArrowRight, Shield, MapPin, Layers, Gauge, FileDown } from 'lucide-react';
 import { trackMetaEvent } from '../utils/metaPixel';
 import { SEOHead } from '../components/SEOHead';
 
@@ -261,6 +261,61 @@ const Fabricacion = () => {
                   <span key={i} className="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">{zona}</span>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fichas Técnicas y Planos Descargables (PDF) */}
+      <section className="py-16 bg-slate-900 text-white border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-3xl mb-10">
+            <span className="inline-block px-3 py-1 rounded bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest mb-4">
+              Documentación Técnica · Descarga Directa PDF
+            </span>
+            <h2 className="text-3xl font-black uppercase tracking-tight mb-3">
+              Fichas Técnicas y Planos Esquemáticos
+            </h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              Descarga nuestras fichas técnicas en PDF con alzado acotado, detalle de placa base, canastilla de anclaje, dado de cimentación y especificaciones de acero Cédula 40 para tu proyecto o licitación.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-xl bg-slate-800/80 border border-slate-700 flex flex-col justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Modelo FT-AM-25FT</span>
+                <h3 className="text-xl font-black mt-1">Asta Bandera 7.62 m (25 Pies)</h3>
+                <p className="text-slate-400 text-xs mt-2 leading-relaxed">
+                  Acero al Carbón Céd. 40 (4" → 3" → 2"), placa base 350×350 mm con 4 cartabones, canastilla de anclaje 5/8", dado 0.60×0.60×0.80 m y tramos ensamblables aptos para paquetería.
+                </p>
+              </div>
+              <a
+                href="/fichas-tecnicas/Ficha_Tecnica_Asta_Bandera_7.62m_25_Pies.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                <FileDown className="w-4 h-4" /> Descargar Ficha Técnica 7.62 m (PDF)
+              </a>
+            </div>
+            <div className="p-6 rounded-xl bg-slate-800/80 border border-slate-700 flex flex-col justify-between gap-4">
+              <div>
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Modelo FT-AM-30FT</span>
+                <h3 className="text-xl font-black mt-1">Asta Bandera 9.14 m (30 Pies)</h3>
+                <p className="text-slate-400 text-xs mt-2 leading-relaxed">
+                  Acero al Carbón Céd. 40 (4" → 3" → 2-1/2"), placa base 400×400 mm de 1/2" con 4 cartabones, canastilla 3/4", dado 0.70×0.70×0.90 m y tramos ensamblables aptos para paquetería.
+                </p>
+              </div>
+              <a
+                href="/fichas-tecnicas/Ficha_Tecnica_Asta_Bandera_9.14m_30_Pies.pdf"
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                <FileDown className="w-4 h-4" /> Descargar Ficha Técnica 9.14 m (PDF)
+              </a>
             </div>
           </div>
         </div>
