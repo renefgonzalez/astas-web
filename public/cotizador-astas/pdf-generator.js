@@ -166,7 +166,7 @@ async function construirDocumentoPDF(cot, ajustes) {
   const lineaContacto = [cot.cliente_telefono, cot.cliente_correo].filter(Boolean).join('  |  ');
   if (lineaContacto) {
     doc.text(doc.splitTextToSize(lineaContacto, contentW * 0.48)[0], col1X, cursorY + 21.8);
-  } else {
+  } else if (lineaEmpresa !== 'P R E S E N T E') {
     doc.setFont('helvetica', 'bold');
     doc.text('P R E S E N T E', col1X, cursorY + 21.8);
   }
@@ -175,6 +175,7 @@ async function construirDocumentoPDF(cot, ajustes) {
   const col2X = marginX + contentW * 0.52 + 4;
   const maxSpecW = contentW * 0.48 - 7;
   const ocultarEspec = !!(cot.clausulas && cot.clausulas.ocultar_especificacion);
+  const ocultarAcabadoColor = !!(cot.clausulas && cot.clausulas.ocultar_acabado_color);
   const tipoCot = cot.tipo_cotizacion || 'venta_asta';
 
   if (ocultarEspec) {
@@ -252,15 +253,27 @@ async function construirDocumentoPDF(cot, ajustes) {
     doc.setFont('helvetica', 'normal');
     doc.text(doc.splitTextToSize(spec.v1, maxSpecW - 16)[0], col2X + 16, cursorY + 11);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(spec.k2, col2X, cursorY + 16.5);
-    doc.setFont('helvetica', 'normal');
-    doc.text(doc.splitTextToSize(spec.v2, maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
+    if (ocultarAcabadoColor) {
+      doc.setFont('helvetica', 'bold');
+      doc.text('Entrega: ', col2X, cursorY + 16.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(doc.splitTextToSize(cot.tiempo_entrega || 'A convenir', maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
 
-    doc.setFont('helvetica', 'bold');
-    doc.text(spec.k3, col2X, cursorY + 21.8);
-    doc.setFont('helvetica', 'normal');
-    doc.text(doc.splitTextToSize(spec.v3, maxSpecW - 12)[0], col2X + 12, cursorY + 21.8);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Anticipo: ', col2X, cursorY + 21.8);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${cot.anticipo_pct || 75}% anticipo · ${100 - (cot.anticipo_pct || 75)}% entrega`, col2X + 16, cursorY + 21.8);
+    } else {
+      doc.setFont('helvetica', 'bold');
+      doc.text(spec.k2, col2X, cursorY + 16.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(doc.splitTextToSize(spec.v2, maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
+
+      doc.setFont('helvetica', 'bold');
+      doc.text(spec.k3, col2X, cursorY + 21.8);
+      doc.setFont('helvetica', 'normal');
+      doc.text(doc.splitTextToSize(spec.v3, maxSpecW - 12)[0], col2X + 12, cursorY + 21.8);
+    }
   }
 
   cursorY += boxH + 5;
@@ -590,7 +603,9 @@ async function compartirCotizacionWhatsApp(cot, ajustes) {
     : tipoCot === 'articulo'
     ? `• Material / Artículo: ${cot.subtipo_servicio || cot.material_principal}`
     : `• Material: ${cot.material_principal}`;
-  const mensajeWA = `Buen día${cot.cliente_nombre && cot.cliente_nombre !== 'A quien corresponda' ? ' ' + cot.cliente_nombre : ''}. Le comparto la cotización *${cot.folio}* referente a *${cot.titulo_proyecto}* por un total de *${formatoMonedaPDF(cot.total)} MXN* (IVA incluido).\n\n${etiquetaLinea1}\n• Acabado: ${cot.tipo_pintura} (${cot.color_acabado})\n• Anticipo (${cot.anticipo_pct || 75}%): ${anticipoMonto}\n• Vigencia: ${cot.vigencia_dias || 30} días naturales.\n\nQuedo atento a sus comentarios.\n*Lic. René Félix González Granados*\nAstas y Mantenimiento`;
+  const ocultarAcabadoWA = !!(cot.clausulas && cot.clausulas.ocultar_acabado_color);
+  const lineaAcabadoWA = ocultarAcabadoWA ? '' : `\n• Acabado: ${cot.tipo_pintura} (${cot.color_acabado})`;
+  const mensajeWA = `Buen día${cot.cliente_nombre && cot.cliente_nombre !== 'A quien corresponda' ? ' ' + cot.cliente_nombre : ''}. Le comparto la cotización *${cot.folio}* referente a *${cot.titulo_proyecto}* por un total de *${formatoMonedaPDF(cot.total)} MXN* (IVA incluido).\n\n${etiquetaLinea1}${lineaAcabadoWA}\n• Anticipo (${cot.anticipo_pct || 75}%): ${anticipoMonto}\n• Vigencia: ${cot.vigencia_dias || 30} días naturales.\n\nQuedo atento a sus comentarios.\n*Lic. René Félix González Granados*\nAstas y Mantenimiento`;
 
   // En iPhone / Android modernos: abre hoja nativa de compartir con el PDF adjunto directo a WhatsApp
   if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {

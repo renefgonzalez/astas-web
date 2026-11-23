@@ -97,6 +97,7 @@ function crearCotizacionEnBlanco() {
       no_incluye_grua: false,
       requiere_trifasica: false,
       mostrar_datos_bancarios: false,
+      ocultar_acabado_color: false,
       nota_extra: '',
     },
     notas_internas: '',
@@ -389,6 +390,13 @@ function actualizarUISegunTipoCotizacion() {
         ? '🎨 Acabado / Confección'
         : '🎨 Sistema de Pintura / Recubrimiento';
   }
+  const ocultarAC = !!(cotActual.clausulas && cotActual.clausulas.ocultar_acabado_color);
+  const selPin = document.getElementById('cot-pintura');
+  const selCol = document.getElementById('cot-color');
+  const inpColCustom = document.getElementById('cot-color-custom');
+  if (selPin) selPin.disabled = ocultarAC;
+  if (selCol) selCol.disabled = ocultarAC;
+  if (inpColCustom) inpColCustom.disabled = ocultarAC;
 }
 
 function poblarSelectoresFijos() {
@@ -529,6 +537,7 @@ function poblarSelectoresFijos() {
           cotActual.material_principal = 'No aplica (Servicio en sitio)';
           if (pl.id === 'cambio_cable' || pl.id === 'cambio_carretillas') {
             cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
+            cotActual.clausulas.ocultar_acabado_color = true;
           }
           cotActual.tiempo_entrega = '3 a 5 días hábiles';
         } else if (pl.tipo_cotizacion === 'sistema_izaje') {
@@ -618,6 +627,9 @@ function volcarCotizacionAInputs() {
   document.getElementById('cl-banco').checked = !!cl.mostrar_datos_bancarios;
   const chkOcultarEspec = document.getElementById('cl-ocultar-especificacion');
   if (chkOcultarEspec) chkOcultarEspec.checked = !!cl.ocultar_especificacion;
+  const chkOcultarAC = document.getElementById('cl-ocultar-acabado-color');
+  if (chkOcultarAC) chkOcultarAC.checked = !!cl.ocultar_acabado_color;
+  actualizarUISegunTipoCotizacion();
   document.getElementById('cl-nota-extra').value = cl.nota_extra || '';
   document.getElementById('cot-notas-internas').value = cotActual.notas_internas || '';
 
@@ -1850,6 +1862,14 @@ function enlazarEventosUI() {
   bindCheck('cl-trifasica', 'requiere_trifasica');
   bindCheck('cl-banco', 'mostrar_datos_bancarios');
   bindCheck('cl-ocultar-especificacion', 'ocultar_especificacion');
+  const chkOcultarAC = document.getElementById('cl-ocultar-acabado-color');
+  if (chkOcultarAC) {
+    chkOcultarAC.addEventListener('change', (e) => {
+      cotActual.clausulas.ocultar_acabado_color = e.target.checked;
+      actualizarUISegunTipoCotizacion();
+      guardarRespaldoLocal();
+    });
+  }
   document.getElementById('cl-nota-extra').addEventListener('input', (e) => {
     cotActual.clausulas.nota_extra = e.target.value;
     guardarRespaldoLocal();
