@@ -39,6 +39,7 @@ const AJUSTES_DEFAULT = {
 
 const OPCIONES_MATERIAL = [
   'Acero al Carbón Cédula 40 (ASTM A36 / A53)',
+  'Acero al Carbón Cédula 30 (ASTM A36 / A53)',
   'Acero Estructural Alta Resistencia ASTM A572 Gr. 50',
   'Acero Inoxidable AISI 304',
   'Acero Inoxidable Grado Marino AISI 316',
