@@ -534,6 +534,16 @@ const INSUMOS_INICIALES = [
     notas: 'Para despachos, municipios y salas de juntas',
   },
   {
+    codigo: 'FLT-TRES-4ASTAS-MTY',
+    categoria: 'Artículo de Venta Terminado',
+    altura_asta: '6m - 8m',
+    nombre: 'Flete Paquetería Tresguerras Ocurre Monterrey (Ref. 4 astas 7.30m)',
+    unidad: 'envío',
+    costo_sin_iva: 12218.10,
+    proveedor: 'Paquetería Tresguerras',
+    notas: 'Cotización directa Tresguerras Ocurre Monterrey (~$14,173 c/IVA ÷ 1.16 = $12,218.10 s/IVA)',
+  },
+  {
     codigo: 'FLT-TRES-2ASTAS-730',
     categoria: 'Artículo de Venta Terminado',
     altura_asta: '6m - 8m',
