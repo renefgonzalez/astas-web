@@ -15,34 +15,34 @@ const modelos = [
     archivo: 'Ficha_Tecnica_Asta_Bandera_7.62m_25_Pies.pdf',
     codigo: 'FT-AM-25FT',
     titulo: 'ASTA BANDERA INSTITUCIONAL 7.62 m (25 PIES)',
-    subtitulo: 'Tubería Acero al Carbón Cédula 40 · Tramos Ensamblables · Izaje Manual / Matraca',
+    subtitulo: 'Tubería Acero al Carbón Cédula 30 · Tramos Ensamblables · Izaje Manual / Matraca',
     alturaM: '7.62 m',
     alturaFt: "25'",
     tramos: '2 o 3 secciones ensamblables (largo máx. de envío ≤ 7.30 m)',
-    diametros: 'Base 4" Céd. 40 → Medio 3" Céd. 40 → Punta 2" Céd. 40',
+    diametros: 'Base 4" Céd. 30 → Medio 3" Céd. 30 → Punta 2" Céd. 30',
     placaBase: '350 × 350 mm · Espesor 3/8" (9.5 mm) · 4 cartabones',
     anclas: '4 pernos de anclaje Ø 5/8" × 50 cm (canastilla con plantilla)',
     dado: '0.60 × 0.60 × 0.80 m · Concreto armado f\'c = 250 kg/cm²',
     cable: 'Cable de acero galvanizado o inox 3/16" + polea industrial / bronce',
     bandera: '1.50 × 2.50 m (Nylon Ripstop / Poliéster UV)',
-    pesoAprox: '~135 – 165 kg (estructura sin cimentación)',
+    pesoAprox: '~105 – 130 kg (estructura sin cimentación)',
     viento: 'Diseño estructural hasta 110 km/h (arriar bandera a > 45 km/h)',
   },
   {
     archivo: 'Ficha_Tecnica_Asta_Bandera_9.14m_30_Pies.pdf',
     codigo: 'FT-AM-30FT',
     titulo: 'ASTA BANDERA INSTITUCIONAL 9.14 m (30 PIES)',
-    subtitulo: 'Tubería Acero al Carbón Cédula 40 · Tramos Ensamblables · Izaje Manual / Matraca',
+    subtitulo: 'Tubería Acero al Carbón Cédula 30 · Tramos Ensamblables · Izaje Manual / Matraca',
     alturaM: '9.14 m',
     alturaFt: "30'",
     tramos: '2 o 3 secciones ensamblables (largo máx. de envío ≤ 7.30 m)',
-    diametros: 'Base 4" Céd. 40 → Medio 3" Céd. 40 → Punta 2-1/2" / 2" Céd. 40',
+    diametros: 'Base 4" Céd. 30 → Medio 3" Céd. 30 → Punta 2-1/2" / 2" Céd. 30',
     placaBase: '400 × 400 mm · Espesor 1/2" (12.7 mm) · 4 cartabones',
     anclas: '4 pernos de anclaje Ø 3/4" × 60 cm (canastilla con plantilla)',
     dado: '0.70 × 0.70 × 0.90 m · Concreto armado f\'c = 250 kg/cm²',
     cable: 'Cable de acero galvanizado o inox 3/16" + polea industrial / bronce',
     bandera: '1.50 × 2.50 m o 1.80 × 3.00 m (Nylon Ripstop / Poliéster UV)',
-    pesoAprox: '~180 – 215 kg (estructura sin cimentación)',
+    pesoAprox: '~140 – 170 kg (estructura sin cimentación)',
     viento: 'Diseño estructural hasta 120 km/h (arriar bandera a > 45 km/h)',
   },
 ];
@@ -193,7 +193,7 @@ function renderHTML(m) {
         <text x="184" y="31" font-size="6.8" fill="#475569">Polea superior c/ rodamiento</text>
 
         <line x1="126" y1="155" x2="180" y2="155" stroke="#64748b" stroke-width="0.8"/>
-        <text x="184" y="153" font-size="7.5" font-weight="700" fill="#0f172a">Fuste Escalonado Céd. 40</text>
+        <text x="184" y="153" font-size="7.5" font-weight="700" fill="#0f172a">Fuste Escalonado Céd. 30</text>
         <text x="184" y="162" font-size="6.8" fill="#475569">Soldadura certificada AWS D1.1</text>
 
         <line x1="130" y1="213" x2="180" y2="213" stroke="#64748b" stroke-width="0.8"/>
@@ -274,7 +274,7 @@ function renderHTML(m) {
     </thead>
     <tbody>
       <tr><td class="k">Altura Total Nominal</td><td>${m.alturaM} (${m.alturaFt}) sobre Nivel de Piso Terminado (N.P.T.)</td></tr>
-      <tr><td class="k">Material y Norma</td><td>Tubería de Acero al Carbón Cédula 40 (ASTM A53 / A36) · Soldadura certificada AWS D1.1</td></tr>
+      <tr><td class="k">Material y Norma</td><td>Tubería de Acero al Carbón Cédula 30 (ASTM A53 / A36) · Soldadura certificada AWS D1.1</td></tr>
       <tr><td class="k">Configuración de Fuste</td><td>${m.diametros} · ${m.tramos}</td></tr>
       <tr><td class="k">Placa Base y Anclaje</td><td>${m.placaBase} · ${m.anclas}</td></tr>
       <tr><td class="k">Cimentación Recomendada</td><td>${m.dado}</td></tr>

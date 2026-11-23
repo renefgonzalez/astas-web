@@ -277,7 +277,7 @@ const Fabricacion = () => {
               Fichas Técnicas y Planos Esquemáticos
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Descarga nuestras fichas técnicas en PDF con alzado acotado, detalle de placa base, canastilla de anclaje, dado de cimentación y especificaciones de acero Cédula 40 para tu proyecto o licitación.
+              Descarga nuestras fichas técnicas en PDF con alzado acotado, detalle de placa base, canastilla de anclaje, dado de cimentación y especificaciones de acero Cédula 30 para tu proyecto o licitación.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -286,7 +286,7 @@ const Fabricacion = () => {
                 <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Modelo FT-AM-25FT</span>
                 <h3 className="text-xl font-black mt-1">Asta Bandera 7.62 m (25 Pies)</h3>
                 <p className="text-slate-400 text-xs mt-2 leading-relaxed">
-                  Acero al Carbón Céd. 40 (4" → 3" → 2"), placa base 350×350 mm con 4 cartabones, canastilla de anclaje 5/8", dado 0.60×0.60×0.80 m y tramos ensamblables aptos para paquetería.
+                  Acero al Carbón Céd. 30 (4" → 3" → 2"), placa base 350×350 mm con 4 cartabones, canastilla de anclaje 5/8", dado 0.60×0.60×0.80 m y tramos ensamblables aptos para paquetería.
                 </p>
               </div>
               <a
@@ -304,7 +304,7 @@ const Fabricacion = () => {
                 <span className="text-xs font-bold text-blue-400 uppercase tracking-wider">Modelo FT-AM-30FT</span>
                 <h3 className="text-xl font-black mt-1">Asta Bandera 9.14 m (30 Pies)</h3>
                 <p className="text-slate-400 text-xs mt-2 leading-relaxed">
-                  Acero al Carbón Céd. 40 (4" → 3" → 2-1/2"), placa base 400×400 mm de 1/2" con 4 cartabones, canastilla 3/4", dado 0.70×0.70×0.90 m y tramos ensamblables aptos para paquetería.
+                  Acero al Carbón Céd. 30 (4" → 3" → 2-1/2"), placa base 400×400 mm de 1/2" con 4 cartabones, canastilla 3/4", dado 0.70×0.70×0.90 m y tramos ensamblables aptos para paquetería.
                 </p>
               </div>
               <a
