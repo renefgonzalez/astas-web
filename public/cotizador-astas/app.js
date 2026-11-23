@@ -97,6 +97,7 @@ function crearCotizacionEnBlanco() {
     clausulas: {
       cimentacion_canastilla: false,
       no_incluye_flete: true,
+      envio_tresguerras: false,
       no_incluye_grua: false,
       requiere_trifasica: false,
       mostrar_datos_bancarios: false,
@@ -631,6 +632,8 @@ function volcarCotizacionAInputs() {
   document.getElementById('cl-cimentacion').checked = !!cl.cimentacion_canastilla;
   document.getElementById('cl-cimentacion-completa').checked = !!cl.cimentacion_completa;
   document.getElementById('cl-flete').checked = cl.no_incluye_flete !== false;
+  const chkTres = document.getElementById('cl-tresguerras');
+  if (chkTres) chkTres.checked = !!cl.envio_tresguerras;
   document.getElementById('cl-grua').checked = !!cl.no_incluye_grua;
   document.getElementById('cl-trifasica').checked = !!cl.requiere_trifasica;
   document.getElementById('cl-banco').checked = !!cl.mostrar_datos_bancarios;
@@ -1876,6 +1879,7 @@ function enlazarEventosUI() {
   bindCheck('cl-cimentacion', 'cimentacion_canastilla');
   bindCheck('cl-cimentacion-completa', 'cimentacion_completa');
   bindCheck('cl-flete', 'no_incluye_flete');
+  if (document.getElementById('cl-tresguerras')) bindCheck('cl-tresguerras', 'envio_tresguerras');
   bindCheck('cl-grua', 'no_incluye_grua');
   bindCheck('cl-trifasica', 'requiere_trifasica');
   bindCheck('cl-banco', 'mostrar_datos_bancarios');

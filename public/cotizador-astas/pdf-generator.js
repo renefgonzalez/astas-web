@@ -456,6 +456,9 @@ async function construirDocumentoPDF(cot, ajustes) {
   if (cl.no_incluye_flete) {
     listaNotas.push('• Flete: No incluye flete ni maniobras de envío foráneo (entrega en planta Chalco o envío por cobrar).');
   }
+  if (cl.envio_tresguerras) {
+    listaNotas.push('• Paquetería Tresguerras (Ocurre): El envío de las astas se realiza vía Paquetería Tresguerras modalidad Ocurre en sucursal destino (costo de flete por cobrar / aparte).');
+  }
   if (cl.no_incluye_grua) {
     listaNotas.push('• Maquinaria de elevación: No incluye renta de grúa articulada/telescópica ni plataforma elevadora.');
   }

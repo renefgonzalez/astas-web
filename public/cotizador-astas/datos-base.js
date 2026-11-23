@@ -534,6 +534,16 @@ const INSUMOS_INICIALES = [
     notas: 'Para despachos, municipios y salas de juntas',
   },
   {
+    codigo: 'FLT-TRES-2ASTAS-730',
+    categoria: 'Artículo de Venta Terminado',
+    altura_asta: '6m - 8m',
+    nombre: 'Flete Paquetería Tresguerras Ocurre (Ref. 2 astas 7.30m + bulto a Cd. Juárez, 1,254 kg vol.)',
+    unidad: 'envío',
+    costo_sin_iva: 11075.02,
+    proveedor: 'Paquetería Tresguerras',
+    notas: 'Guía real 23/01/2026: 2 pzas 7.30x0.50x0.50 + 1 bulto 1.31x1x1 Ocurre ($12,847.02 c/IVA)',
+  },
+  {
     codigo: 'ESC-ASTA-REG',
     categoria: 'Banderas y Escritorio',
     altura_asta: 'General / Todas',
