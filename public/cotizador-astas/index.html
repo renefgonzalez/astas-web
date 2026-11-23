@@ -12,7 +12,7 @@
   <link rel="icon" href="assets/favicon.ico" />
   <link rel="apple-touch-icon" href="assets/icon-astas.jpg" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="styles.css?v=20261122f" />
+  <link rel="stylesheet" href="styles.css?v=20261123a" />
 </head>
 <body>
 
@@ -192,20 +192,32 @@
           </div>
         </div>
 
-        <!-- Selectores pedidos por René: Material + Pintura Normal vs Epóxica + Color -->
-        <div class="grid-3" style="margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px dashed #cbd5e1;">
-          <div class="field">
-            <label for="cot-material">🔩 Tipo de Material Principal</label>
-            <select id="cot-material"></select>
+        <!-- Selectores pedidos por René: Tipo de Cotización + Material + Pintura + Color -->
+        <div style="margin-top: 0.85rem; padding-top: 0.85rem; border-top: 1px dashed #cbd5e1;">
+          <div class="grid-2" style="margin-bottom: 0.7rem;">
+            <div class="field">
+              <label for="cot-tipo">📌 Tipo de Cotización (adapta el PDF automáticamente)</label>
+              <select id="cot-tipo"></select>
+            </div>
+            <div class="field" id="wrap-subtipo-servicio" hidden>
+              <label for="cot-subtipo-servicio">🔧 Alcance / Especificación Corta (sale en el PDF)</label>
+              <input type="text" id="cot-subtipo-servicio" placeholder="Ej. Cambio de cable de acero / Sistema 2HP 440V / Bandera 3×5m" />
+            </div>
           </div>
-          <div class="field">
-            <label for="cot-pintura">🎨 Sistema de Pintura / Recubrimiento</label>
-            <select id="cot-pintura"></select>
-          </div>
-          <div class="field">
-            <label for="cot-color">🌈 Color de Acabado</label>
-            <select id="cot-color"></select>
-            <input type="text" id="cot-color-custom" placeholder="Escribe color o código RAL/Pantone..." style="margin-top: 0.4rem;" hidden />
+          <div class="grid-3">
+            <div class="field">
+              <label for="cot-material" id="lbl-cot-material">🔩 Tipo de Material Principal</label>
+              <select id="cot-material"></select>
+            </div>
+            <div class="field">
+              <label for="cot-pintura" id="lbl-cot-pintura">🎨 Sistema de Pintura / Recubrimiento</label>
+              <select id="cot-pintura"></select>
+            </div>
+            <div class="field">
+              <label for="cot-color" id="lbl-cot-color">🌈 Color de Acabado</label>
+              <select id="cot-color"></select>
+              <input type="text" id="cot-color-custom" placeholder="Escribe color o código RAL/Pantone..." style="margin-top: 0.4rem;" hidden />
+            </div>
           </div>
         </div>
       </div>
@@ -216,6 +228,7 @@
           <h3 class="card-title">🏗️ Partidas de la Cotización (Agrega lo que necesites)</h3>
           <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
             <button type="button" class="btn btn-dark btn-sm" id="btn-abrir-despiece">🧮 Armar por Despiece (Acero + Soldadura/Discos)</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-abrir-bandera">🇲🇽 Pura Bandera (por Metros)</button>
             <button type="button" class="btn btn-secondary btn-sm" id="btn-agregar-desde-insumo">+ Desde Materiales</button>
             <button type="button" class="btn btn-primary btn-sm" id="btn-agregar-vacia">+ Partida Libre</button>
           </div>
@@ -259,6 +272,62 @@
 
           <div style="margin-top:0.7rem; display:flex; justify-content:flex-end; gap:0.5rem; flex-wrap:wrap;">
             <button type="button" class="btn btn-primary btn-sm" id="btn-insertar-despiece">✅ Insertar Partida con este Costo Exacto</button>
+          </div>
+        </div>
+
+        <!-- Calculadora Rápida de Venta de Pura Bandera por Medida -->
+        <div id="box-bandera" style="background: #f0fdf4; border: 1.5px solid #16a34a; padding: 0.9rem; border-radius: 10px; margin-bottom: 0.95rem;" hidden>
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.7rem;">
+            <div>
+              <strong style="font-size:0.95rem;">🇲🇽 Cotizar Pura Bandera (Artículo por Medida en Metros)</strong>
+              <span style="display:block; font-size:0.78rem; color:var(--muted);">Para clientes que solo piden la bandera de ciertos metros. Adapta automáticamente la cotización a tipo Artículo / Textil.</span>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-cerrar-bandera">Cerrar</button>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:0.65rem;">
+            <div class="field">
+              <label for="ban-medida">📏 Medida de la Bandera (Alto × Largo)</label>
+              <select id="ban-medida"></select>
+            </div>
+            <div class="field">
+              <label for="ban-tipo">🧵 Tipo de Bandera / Tela</label>
+              <select id="ban-tipo"></select>
+            </div>
+          </div>
+
+          <div id="ban-custom-wrap" class="grid-2" style="margin-bottom:0.65rem;" hidden>
+            <div class="field">
+              <label for="ban-alto">Alto personalizado (metros)</label>
+              <input type="number" id="ban-alto" min="0.3" step="0.1" value="2.0" />
+            </div>
+            <div class="field">
+              <label for="ban-ancho">Largo personalizado (metros)</label>
+              <input type="number" id="ban-ancho" min="0.5" step="0.1" value="3.5" />
+            </div>
+          </div>
+
+          <div class="grid-4 grid-mobile-2">
+            <div class="field">
+              <label for="ban-cantidad">Cantidad (pzas)</label>
+              <input type="number" id="ban-cantidad" min="1" step="1" value="1" />
+            </div>
+            <div class="field">
+              <label for="ban-costo">🔒 Tu Costo Unit. s/IVA ($)</label>
+              <input type="number" id="ban-costo" min="0" step="10" value="980" />
+            </div>
+            <div class="field">
+              <label for="ban-factor">Factor margen</label>
+              <input type="number" id="ban-factor" min="1" step="0.1" value="2.5" />
+            </div>
+            <div class="field">
+              <label for="ban-venta">📄 Precio Venta Unit. s/IVA ($)</label>
+              <input type="number" id="ban-venta" min="0" step="10" value="2450" />
+            </div>
+          </div>
+
+          <div style="margin-top:0.7rem; display:flex; justify-content:flex-end; gap:0.5rem;">
+            <button type="button" class="btn btn-primary btn-sm" id="btn-insertar-bandera">✅ Agregar Bandera a Cotización</button>
           </div>
         </div>
 
@@ -753,9 +822,9 @@
   <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
-  <script src="config.js?v=20261122f"></script>
-  <script src="datos-base.js?v=20261122f"></script>
-  <script src="pdf-generator.js?v=20261122f"></script>
-  <script src="app.js?v=20261122f"></script>
+  <script src="config.js?v=20261123a"></script>
+  <script src="datos-base.js?v=20261123a"></script>
+  <script src="pdf-generator.js?v=20261123a"></script>
+  <script src="app.js?v=20261123a"></script>
 </body>
 </html>

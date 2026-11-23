@@ -46,6 +46,32 @@ const OPCIONES_MATERIAL = [
   'Acero Galvanizado por Inmersión en Caliente (HDG)',
   'Latón',
   'Textil Reglamentario Nylon Ripstop / Poliéster UV',
+  'Cable de Acero / Herrajes de Izaje',
+  'No aplica (Servicio en sitio)',
+];
+
+const TIPOS_COTIZACION = [
+  { id: 'venta_asta', label: '🏗️ Venta / Fabricación de Asta Completa', titulo_pdf: 'ESPECIFICACIÓN GENERAL DE MATERIAL Y ACABADO' },
+  { id: 'mantenimiento', label: '🛠️ Mantenimiento / Reparación / Pintura', titulo_pdf: 'ALCANCE Y ESPECIFICACIÓN DEL SERVICIO' },
+  { id: 'sistema_izaje', label: '⚡ Sistema de Izaje (Eléctrico / Malacate)', titulo_pdf: 'ESPECIFICACIÓN DEL SISTEMA DE IZAJE' },
+  { id: 'articulo', label: '🇲🇽 Artículo / Bandera / Refacción Suelta', titulo_pdf: 'ESPECIFICACIÓN DEL ARTÍCULO' },
+];
+
+const MEDIDAS_BANDERA = [
+  { id: '090x150', label: '0.90 × 1.50 m (Escolta / Oficina / Asta 3–4m)', alto: 0.9, ancho: 1.5, costo: 420, venta: 890 },
+  { id: '120x200', label: '1.20 × 2.00 m (Asta 6m)', alto: 1.2, ancho: 2.0, costo: 680, venta: 1450 },
+  { id: '150x250', label: '1.50 × 2.50 m (Asta 8m – 12m)', alto: 1.5, ancho: 2.5, costo: 980, venta: 2450 },
+  { id: '180x300', label: '1.80 × 3.00 m (Asta 12m – 15m)', alto: 1.8, ancho: 3.0, costo: 1450, venta: 3350 },
+  { id: '240x400', label: '2.40 × 4.00 m (Asta 15m – 18m)', alto: 2.4, ancho: 4.0, costo: 2350, venta: 5200 },
+  { id: '300x500', label: '3.00 × 5.00 m (Monumental 20m – 25m)', alto: 3.0, ancho: 5.0, costo: 3400, venta: 7500 },
+  { id: '400x700', label: '4.00 × 7.00 m (Monumental 30m+)', alto: 4.0, ancho: 7.0, costo: 5900, venta: 12800 },
+  { id: 'custom', label: '✏️ Medida personalizada en metros (Largo × Alto)...', alto: 2.0, ancho: 3.5, costo: 1800, venta: 4000 },
+];
+
+const TIPOS_TELA_BANDERA = [
+  'Bandera Nacional Reglamentaria (Nylon Ripstop / Poliéster UV 150D)',
+  'Bandera Institucional / Empresarial Personalizada (Poliéster UV)',
+  'Bandera de Gala / Despacho (Raso / Satín con fleco dorado)',
 ];
 
 const OPCIONES_PINTURA = [
@@ -428,6 +454,26 @@ const INSUMOS_INICIALES = [
     notas: 'Alta resistencia intemperie / costa / industrial',
   },
   {
+    codigo: 'SYS-ELEC-2HP',
+    categoria: 'Motorización',
+    altura_asta: '20m',
+    nombre: 'Sistema de Izaje Eléctrico Completo (Motorreductor 2HP 440V, flecha, catarina, cable 1/2", aguilón, caja cal.14)',
+    unidad: 'pieza',
+    costo_sin_iva: 32000.00,
+    proveedor: 'Integración Taller Chalco',
+    notas: 'Basado en cotización SISTEMA ELECTRICO 231126.pdf (venta $70,483 s/IVA)',
+  },
+  {
+    codigo: 'MAL-MAN-SEG',
+    categoria: 'Izaje y Herrajes',
+    altura_asta: 'General / Todas',
+    nombre: 'Malacate / Matraca Manual de Seguridad con Freno Automático',
+    unidad: 'pieza',
+    costo_sin_iva: 1850.00,
+    proveedor: 'Ferretería Industrial',
+    notas: 'Para conversión de izaje manual a malacate',
+  },
+  {
     codigo: 'BAN-150-250',
     categoria: 'Banderas y Escritorio',
     altura_asta: '10m',
@@ -438,6 +484,26 @@ const INSUMOS_INICIALES = [
     notas: 'Con ojillos reforzados y cinta de lona',
   },
   {
+    codigo: 'BAN-180-300',
+    categoria: 'Banderas y Escritorio',
+    altura_asta: '12m - 15m',
+    nombre: 'Bandera Nacional Reglamentaria 1.80 x 3.00 m Nylon Ripstop UV (astas 12-15m)',
+    unidad: 'pieza',
+    costo_sin_iva: 1450.00,
+    proveedor: 'Taller Textil',
+    notas: 'Con ojillos reforzados y cinta de lona',
+  },
+  {
+    codigo: 'BAN-240-400',
+    categoria: 'Banderas y Escritorio',
+    altura_asta: '12m - 15m',
+    nombre: 'Bandera Monumental 2.40 x 4.00 m Nylon Ripstop UV (astas 15-18m)',
+    unidad: 'pieza',
+    costo_sin_iva: 2350.00,
+    proveedor: 'Taller Textil',
+    notas: 'Costura triple aerodinámica',
+  },
+  {
     codigo: 'BAN-300-500',
     categoria: 'Banderas y Escritorio',
     altura_asta: '20m',
@@ -446,6 +512,16 @@ const INSUMOS_INICIALES = [
     costo_sin_iva: 3400.00,
     proveedor: 'Taller Textil',
     notas: 'Costura triple aerodinámica',
+  },
+  {
+    codigo: 'BAN-400-700',
+    categoria: 'Banderas y Escritorio',
+    altura_asta: '25m+',
+    nombre: 'Bandera Monumental 4.00 x 7.00 m Nylon Ripstop UV (astas 30m+)',
+    unidad: 'pieza',
+    costo_sin_iva: 5900.00,
+    proveedor: 'Taller Textil',
+    notas: 'Costura triple aerodinámica reforzada',
   },
   {
     codigo: 'ESC-LATON-KIT',
@@ -534,10 +610,33 @@ const PLANTILLAS_RAPIDAS = [
     factor: 3.5,
   },
   {
+    id: 'sistema_electrico_pdf',
+    icono: '🔌',
+    boton: 'Sist. Eléctrico 2HP ($70,483)',
+    categoria: 'Izaje Motorizado',
+    tipo_cotizacion: 'sistema_izaje',
+    concepto: 'Sistema de izaje eléctrico',
+    descripcion: `- Motorreductor trifásico 2 HP 440V (potencia mínima 2.2 HP, máxima 3 HP)
+- 2 chumaceras y 1 polea
+- 1 flecha en acero 1" y cadena
+- 1 catarina
+- Cable de acero 1/2"
+- 1 aguilón con polea de 8"
+- Interruptor marcha reversible
+- Cableado para motor y botonera
+- Sistema de protección al motor y botonera alojado en caja de placa de acero y lámina cal. 14
+- Acabado en pintura esmalte color a elegir`,
+    unidad: 'pieza',
+    costo_unitario_directo: 32000.00,
+    factor: 2.2026,
+    precio_venta_fijo: 70483.00,
+  },
+  {
     id: 'izaje_11m_motor',
     icono: '⚙️',
     boton: 'Izaje Eléctrico 11m',
     categoria: 'Izaje Motorizado',
+    tipo_cotizacion: 'sistema_izaje',
     concepto: 'Suministro e instalación de Sistema de Izaje Motorizado para Asta de 10–15 m',
     descripcion: `- Motorreductor corona-sinfín tamaño NMRV075 (T-75) de 2 HP trifásico 220/440V rel. 30:1
 - Flecha sólida de salida de 1-1/4" acoplada a tambor enrollador
@@ -552,6 +651,7 @@ const PLANTILLAS_RAPIDAS = [
     icono: '⚡',
     boton: 'Izaje Monumental 25m',
     categoria: 'Izaje Motorizado',
+    tipo_cotizacion: 'sistema_izaje',
     concepto: 'Sistema de Izaje Eléctrico Industrial con Variador para Asta Monumental (20–25 m)',
     descripcion: `- Motorreductor industrial NMRV090 de 2 HP trifásico 220/440V para carga pesada
 - Tablero de control con variador de frecuencia (arranque y frenado suave) y botonera
@@ -562,10 +662,71 @@ const PLANTILLAS_RAPIDAS = [
     factor: 2.2,
   },
   {
+    id: 'cambio_cable',
+    icono: '🧵',
+    boton: 'Solo Cambio de Cable',
+    categoria: 'Mantenimiento',
+    tipo_cotizacion: 'mantenimiento',
+    concepto: 'Servicio de Sustitución de Cable de Acero (Driza) para Asta Bandera',
+    descripcion: `- Retiro de driza / cable de acero desgastado o reventado
+- Suministro e instalación de cable de acero galvanizado o inoxidable (3/16" o 1/4" según altura)
+- Revisión, limpieza y lubricación de poleas superior e inferior y aguilón giratorio
+- Pruebas de izaje, tensado y verificación de operatividad`,
+    unidad: 'servicio',
+    costo_unitario_directo: 1850.00,
+    factor: 2.5,
+  },
+  {
+    id: 'cambio_carretillas',
+    icono: '🎡',
+    boton: 'Cambio de Carretillas/Poleas',
+    categoria: 'Mantenimiento',
+    tipo_cotizacion: 'mantenimiento',
+    concepto: 'Suministro y Cambio de Carretillas / Poleas y Herrajes de Izaje',
+    descripcion: `- Desmontaje de carretillas / poleas dañadas o amarradas
+- Suministro e instalación de poleas / carretillas con rodamiento de alta carga
+- Revisión de pernos, aguilón giratorio, eslabones y lubricación técnica
+- Pruebas de deslizamiento y operatividad en sitio`,
+    unidad: 'servicio',
+    costo_unitario_directo: 2100.00,
+    factor: 2.5,
+  },
+  {
+    id: 'cambio_izaje_malacate',
+    icono: '🔧',
+    boton: 'Cambio a Malacate/Matraca',
+    categoria: 'Mantenimiento',
+    tipo_cotizacion: 'sistema_izaje',
+    concepto: 'Conversión / Cambio de Sistema de Izaje a Malacate (Matraca) Manual de Seguridad',
+    descripcion: `- Desmontaje de sistema de izaje anterior (manual o dañado)
+- Suministro e instalación de malacate / matraca manual con freno automático de seguridad
+- Suministro de cable de acero nuevo, polea guía, pernos y herrajes de sujeción
+- Pruebas de carga, izaje y descenso controlado`,
+    unidad: 'servicio',
+    costo_unitario_directo: 3200.00,
+    factor: 2.5,
+  },
+  {
+    id: 'solo_pintura',
+    icono: '🎨',
+    boton: 'Solo Pintura de Asta',
+    categoria: 'Mantenimiento',
+    tipo_cotizacion: 'mantenimiento',
+    concepto: 'Servicio de Rehabilitación y Pintura General de Asta Bandera',
+    descripcion: `- Limpieza, lijado y preparación mecánica de superficie (retiro de óxido y recubrimiento suelto)
+- Aplicación de primario anticorrosivo industrial en fuste y placa base
+- Aplicación de acabado en esmalte industrial o pintura epóxica color a elegir
+- Revisión visual de cordones de soldadura y pernos de anclaje`,
+    unidad: 'servicio',
+    costo_unitario_directo: 2800.00,
+    factor: 2.5,
+  },
+  {
     id: 'mantenimiento_gral',
     icono: '🛠️',
-    boton: 'Mantenimiento / Pintura',
+    boton: 'Mantenimiento Completo',
     categoria: 'Mantenimiento',
+    tipo_cotizacion: 'mantenimiento',
     concepto: 'Servicio de Mantenimiento Preventivo, Rehabilitación y Pintura de Asta Bandera',
     descripcion: `- Revisión estructural de fuste, placa base, pernos de anclaje y soldaduras
 - Sustitución de driza (cable de acero) y lubricación técnica de poleas y aguilón

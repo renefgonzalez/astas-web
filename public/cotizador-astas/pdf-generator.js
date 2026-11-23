@@ -171,10 +171,11 @@ async function construirDocumentoPDF(cot, ajustes) {
     doc.text('P R E S E N T E', col1X, cursorY + 21.8);
   }
 
-  // Columna Derecha: Material, Tipo de Pintura (Normal vs Epóxica) y Color — u oculta si no aplica
+  // Columna Derecha: Especificación adaptada según tipo de cotización (venta asta, mantenimiento, izaje o artículo)
   const col2X = marginX + contentW * 0.52 + 4;
   const maxSpecW = contentW * 0.48 - 7;
   const ocultarEspec = !!(cot.clausulas && cot.clausulas.ocultar_especificacion);
+  const tipoCot = cot.tipo_cotizacion || 'venta_asta';
 
   if (ocultarEspec) {
     doc.setFont('helvetica', 'bold');
@@ -199,27 +200,67 @@ async function construirDocumentoPDF(cot, ajustes) {
     doc.setFont('helvetica', 'normal');
     doc.text(doc.splitTextToSize(cot.tiempo_entrega || 'A convenir', maxSpecW - 15)[0], col2X + 15, cursorY + 21.8);
   } else {
+    const specPorTipo = {
+      mantenimiento: {
+        titulo: 'ALCANCE Y ESPECIFICACIÓN DEL SERVICIO',
+        k1: 'Servicio: ',
+        v1: cot.subtipo_servicio || cot.material_principal || 'Mantenimiento / Reparación en Sitio',
+        k2: 'Acabado: ',
+        v2: cot.tipo_pintura || 'No aplica / Servicio técnico',
+        k3: 'Color: ',
+        v3: cot.color_acabado || 'Según requerimiento',
+      },
+      sistema_izaje: {
+        titulo: 'ESPECIFICACIÓN DEL SISTEMA DE IZAJE',
+        k1: 'Sistema: ',
+        v1: cot.subtipo_servicio || cot.material_principal || 'Sistema de Izaje (Eléctrico / Malacate)',
+        k2: 'Acabado: ',
+        v2: cot.tipo_pintura || 'Pintura Esmalte Industrial',
+        k3: 'Color: ',
+        v3: cot.color_acabado || 'Color a elegir',
+      },
+      articulo: {
+        titulo: 'ESPECIFICACIÓN DEL ARTÍCULO',
+        k1: 'Material: ',
+        v1: cot.subtipo_servicio || cot.material_principal || 'Artículo / Bandera Reglamentaria',
+        k2: 'Acabado: ',
+        v2: cot.tipo_pintura || 'Estándar de fábrica',
+        k3: 'Color: ',
+        v3: cot.color_acabado || 'Color a elegir',
+      },
+      venta_asta: {
+        titulo: 'ESPECIFICACIÓN GENERAL DE MATERIAL Y ACABADO',
+        k1: 'Material: ',
+        v1: cot.material_principal || 'Acero al Carbón Cédula 40',
+        k2: 'Acabado: ',
+        v2: cot.tipo_pintura || 'Esmalte Anticorrosivo',
+        k3: 'Color: ',
+        v3: cot.color_acabado || 'Color a elegir',
+      },
+    };
+    const spec = specPorTipo[tipoCot] || specPorTipo.venta_asta;
+
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(7.5);
     doc.setTextColor(...BLUE);
-    doc.text('ESPECIFICACIÓN GENERAL DE MATERIAL Y ACABADO', col2X, cursorY + 5.5);
+    doc.text(spec.titulo, col2X, cursorY + 5.5);
 
     doc.setFontSize(8.1);
     doc.setTextColor(...NAVY);
     doc.setFont('helvetica', 'bold');
-    doc.text('Material: ', col2X, cursorY + 11);
+    doc.text(spec.k1, col2X, cursorY + 11);
     doc.setFont('helvetica', 'normal');
-    doc.text(doc.splitTextToSize(cot.material_principal || 'Acero al Carbón Cédula 40', maxSpecW - 15)[0], col2X + 15, cursorY + 11);
+    doc.text(doc.splitTextToSize(spec.v1, maxSpecW - 16)[0], col2X + 16, cursorY + 11);
 
     doc.setFont('helvetica', 'bold');
-    doc.text('Acabado: ', col2X, cursorY + 16.5);
+    doc.text(spec.k2, col2X, cursorY + 16.5);
     doc.setFont('helvetica', 'normal');
-    doc.text(doc.splitTextToSize(cot.tipo_pintura || 'Esmalte Anticorrosivo', maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
+    doc.text(doc.splitTextToSize(spec.v2, maxSpecW - 16)[0], col2X + 16, cursorY + 16.5);
 
     doc.setFont('helvetica', 'bold');
-    doc.text('Color: ', col2X, cursorY + 21.8);
+    doc.text(spec.k3, col2X, cursorY + 21.8);
     doc.setFont('helvetica', 'normal');
-    doc.text(doc.splitTextToSize(cot.color_acabado || 'Color a elegir', maxSpecW - 12)[0], col2X + 12, cursorY + 21.8);
+    doc.text(doc.splitTextToSize(spec.v3, maxSpecW - 12)[0], col2X + 12, cursorY + 21.8);
   }
 
   cursorY += boxH + 5;
@@ -541,7 +582,15 @@ async function compartirCotizacionWhatsApp(cot, ajustes) {
   const pdfFile = new File([pdfBlob], fileName, { type: 'application/pdf' });
 
   const anticipoMonto = formatoMonedaPDF((Number(cot.total) || 0) * ((Number(cot.anticipo_pct) || 75) / 100));
-  const mensajeWA = `Buen día${cot.cliente_nombre && cot.cliente_nombre !== 'A quien corresponda' ? ' ' + cot.cliente_nombre : ''}. Le comparto la cotización *${cot.folio}* referente a *${cot.titulo_proyecto}* por un total de *${formatoMonedaPDF(cot.total)} MXN* (IVA incluido).\n\n• Material: ${cot.material_principal}\n• Acabado: ${cot.tipo_pintura} (${cot.color_acabado})\n• Anticipo (${cot.anticipo_pct || 75}%): ${anticipoMonto}\n• Vigencia: ${cot.vigencia_dias || 30} días naturales.\n\nQuedo atento a sus comentarios.\n*Lic. René Félix González Granados*\nAstas y Mantenimiento`;
+  const tipoCot = cot.tipo_cotizacion || 'venta_asta';
+  const etiquetaLinea1 = tipoCot === 'mantenimiento'
+    ? `• Servicio: ${cot.subtipo_servicio || cot.titulo_proyecto || 'Mantenimiento en sitio'}`
+    : tipoCot === 'sistema_izaje'
+    ? `• Sistema: ${cot.subtipo_servicio || 'Sistema de Izaje'}`
+    : tipoCot === 'articulo'
+    ? `• Material / Artículo: ${cot.subtipo_servicio || cot.material_principal}`
+    : `• Material: ${cot.material_principal}`;
+  const mensajeWA = `Buen día${cot.cliente_nombre && cot.cliente_nombre !== 'A quien corresponda' ? ' ' + cot.cliente_nombre : ''}. Le comparto la cotización *${cot.folio}* referente a *${cot.titulo_proyecto}* por un total de *${formatoMonedaPDF(cot.total)} MXN* (IVA incluido).\n\n${etiquetaLinea1}\n• Acabado: ${cot.tipo_pintura} (${cot.color_acabado})\n• Anticipo (${cot.anticipo_pct || 75}%): ${anticipoMonto}\n• Vigencia: ${cot.vigencia_dias || 30} días naturales.\n\nQuedo atento a sus comentarios.\n*Lic. René Félix González Granados*\nAstas y Mantenimiento`;
 
   // En iPhone / Android modernos: abre hoja nativa de compartir con el PDF adjunto directo a WhatsApp
   if (navigator.canShare && navigator.canShare({ files: [pdfFile] })) {

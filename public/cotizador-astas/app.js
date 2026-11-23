@@ -65,6 +65,8 @@ function crearCotizacionEnBlanco() {
     cliente_ciudad: '',
     cliente_telefono: '',
     cliente_correo: '',
+    tipo_cotizacion: 'venta_asta',
+    subtipo_servicio: '',
     material_principal: OPCIONES_MATERIAL[0],
     tipo_pintura: OPCIONES_PINTURA[0].label,
     color_acabado: 'Color a elegir',
@@ -365,7 +367,46 @@ function recalcularTotalesCotizacion() {
 }
 
 // ── RENDERIZADO DEL FORMULARIO DE COTIZACIÓN ─────────────────────────────────
+function actualizarUISegunTipoCotizacion() {
+  const tipo = cotActual.tipo_cotizacion || 'venta_asta';
+  const wrapSub = document.getElementById('wrap-subtipo-servicio');
+  const lblMat = document.getElementById('lbl-cot-material');
+  const lblPin = document.getElementById('lbl-cot-pintura');
+  if (wrapSub) wrapSub.hidden = tipo === 'venta_asta';
+  if (lblMat) {
+    lblMat.textContent =
+      tipo === 'mantenimiento'
+        ? '🔩 Material / Refacción (opcional)'
+        : tipo === 'sistema_izaje'
+        ? '🔩 Material / Gabinete Base'
+        : tipo === 'articulo'
+        ? '🧵 Material del Artículo / Textil'
+        : '🔩 Tipo de Material Principal';
+  }
+  if (lblPin) {
+    lblPin.textContent =
+      tipo === 'articulo'
+        ? '🎨 Acabado / Confección'
+        : '🎨 Sistema de Pintura / Recubrimiento';
+  }
+}
+
 function poblarSelectoresFijos() {
+  const selTipo = document.getElementById('cot-tipo');
+  if (selTipo) {
+    selTipo.innerHTML = TIPOS_COTIZACION.map((t) => `<option value="${t.id}">${t.label}</option>`).join('');
+  }
+
+  const selBanMed = document.getElementById('ban-medida');
+  if (selBanMed) {
+    selBanMed.innerHTML = MEDIDAS_BANDERA.map((m) => `<option value="${m.id}">${m.label}</option>`).join('');
+    selBanMed.value = '150x250';
+  }
+  const selBanTipo = document.getElementById('ban-tipo');
+  if (selBanTipo) {
+    selBanTipo.innerHTML = TIPOS_TELA_BANDERA.map((t) => `<option value="${t}">${t}</option>`).join('');
+  }
+
   const selMat = document.getElementById('cot-material');
   selMat.innerHTML = OPCIONES_MATERIAL.map((m) => `<option value="${m}">${m}</option>`).join('');
 
@@ -428,6 +469,9 @@ function poblarSelectoresFijos() {
       } else if (pl.id === 'asta_escolta') {
         const ref = insumos.find((i) => i.codigo === 'ESC-ASTA-REG');
         if (ref) costoReal = Number(ref.costo_sin_iva);
+      } else if (pl.id === 'sistema_electrico_pdf') {
+        const ref = insumos.find((i) => i.codigo === 'SYS-ELEC-2HP');
+        if (ref) costoReal = Number(ref.costo_sin_iva);
       }
       // Si tiene seleccionada pintura epóxica, sumar suplemento sugerido al costo si es fabricación
       const extraEpox = cotActual.tipo_pintura.toLowerCase().includes('epóxica') && pl.categoria === 'Fabricación' ? 1150 : 0;
@@ -469,6 +513,32 @@ function poblarSelectoresFijos() {
         volcarCotizacionAInputs();
         mostrarToast(`Agregada: ${pl.boton}`);
         return;
+      } else if (pl.tipo_cotizacion && cotActual.partidas.length === 1) {
+        cotActual.tipo_cotizacion = pl.tipo_cotizacion;
+        if (pl.id === 'sistema_electrico_pdf') {
+          cotActual.titulo_proyecto = cotActual.titulo_proyecto || 'Cotización Sistema de Izaje Eléctrico';
+          cotActual.subtipo_servicio = 'Motorreductor Trifásico 2HP 440V + Aguilón + Tablero';
+          cotActual.material_principal = 'Cable de Acero / Herrajes de Izaje';
+          cotActual.tipo_pintura = 'Pintura Normal — Esmalte Anticorrosivo Industrial';
+          cotActual.tiempo_entrega = '15 días hábiles a partir de confirmación de anticipo';
+          cotActual.garantia = '1 año de garantía (no aplica descargas eléctricas o mal uso del sistema)';
+          cotActual.clausulas.requiere_trifasica = true;
+        } else if (pl.tipo_cotizacion === 'mantenimiento') {
+          cotActual.titulo_proyecto = cotActual.titulo_proyecto || pl.concepto;
+          cotActual.subtipo_servicio = pl.boton;
+          cotActual.material_principal = 'No aplica (Servicio en sitio)';
+          if (pl.id === 'cambio_cable' || pl.id === 'cambio_carretillas') {
+            cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
+          }
+          cotActual.tiempo_entrega = '3 a 5 días hábiles';
+        } else if (pl.tipo_cotizacion === 'sistema_izaje') {
+          cotActual.titulo_proyecto = cotActual.titulo_proyecto || pl.concepto;
+          cotActual.subtipo_servicio = pl.boton;
+          cotActual.material_principal = 'Cable de Acero / Herrajes de Izaje';
+        }
+        volcarCotizacionAInputs();
+        mostrarToast(`Agregada: ${pl.boton}`);
+        return;
       }
       renderPartidas();
       recalcularTotalesCotizacion();
@@ -495,6 +565,12 @@ function volcarCotizacionAInputs() {
   document.getElementById('cot-empresa').value = cotActual.cliente_empresa || '';
   document.getElementById('cot-telefono').value = cotActual.cliente_telefono || '';
   document.getElementById('cot-correo').value = cotActual.cliente_correo || '';
+
+  const selTipo = document.getElementById('cot-tipo');
+  if (selTipo) selTipo.value = cotActual.tipo_cotizacion || 'venta_asta';
+  const inpSubtipo = document.getElementById('cot-subtipo-servicio');
+  if (inpSubtipo) inpSubtipo.value = cotActual.subtipo_servicio || '';
+  actualizarUISegunTipoCotizacion();
 
   const selMat = document.getElementById('cot-material');
   if ([...selMat.options].some((o) => o.value === cotActual.material_principal)) {
@@ -932,13 +1008,16 @@ function renderInsumos() {
   });
 
 function aplicarPerfilArticuloVenta(tipo) {
+  cotActual.tipo_cotizacion = 'articulo';
   if (tipo === 'laton') {
+    cotActual.subtipo_servicio = 'Asta de Latón / Escolta / Oficina';
     cotActual.material_principal = 'Latón';
     cotActual.tipo_pintura = 'Acabado Brilloso (Pulido / Lacado UV)';
     cotActual.color_acabado = 'Latonado / Dorado';
     cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
     cotActual.garantia = 'Garantía contra defectos de origen';
   } else if (tipo === 'textil') {
+    cotActual.subtipo_servicio = 'Bandera Reglamentaria / Institucional (Textil)';
     cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
     cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
     cotActual.color_acabado = 'Color a elegir';
@@ -1187,7 +1266,7 @@ async function invocarSoporteIA({ modo, prompt, file }) {
 async function invocarGeminiDirectoDispositivo({ localKey, modo, prompt, catalogoResumen, archivoBase64, archivoMime }) {
   let instruccion = '';
   if (modo === 'armar_cotizacion') {
-    instruccion = `Eres el cotizador de "Astas y Mantenimiento" (Chalco, Edo. Méx.). Usa PRIMERO los costos reales del catálogo de René y la IA solo como soporte. Factor default ${ajustes.factor_default || 3.5}. Devuelve SOLO JSON con: titulo_proyecto, cliente_nombre, cliente_empresa, cliente_ciudad, material_principal, tipo_pintura, color_acabado, tiempo_entrega, partidas:[{categoria,concepto,descripcion,cantidad,unidad,costo_unitario_directo,factor,precio_unitario_venta,es_estimado_ia,nota_interna}], viaje:{activo,destino,km_redondos,casetas_total,personas,dias,noches_hotel,costo_hotel_noche,factor_viaje,modo_cobro}, clausulas_sugeridas:{cimentacion_canastilla,no_incluye_flete,no_incluye_grua,requiere_trifasica}, resumen_ia.`;
+    instruccion = `Eres el cotizador de "Astas y Mantenimiento" (Chalco, Edo. Méx.). Usa PRIMERO los costos reales del catálogo de René y la IA solo como soporte. Factor default ${ajustes.factor_default || 3.5}. Identifica tipo_cotizacion entre: "venta_asta" (fabricación asta completa), "mantenimiento" (cambio de cable, carretillas, poleas, pintura, mantenimiento), "sistema_izaje" (motor eléctrico, malacate/matraca) o "articulo" (pura bandera por metros, asta escolta, refacción suelta). Devuelve SOLO JSON con: tipo_cotizacion, subtipo_servicio, titulo_proyecto, cliente_nombre, cliente_empresa, cliente_ciudad, material_principal, tipo_pintura, color_acabado, tiempo_entrega, partidas:[{categoria,concepto,descripcion,cantidad,unidad,costo_unitario_directo,factor,precio_unitario_venta,es_estimado_ia,nota_interna}], viaje:{activo,destino,km_redondos,casetas_total,personas,dias,noches_hotel,costo_hotel_noche,factor_viaje,modo_cobro}, clausulas_sugeridas:{cimentacion_canastilla,no_incluye_flete,no_incluye_grua,requiere_trifasica}, resumen_ia.`;
   } else if (modo === 'actualizar_acero') {
     instruccion = `Extrae precios de acero/herrajes SIN IVA (si traen IVA 16% divide entre 1.16). Empareja con códigos del catálogo de René si existen. Devuelve SOLO JSON: {proveedor_detectado, resumen, materiales:[{codigo,categoria,nombre,unidad,costo_sin_iva,notas}]}.`;
   } else {
@@ -1241,7 +1320,95 @@ function motorIngenieriaLocalCalle(texto) {
 
   const partidas = [];
   const base10 = Number(insumos.find((i) => i.codigo === 'BASE-ASTA-10C')?.costo_sin_iva) || 4157;
+  let tipoCotizacion = 'venta_asta';
+  let subtipoServicio = '';
+  let materialFinal = material;
+  let pinturaFinal = pintura;
+  let entregaFinal = '10 a 15 días hábiles a partir de anticipo';
 
+  // Detectar si es solo bandera, mantenimiento (cable/carretillas/pintura) o sistema de izaje
+  const soloBandera = t.includes('bandera') && !t.includes('asta');
+  const esCambioCable = t.includes('cable') || t.includes('driza');
+  const esCarretillas = t.includes('carretilla') || t.includes('polea');
+  const esSoloPintura = t.includes('pintura') && !t.includes('asta de') && !t.includes("25'") && !t.includes("30'");
+  const esMalacate = t.includes('malacate') || (t.includes('matraca') && t.includes('cambio'));
+  const esSistemaElectrico = (t.includes('electric') || t.includes('eléctric') || t.includes('motor')) && !t.includes('asta completa');
+
+  if (soloBandera) {
+    tipoCotizacion = 'articulo';
+    materialFinal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
+    pinturaFinal = 'Sin recubrimiento / Acero natural o textil';
+    entregaFinal = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+    const mDim = t.match(/(\d+(?:\.\d+)?)\s*(?:x|por|×)\s*(\d+(?:\.\d+)?)/i);
+    const mCant = t.match(/(\d+)\s*banderas?/i);
+    const cant = mCant ? Number(mCant[1]) : 1;
+    const alto = mDim ? Number(mDim[1]) : 1.5;
+    const ancho = mDim ? Number(mDim[2]) : 2.5;
+    const m2 = alto * ancho;
+    const costoEst = +(Math.max(420, m2 * 250)).toFixed(2);
+    const fBan = 2.5;
+    subtipoServicio = `Bandera Nacional ${alto.toFixed(2)} × ${ancho.toFixed(2)} m`;
+    partidas.push({
+      categoria: 'Banderas / Escritorio',
+      concepto: `Suministro de Bandera Nacional Reglamentaria de ${alto.toFixed(2)} × ${ancho.toFixed(2)} m`,
+      descripcion: `- Bandera confeccionada en Nylon Ripstop / Poliéster UV 150D\n- Medidas: ${alto.toFixed(2)} m de alto × ${ancho.toFixed(2)} m de largo\n- Costuras triples reforzadas, esquinas en lona y ojillos metálicos`,
+      cantidad: cant,
+      unidad: 'pieza',
+      costo_unitario_directo: costoEst,
+      factor: fBan,
+      precio_unitario_venta: +(costoEst * fBan).toFixed(2),
+      es_estimado_ia: !mDim,
+      nota_interna: `Cálculo por medida (${m2.toFixed(2)} m²)`,
+    });
+  } else if (esSistemaElectrico) {
+    tipoCotizacion = 'sistema_izaje';
+    subtipoServicio = 'Sistema de Izaje Eléctrico Trifásico 2HP';
+    materialFinal = 'Cable de Acero / Herrajes de Izaje';
+    entregaFinal = '15 días hábiles a partir de confirmación de anticipo';
+    const pl = PLANTILLAS_RAPIDAS.find((x) => x.id === 'sistema_electrico_pdf');
+    partidas.push({
+      categoria: 'Izaje Motorizado',
+      concepto: pl.concepto,
+      descripcion: pl.descripcion,
+      cantidad: 1,
+      unidad: pl.unidad,
+      costo_unitario_directo: pl.costo_unitario_directo,
+      factor: pl.factor,
+      precio_unitario_venta: pl.precio_venta_fijo,
+      es_estimado_ia: false,
+      nota_interna: 'Referencia cotización sistema eléctrico 2HP 440V',
+    });
+  } else if (esCambioCable || esCarretillas || esSoloPintura || esMalacate || t.includes('mantenimiento')) {
+    tipoCotizacion = esMalacate ? 'sistema_izaje' : 'mantenimiento';
+    materialFinal = 'No aplica (Servicio en sitio)';
+    entregaFinal = '3 a 5 días hábiles';
+    if (!esSoloPintura && !t.includes('mantenimiento')) {
+      pinturaFinal = 'Sin recubrimiento / Acero natural o textil';
+    }
+    const idPl = esMalacate
+      ? 'cambio_izaje_malacate'
+      : esCarretillas
+      ? 'cambio_carretillas'
+      : esCambioCable
+      ? 'cambio_cable'
+      : esSoloPintura
+      ? 'solo_pintura'
+      : 'mantenimiento_gral';
+    const pl = PLANTILLAS_RAPIDAS.find((x) => x.id === idPl);
+    subtipoServicio = pl.boton;
+    partidas.push({
+      categoria: pl.categoria,
+      concepto: pl.concepto,
+      descripcion: pl.descripcion,
+      cantidad: 1,
+      unidad: pl.unidad,
+      costo_unitario_directo: pl.costo_unitario_directo,
+      factor: pl.factor,
+      precio_unitario_venta: +(pl.costo_unitario_directo * pl.factor).toFixed(2),
+      es_estimado_ia: false,
+      nota_interna: `Servicio detectado: ${pl.boton}`,
+    });
+  } else {
   // Caso 1: René dictó costos sueltos tipo "material 1007 matraca 2650 pintura 500"
   const numerosGrandes = [...t.matchAll(/(\d{3,6}(?:\.\d+)?)/g)].map((m) => Number(m[1]));
   if ((t.includes('matraca') || t.includes('material')) && numerosGrandes.length >= 2 && !t.includes("25'") && !t.includes('pies')) {
@@ -1305,6 +1472,7 @@ function motorIngenieriaLocalCalle(texto) {
       });
     }
   }
+  }
 
   // Detectar si menciona ciudad/viaje
   let rutaDetectada = null;
@@ -1321,14 +1489,16 @@ function motorIngenieriaLocalCalle(texto) {
   const pideInstalacion = t.includes('instalac') || t.includes('viaje') || t.includes('traslado') || !!rutaDetectada;
 
   return {
+    tipo_cotizacion: tipoCotizacion,
+    subtipo_servicio: subtipoServicio,
     titulo_proyecto: partidas[0]?.concepto || 'Cotización de Asta Bandera',
     cliente_nombre: 'A quien corresponda',
     cliente_empresa: '',
     cliente_ciudad: rutaDetectada ? rutaDetectada.nombre : '',
-    material_principal: material,
-    tipo_pintura: pintura,
+    material_principal: materialFinal,
+    tipo_pintura: pinturaFinal,
     color_acabado: color,
-    tiempo_entrega: '10 a 15 días hábiles a partir de anticipo',
+    tiempo_entrega: entregaFinal,
     partidas,
     viaje: rutaDetectada
       ? {
@@ -1441,17 +1611,120 @@ function enlazarEventosUI() {
     ['cot-telefono', 'cliente_telefono'],
     ['cot-correo', 'cliente_correo'],
     ['cot-material', 'material_principal'],
+    ['cot-subtipo-servicio', 'subtipo_servicio'],
     ['cot-garantia', 'garantia'],
     ['cot-notas-internas', 'notas_internas'],
   ];
 
   mapeoInputs.forEach(([id, prop]) => {
     const el = document.getElementById(id);
+    if (!el) return;
     el.addEventListener('input', () => {
       cotActual[prop] = el.value;
       recalcularTotalesCotizacion();
     });
   });
+
+  // Selector de tipo de cotización (venta asta, mantenimiento, izaje, artículo)
+  const selTipoCot = document.getElementById('cot-tipo');
+  if (selTipoCot) {
+    selTipoCot.addEventListener('change', (e) => {
+      cotActual.tipo_cotizacion = e.target.value;
+      if (cotActual.tipo_cotizacion === 'mantenimiento' && cotActual.material_principal === OPCIONES_MATERIAL[0]) {
+        cotActual.material_principal = 'No aplica (Servicio en sitio)';
+      } else if (cotActual.tipo_cotizacion === 'venta_asta' && cotActual.material_principal === 'No aplica (Servicio en sitio)') {
+        cotActual.material_principal = OPCIONES_MATERIAL[0];
+      }
+      actualizarUISegunTipoCotizacion();
+      volcarCotizacionAInputs();
+    });
+  }
+
+  // Calculadora rápida de Pura Bandera por Medida
+  const btnAbrirBan = document.getElementById('btn-abrir-bandera');
+  const boxBan = document.getElementById('box-bandera');
+  if (btnAbrirBan && boxBan) {
+    const recalcularBan = () => {
+      const selMed = document.getElementById('ban-medida').value;
+      const med = MEDIDAS_BANDERA.find((x) => x.id === selMed) || MEDIDAS_BANDERA[2];
+      const customWrap = document.getElementById('ban-custom-wrap');
+      if (customWrap) customWrap.hidden = selMed !== 'custom';
+      if (selMed !== 'custom') {
+        document.getElementById('ban-alto').value = med.alto;
+        document.getElementById('ban-ancho').value = med.ancho;
+        document.getElementById('ban-costo').value = med.costo;
+        document.getElementById('ban-venta').value = med.venta;
+        document.getElementById('ban-factor').value = +(med.venta / med.costo).toFixed(2);
+      } else {
+        const alto = Number(document.getElementById('ban-alto').value) || 2.0;
+        const ancho = Number(document.getElementById('ban-ancho').value) || 3.5;
+        const costoEst = Math.round(Math.max(420, alto * ancho * 250));
+        const fac = Number(document.getElementById('ban-factor').value) || 2.5;
+        document.getElementById('ban-costo').value = costoEst;
+        document.getElementById('ban-venta').value = +(costoEst * fac).toFixed(2);
+      }
+    };
+    btnAbrirBan.addEventListener('click', () => {
+      boxBan.hidden = !boxBan.hidden;
+      if (!boxBan.hidden) recalcularBan();
+    });
+    document.getElementById('btn-cerrar-bandera').addEventListener('click', () => {
+      boxBan.hidden = true;
+    });
+    document.getElementById('ban-medida').addEventListener('change', recalcularBan);
+    ['ban-alto', 'ban-ancho'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', () => {
+        if (document.getElementById('ban-medida').value === 'custom') recalcularBan();
+      });
+    });
+    document.getElementById('ban-costo').addEventListener('input', () => {
+      const c = Number(document.getElementById('ban-costo').value) || 0;
+      const f = Number(document.getElementById('ban-factor').value) || 2.5;
+      document.getElementById('ban-venta').value = +(c * f).toFixed(2);
+    });
+    document.getElementById('ban-factor').addEventListener('input', () => {
+      const c = Number(document.getElementById('ban-costo').value) || 0;
+      const f = Number(document.getElementById('ban-factor').value) || 2.5;
+      document.getElementById('ban-venta').value = +(c * f).toFixed(2);
+    });
+    document.getElementById('ban-venta').addEventListener('input', () => {
+      const c = Number(document.getElementById('ban-costo').value) || 0;
+      const v = Number(document.getElementById('ban-venta').value) || 0;
+      if (c > 0) document.getElementById('ban-factor').value = +(v / c).toFixed(2);
+    });
+    document.getElementById('btn-insertar-bandera').addEventListener('click', () => {
+      const alto = Number(document.getElementById('ban-alto').value) || 1.5;
+      const ancho = Number(document.getElementById('ban-ancho').value) || 2.5;
+      const tipoTela = document.getElementById('ban-tipo').value;
+      const cant = Math.max(1, Number(document.getElementById('ban-cantidad').value) || 1);
+      const costo = Number(document.getElementById('ban-costo').value) || 0;
+      const factor = Number(document.getElementById('ban-factor').value) || 2.5;
+      const venta = Number(document.getElementById('ban-venta').value) || 0;
+      const medidaTxt = `${alto.toFixed(2)} × ${ancho.toFixed(2)} m`;
+
+      cotActual.partidas.push({
+        id: uid(),
+        categoria: 'Banderas / Escritorio',
+        concepto: `Suministro de ${tipoTela.split('(')[0].trim()} de ${medidaTxt}`,
+        descripcion: `- Medida: ${medidaTxt} (${(alto * ancho).toFixed(2)} m²)\n- Confección: ${tipoTela}\n- Costuras triples reforzadas en perímetro, esquinas en lona y ojillos metálicos para izaje`,
+        cantidad: cant,
+        unidad: 'pieza',
+        costo_unitario_directo: costo,
+        factor,
+        precio_unitario_venta: venta,
+        es_estimado_ia: false,
+        nota_interna: `Bandera ${medidaTxt}`,
+      });
+      if (cotActual.partidas.length === 1) {
+        aplicarPerfilArticuloVenta('textil');
+        cotActual.subtipo_servicio = `Bandera ${medidaTxt}`;
+        cotActual.titulo_proyecto = cotActual.titulo_proyecto || `Cotización Bandera ${medidaTxt}`;
+      }
+      boxBan.hidden = true;
+      volcarCotizacionAInputs();
+      mostrarToast(`Agregada Bandera ${medidaTxt}`);
+    });
+  }
 
   // Selector de tiempo de entrega con opción personalizada
   document.getElementById('cot-entrega').addEventListener('change', (e) => {
@@ -1730,6 +2003,8 @@ function enlazarEventosUI() {
 
     try {
       const r = await invocarSoporteIA({ modo: 'armar_cotizacion', prompt });
+      if (r.tipo_cotizacion) cotActual.tipo_cotizacion = r.tipo_cotizacion;
+      if (r.subtipo_servicio) cotActual.subtipo_servicio = r.subtipo_servicio;
       if (r.titulo_proyecto) cotActual.titulo_proyecto = r.titulo_proyecto;
       if (r.cliente_nombre) cotActual.cliente_nombre = r.cliente_nombre;
       if (r.cliente_empresa) cotActual.cliente_empresa = r.cliente_empresa;
