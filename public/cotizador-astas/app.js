@@ -77,11 +77,14 @@ function crearCotizacionEnBlanco() {
     partidas: [],
     viaje: {
       activo: false,
+      transporte: 'vehiculo',
       ruta_id: 'puebla',
       destino: 'Puebla, Pue.',
       modo_cobro: 'separado',
       km_redondos: 210,
       casetas_total: 452,
+      pasaje_persona: 2400,
+      traslados_locales: 800,
       personas: 3,
       dias: 1,
       noches_hotel: 0,
@@ -282,8 +285,9 @@ function calcularViajeInterno() {
     v.precio_venta_viaje = 0;
     return;
   }
+  const esAutobus = v.transporte === 'autobus';
   const km = Number(v.km_redondos) || 0;
-  const casetas = Number(v.casetas_total) || 0;
+  const casetas = esAutobus ? 0 : Number(v.casetas_total) || 0;
   const personas = Math.max(1, Number(v.personas) || 1);
   const dias = Math.max(1, Number(v.dias) || 1);
   const noches = Math.max(0, Number(v.noches_hotel) || 0);
@@ -291,20 +295,22 @@ function calcularViajeInterno() {
   const factor = Math.max(1, Number(v.factor_viaje) || 1.35);
 
   const litros = km / Math.max(1, Number(ajustes.rendimiento_km_litro) || 10);
-  const gasolina = litros * (Number(ajustes.gasolina_litro) || 24.5);
-  const desgaste = km * (Number(ajustes.desgaste_por_km) || 1.8);
+  const gasolina = esAutobus ? 0 : litros * (Number(ajustes.gasolina_litro) || 24.5);
+  const desgaste = esAutobus ? 0 : km * (Number(ajustes.desgaste_por_km) || 1.8);
+  const pasajes = esAutobus ? personas * (Number(v.pasaje_persona) || 0) : 0;
+  const trasladosLocales = esAutobus ? Number(v.traslados_locales) || 0 : 0;
   const comidas = personas * dias * (Number(ajustes.comida_persona_dia) || 250);
   const ayudantes = Math.max(0, personas - 1);
   const manoObra =
     dias * ((Number(ajustes.sueldo_oficial_dia) || 1000) + ayudantes * (Number(ajustes.sueldo_ayudante_dia) || 600));
   const hotel = noches * hotelNoche;
 
-  const costoTotalViaje = gasolina + casetas + desgaste + comidas + manoObra + hotel;
+  const costoTotalViaje = gasolina + casetas + desgaste + pasajes + trasladosLocales + comidas + manoObra + hotel;
   v.costo_operativo_viaje = +costoTotalViaje.toFixed(2);
   if (!v.manual_override) {
     v.precio_venta_viaje = +(costoTotalViaje * factor).toFixed(2);
   }
-  v._desglose = { gasolina, casetas, desgaste, comidas, manoObra, hotel };
+  v._desglose = { esAutobus, gasolina, casetas, desgaste, pasajes, trasladosLocales, comidas, manoObra, hotel };
 }
 
 function recalcularTotalesCotizacion() {
@@ -359,7 +365,10 @@ function recalcularTotalesCotizacion() {
     badgeViaje.hidden = false;
     badgeViaje.textContent = `Venta viaje: ${moneda(ventaViaje)} s/IVA`;
     const d = cotActual.viaje._desglose || {};
-    divDesglose.innerHTML = `<strong>🔒 Tu costo operativo real del viaje: ${moneda(costoViaje)}</strong> · Gasolina: ${moneda(d.gasolina)} · Casetas: ${moneda(d.casetas)} · Desgaste: ${moneda(d.desgaste)} · Comidas: ${moneda(d.comidas)} · Mano de obra (${cotActual.viaje.personas} pers × ${cotActual.viaje.dias}d): ${moneda(d.manoObra)} · Hotel: ${moneda(d.hotel)} · <strong>Ganancia en viaje: ${moneda(ventaViaje - costoViaje)}</strong>`;
+    const detalleTransp = d.esAutobus
+      ? `Pasajes (${cotActual.viaje.personas} pers): ${moneda(d.pasajes)} · Taxis/Uber locales: ${moneda(d.trasladosLocales)}`
+      : `Gasolina: ${moneda(d.gasolina)} · Casetas: ${moneda(d.casetas)} · Desgaste: ${moneda(d.desgaste)}`;
+    divDesglose.innerHTML = `<strong>🔒 Tu costo operativo real del viaje: ${moneda(costoViaje)}</strong> · ${detalleTransp} · Comidas: ${moneda(d.comidas)} · Mano de obra (${cotActual.viaje.personas} pers × ${cotActual.viaje.dias}d): ${moneda(d.manoObra)} · Hotel: ${moneda(d.hotel)} · <strong>Ganancia en viaje: ${moneda(ventaViaje - costoViaje)}</strong>`;
   } else {
     badgeViaje.hidden = true;
   }
@@ -635,13 +644,22 @@ function volcarCotizacionAInputs() {
 
   // Viaje
   const v = cotActual.viaje || {};
+  const esAutobus = v.transporte === 'autobus';
   document.getElementById('viaje-activo').checked = !!v.activo;
   document.getElementById('panel-viaje').hidden = !v.activo;
+  const selTransp = document.getElementById('viaje-transporte');
+  if (selTransp) selTransp.value = v.transporte || 'vehiculo';
+  document.getElementById('wrap-viaje-km').hidden = esAutobus;
+  document.getElementById('wrap-viaje-casetas').hidden = esAutobus;
+  document.getElementById('wrap-viaje-pasaje').hidden = !esAutobus;
+  document.getElementById('wrap-viaje-local').hidden = !esAutobus;
   document.getElementById('viaje-ruta').value = v.ruta_id || 'custom';
   document.getElementById('viaje-destino').value = v.destino || '';
   document.getElementById('viaje-modo').value = v.modo_cobro || 'separado';
   document.getElementById('viaje-km').value = v.km_redondos ?? 210;
   document.getElementById('viaje-casetas').value = v.casetas_total ?? 452;
+  document.getElementById('viaje-pasaje').value = v.pasaje_persona ?? 2400;
+  document.getElementById('viaje-local').value = v.traslados_locales ?? 800;
   document.getElementById('viaje-personas').value = v.personas ?? 3;
   document.getElementById('viaje-dias').value = v.dias ?? 1;
   document.getElementById('viaje-noches').value = v.noches_hotel ?? 0;
@@ -1956,11 +1974,28 @@ function enlazarEventosUI() {
   };
   bindViajeNum('viaje-km', 'km_redondos');
   bindViajeNum('viaje-casetas', 'casetas_total');
+  bindViajeNum('viaje-pasaje', 'pasaje_persona');
+  bindViajeNum('viaje-local', 'traslados_locales');
   bindViajeNum('viaje-personas', 'personas');
   bindViajeNum('viaje-dias', 'dias');
   bindViajeNum('viaje-noches', 'noches_hotel');
   bindViajeNum('viaje-hotel', 'costo_hotel_noche');
   bindViajeNum('viaje-factor', 'factor_viaje');
+
+  const selTransp = document.getElementById('viaje-transporte');
+  if (selTransp) {
+    selTransp.addEventListener('change', (e) => {
+      cotActual.viaje.transporte = e.target.value;
+      cotActual.viaje.manual_override = false;
+      const esAutobus = e.target.value === 'autobus';
+      document.getElementById('wrap-viaje-km').hidden = esAutobus;
+      document.getElementById('wrap-viaje-casetas').hidden = esAutobus;
+      document.getElementById('wrap-viaje-pasaje').hidden = !esAutobus;
+      document.getElementById('wrap-viaje-local').hidden = !esAutobus;
+      recalcularTotalesCotizacion();
+      document.getElementById('viaje-venta-manual').value = cotActual.viaje.precio_venta_viaje || 0;
+    });
+  }
 
   document.getElementById('viaje-destino').addEventListener('input', (e) => {
     cotActual.viaje.destino = e.target.value;
