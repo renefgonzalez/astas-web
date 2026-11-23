@@ -298,8 +298,14 @@ function calcularViajeInterno() {
   const litros = km / Math.max(1, Number(ajustes.rendimiento_km_litro) || 10);
   const gasolina = esAutobus ? 0 : litros * (Number(ajustes.gasolina_litro) || 24.5);
   const desgaste = esAutobus ? 0 : km * (Number(ajustes.desgaste_por_km) || 1.8);
-  const pasajes = esAutobus ? personas * (Number(v.pasaje_persona) || 0) : 0;
-  const trasladosLocales = esAutobus ? Number(v.traslados_locales) || 0 : 0;
+  const pasajeUnit = v.pasaje_persona !== undefined && v.pasaje_persona !== null ? Number(v.pasaje_persona) : 2400;
+  const localTotal = v.traslados_locales !== undefined && v.traslados_locales !== null ? Number(v.traslados_locales) : 800;
+  if (esAutobus) {
+    if (v.pasaje_persona === undefined || v.pasaje_persona === null) v.pasaje_persona = pasajeUnit;
+    if (v.traslados_locales === undefined || v.traslados_locales === null) v.traslados_locales = localTotal;
+  }
+  const pasajes = esAutobus ? personas * pasajeUnit : 0;
+  const trasladosLocales = esAutobus ? localTotal : 0;
   const comidas = personas * dias * (Number(ajustes.comida_persona_dia) || 250);
   const ayudantes = Math.max(0, personas - 1);
   const manoObra =
@@ -976,6 +982,51 @@ function revisarVigenciaAceroBanner() {
   }
 }
 
+function aplicarPerfilArticuloVenta(tipo) {
+  cotActual.tipo_cotizacion = 'articulo';
+  if (tipo === 'laton') {
+    cotActual.subtipo_servicio = 'Asta de Latón / Escolta / Oficina';
+    cotActual.material_principal = 'Latón';
+    cotActual.tipo_pintura = 'Acabado Brilloso (Pulido / Lacado UV)';
+    cotActual.color_acabado = 'Latonado / Dorado';
+    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+    cotActual.garantia = 'Garantía contra defectos de origen';
+  } else if (tipo === 'textil') {
+    cotActual.subtipo_servicio = 'Bandera Reglamentaria / Institucional (Textil)';
+    cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
+    cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
+    cotActual.color_acabado = 'Color a elegir';
+    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
+    cotActual.garantia = 'Garantía contra defectos de confección';
+  }
+}
+
+function construirPartidaDesdeInsumo(ins) {
+  const esEscolta = ins.codigo === 'ESC-ASTA-REG';
+  const esFlete = String(ins.codigo || '').startsWith('FLT-TRES-');
+  const esArticuloVenta = ins.categoria.includes('Banderas') || ins.categoria.includes('Venta Terminado');
+  const costo = Number(ins.costo_sin_iva) || 0;
+  const f = esFlete ? 1.0 : esEscolta ? 1.5455 : esArticuloVenta ? 1.8 : Number(ajustes.factor_default) || 3.5;
+  const venta = esEscolta && costo === 550 ? 850.00 : +(costo * f).toFixed(2);
+  return {
+    id: uid(),
+    categoria: esFlete ? 'Instalación' : ins.categoria.includes('Motor') ? 'Izaje Motorizado' : esArticuloVenta ? 'Banderas / Escritorio' : 'Fabricación',
+    concepto: ins.nombre,
+    descripcion: esFlete
+      ? `- Envío por Paquetería Tresguerras modalidad Ocurre en sucursal destino\n- ${ins.notas || ins.nombre}`
+      : esArticuloVenta
+      ? `- Artículo terminado: ${ins.nombre}\n- Unidad: ${ins.unidad}`
+      : `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
+    cantidad: 1,
+    unidad: ins.unidad,
+    costo_unitario_directo: costo,
+    factor: f,
+    precio_unitario_venta: venta,
+    es_estimado_ia: false,
+    nota_interna: `Desde catálogo: ${ins.codigo}`,
+  };
+}
+
 function renderInsumos() {
   const tbody = document.getElementById('tbody-insumos');
   const filtro = (document.getElementById('buscar-insumo')?.value || '').toLowerCase().trim();
@@ -1039,48 +1090,6 @@ function renderInsumos() {
       await actualizarPrecioInsumo(cod, nuevoCosto, nuevoProv, 'Edición manual', { altura_asta: nuevaAlt });
     });
   });
-
-function aplicarPerfilArticuloVenta(tipo) {
-  cotActual.tipo_cotizacion = 'articulo';
-  if (tipo === 'laton') {
-    cotActual.subtipo_servicio = 'Asta de Latón / Escolta / Oficina';
-    cotActual.material_principal = 'Latón';
-    cotActual.tipo_pintura = 'Acabado Brilloso (Pulido / Lacado UV)';
-    cotActual.color_acabado = 'Latonado / Dorado';
-    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
-    cotActual.garantia = 'Garantía contra defectos de origen';
-  } else if (tipo === 'textil') {
-    cotActual.subtipo_servicio = 'Bandera Reglamentaria / Institucional (Textil)';
-    cotActual.material_principal = 'Textil Reglamentario Nylon Ripstop / Poliéster UV';
-    cotActual.tipo_pintura = 'Sin recubrimiento / Acero natural o textil';
-    cotActual.color_acabado = 'Color a elegir';
-    cotActual.tiempo_entrega = '1 a 5 días hábiles (artículo de venta / sobre pedido)';
-    cotActual.garantia = 'Garantía contra defectos de confección';
-  }
-}
-
-function construirPartidaDesdeInsumo(ins) {
-  const esEscolta = ins.codigo === 'ESC-ASTA-REG';
-  const esArticuloVenta = ins.categoria.includes('Banderas') || ins.categoria.includes('Venta Terminado');
-  const costo = Number(ins.costo_sin_iva) || 0;
-  const f = esEscolta ? 1.5455 : esArticuloVenta ? 1.8 : Number(ajustes.factor_default) || 3.5;
-  const venta = esEscolta && costo === 550 ? 850.00 : +(costo * f).toFixed(2);
-  return {
-    id: uid(),
-    categoria: ins.categoria.includes('Motor') ? 'Izaje Motorizado' : esArticuloVenta ? 'Banderas / Escritorio' : 'Fabricación',
-    concepto: ins.nombre,
-    descripcion: esArticuloVenta
-      ? `- Artículo terminado: ${ins.nombre}\n- Unidad: ${ins.unidad}`
-      : `- Suministro de ${ins.nombre}\n- Unidad: ${ins.unidad}`,
-    cantidad: 1,
-    unidad: ins.unidad,
-    costo_unitario_directo: costo,
-    factor: f,
-    precio_unitario_venta: venta,
-    es_estimado_ia: false,
-    nota_interna: `Desde catálogo: ${ins.codigo}`,
-  };
-}
 
   tbody.querySelectorAll('[data-cotins]').forEach((btn) => {
     btn.addEventListener('click', () => {
