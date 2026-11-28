@@ -9,4 +9,5 @@ export const STATIC_ROUTES = [
   '/demo-carrito',
   '/reparacion-astas-bandera',
   '/pintura-astas-bandera',
+  '/galeria-obras',
 ] as const;

@@ -244,6 +244,12 @@ const Projects = () => {
                 Galería de Trabajos y Cimentación
               </h3>
             </div>
+            <Link
+              to="/galeria-obras"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-blue hover:underline shrink-0"
+            >
+              Ver galería completa (14 fotos) <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

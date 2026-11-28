@@ -17,6 +17,7 @@ const routes = [
   '/banderas-reglamentarias',
   '/reparacion-astas-bandera',
   '/pintura-astas-bandera',
+  '/galeria-obras',
 ];
 
 const HOME_TITLE = 'Astas y Mantenimiento | Fabricación e Instalación de Astas Monumentales';

@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -63,7 +63,7 @@ const Navbar = () => {
 
   const services = [
     { name: 'Mantenimiento', path: '/mantenimiento-astas-bandera' },
-    { name: 'FabricaciÃ³n', path: '/fabricacion-astas-bandera-mexico' },
+    { name: 'Fabricación', path: '/fabricacion-astas-bandera-mexico' },
     { name: 'Monumentales', path: '/astas-monumentales' },
     { name: 'Escritorio', path: '/astas-escritorio' },
     { name: 'Banderas', path: '/banderas-reglamentarias' },
@@ -139,7 +139,7 @@ const Navbar = () => {
           </Link>
           
           <a
-            href="https://wa.me/525660040372?text=Hola,%20solicito%20informaciÃ³n%20tÃ©cnica"
+            href="https://wa.me/525660040372?text=Hola,%20solicito%20información%20técnica"
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => { trackMetaEvent('Contact'); if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'clic_whatsapp'); }}
@@ -226,7 +226,7 @@ const Footer = () => {
             </div>
           </div>
           <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm">
-            FabricaciÃ³n de astas bandera de alta precisiÃ³n y servicios especializados de mantenimiento estructural en todo MÃ©xico.
+            Fabricación de astas bandera de alta precisión y servicios especializados de mantenimiento estructural en todo México.
           </p>
         </div>
         
@@ -235,7 +235,7 @@ const Footer = () => {
             <h4 className="text-[10px] font-bold uppercase tracking-widest text-primary-navy">Servicios</h4>
             <ul className="space-y-2">
               <li><Link to="/mantenimiento-astas-bandera" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Mantenimiento</Link></li>
-              <li><Link to="/fabricacion-astas-bandera-mexico" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">FabricaciÃ³n</Link></li>
+              <li><Link to="/fabricacion-astas-bandera-mexico" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Fabricación</Link></li>
               <li><Link to="/astas-monumentales" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Monumentales</Link></li>
             </ul>
           </div>
@@ -253,17 +253,7 @@ const Footer = () => {
               >
                 Contacto
               </Link></li>
-              <li><Link 
-                to="/#proyectos" 
-                className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm"
-                onClick={() => {
-                  if (location.pathname === '/') {
-                    document.getElementById('proyectos')?.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-              >
-                Proyectos
-              </Link></li>
+              <li><Link to="/galeria-obras" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Galería de Obras</Link></li>
               <li><Link to="/banderas-reglamentarias" className="text-on-surface-variant hover:text-accent-blue transition-colors text-sm">Banderas</Link></li>
             </ul>
           </div>
@@ -272,7 +262,7 @@ const Footer = () => {
       
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-8 border-t border-outline-variant/10 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
         <p className="text-on-surface-variant text-[10px] font-bold uppercase tracking-widest">
-          Â© {new Date().getFullYear()} ASTAS Y MANTENIMIENTO. Machined to Perfection.
+          © {new Date().getFullYear()} ASTAS Y MANTENIMIENTO. Machined to Perfection.
         </p>
         <p className="text-on-surface-variant/70 text-[10px] uppercase tracking-widest">
           Diseño web:{' '}

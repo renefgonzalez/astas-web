@@ -12,6 +12,7 @@ import Banderas from './pages/Banderas';
 import DemoCarrito from './pages/DemoCarrito';
 import Reparacion from './pages/Reparacion';
 import Pintura from './pages/Pintura';
+import Galeria from './pages/Galeria';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
             <Route path="/demo-carrito" element={<DemoCarrito />} />
             <Route path="/reparacion-astas-bandera" element={<Reparacion />} />
             <Route path="/pintura-astas-bandera" element={<Pintura />} />
+            <Route path="/galeria-obras" element={<Galeria />} />
           </Routes>
         </Layout>
       </Router>
