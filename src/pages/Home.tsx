@@ -153,16 +153,55 @@ const Projects = () => {
     }
   ];
 
+  const galeriaObra = [
+    {
+      titulo: "Canastillas de Anclaje y Trazo",
+      categoria: "Cimentación",
+      desc: "Armado de canastillas con pernos estructurales y preparación de terreno en obra.",
+      img: "/galeria-obra/cimentacion-canastillas.jpg",
+    },
+    {
+      titulo: "Colado de Dado f'c 250 kg/cm²",
+      categoria: "Cimentación",
+      desc: "Colado en sitio con canastilla nivelada y protección de cuerdas.",
+      img: "/galeria-obra/cimentacion-colado.jpg",
+    },
+    {
+      titulo: "Acabado y Herrajes en Planta",
+      categoria: "Fabricación",
+      desc: "Fuste escalonado, caja de polea y recubrimiento industrial antes de embarque.",
+      img: "/galeria-obra/fabricacion-taller.jpg",
+    },
+    {
+      titulo: "Emplayado y Logística",
+      categoria: "Envío",
+      desc: "Protección integral del fuste y placa base para traslado seguro a obra.",
+      img: "/galeria-obra/embarque-emplayado.jpg",
+    },
+    {
+      titulo: "Cuadrilla Especializada en Sitio",
+      categoria: "Montaje",
+      desc: "Personal equipado con EPP y maniobra controlada de montaje e izaje.",
+      img: "/galeria-obra/montaje-cuadrilla.jpg",
+    },
+    {
+      titulo: "Entrega en Explanada Institucional",
+      categoria: "Obra Terminada",
+      desc: "Asta bandera instalada, aplomada y lista para actos cívicos.",
+      img: "/galeria-obra/obra-terminada.jpg",
+    },
+  ];
+
   return (
     <section id="proyectos" className="bg-surface-low py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 md:px-12">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
           <div>
-            <span className="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.3em]">Project Archive</span>
+            <span className="text-on-surface-variant text-[10px] font-bold uppercase tracking-[0.3em]">Archivo de Obra Real</span>
             <h2 className="font-headline text-4xl md:text-6xl font-black text-primary-navy tracking-tighter uppercase mb-6">Proyectos <span className="text-accent-blue">Recientes</span></h2>
           </div>
           <div className="text-right">
-            <span className="text-on-surface-variant text-xs font-mono uppercase">Filtered by: Monumental Scale</span>
+            <span className="text-on-surface-variant text-xs font-mono uppercase">Cimentación · Fabricación · Montaje</span>
           </div>
         </div>
 
@@ -192,6 +231,45 @@ const Projects = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Galería real de Cimentación, Fabricación y Montaje */}
+        <div className="mt-16 pt-12 border-t border-outline-variant/20">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div>
+              <span className="text-accent-blue text-[10px] font-bold uppercase tracking-[0.3em] block mb-2">
+                Evidencia en Campo y Planta
+              </span>
+              <h3 className="font-headline text-2xl md:text-3xl font-black text-primary-navy tracking-tight uppercase">
+                Galería de Trabajos y Cimentación
+              </h3>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {galeriaObra.map((item, idx) => (
+              <figure
+                key={idx}
+                className="group bg-white rounded-xl overflow-hidden border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow"
+              >
+                <div className="relative h-56 overflow-hidden bg-slate-900">
+                  <img
+                    src={item.img}
+                    alt={`${item.titulo} — Astas y Mantenimiento`}
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-3 left-3 bg-primary-navy/85 backdrop-blur-sm text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded">
+                    {item.categoria}
+                  </span>
+                </div>
+                <figcaption className="p-4">
+                  <h4 className="font-headline font-bold text-primary-navy text-sm uppercase">{item.titulo}</h4>
+                  <p className="text-xs text-on-surface-variant mt-1 leading-relaxed">{item.desc}</p>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </div>
     </section>
