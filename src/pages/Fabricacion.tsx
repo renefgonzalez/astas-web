@@ -266,6 +266,98 @@ const Fabricacion = () => {
         </div>
       </section>
 
+      {/* Control de Calidad: Pruebas No Destructivas (Líquidos Penetrantes) */}
+      <section id="calidad-ndt" className="py-20 bg-white border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          <div className="max-w-3xl mb-12">
+            <span className="inline-block px-3 py-1 rounded bg-blue-50 text-blue-700 text-[10px] font-black uppercase tracking-widest mb-4">
+              Inspección Real en Planta · Norma AWS D1.1
+            </span>
+            <h2 className="text-3xl font-black text-slate-900 uppercase tracking-tight mb-4">
+              Control de Calidad con <span className="text-blue-600">Líquidos Penetrantes (NDT)</span>
+            </h2>
+            <p className="text-slate-600 text-sm leading-relaxed">
+              En Astas y Mantenimiento no dejamos la seguridad estructural a la vista simple. Antes de aplicar primario o pintura, sometemos cada unión crítica —placa base, cartabones de refuerzo, empalmes telescópicos y soportes de izaje— a pruebas no destructivas con líquidos penetrantes para verificar cordones 100% libres de fisuras, porosidades o socavaciones.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/70">
+              <span className="text-xs font-black text-blue-600 uppercase">01 · Penetrante Rojo</span>
+              <h3 className="font-bold text-slate-900 text-sm mt-1">Detección Capilar</h3>
+              <p className="text-slate-600 text-xs mt-1.5 leading-relaxed">
+                Aplicamos tinta penetrante de alta capilaridad sobre cordones limpios para revelar cualquier discontinuidad superficial invisible al ojo humano.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/70">
+              <span className="text-xs font-black text-blue-600 uppercase">02 · Revelador Blanco</span>
+              <h3 className="font-bold text-slate-900 text-sm mt-1">Contraste de Alta Precisión</h3>
+              <p className="text-slate-600 text-xs mt-1.5 leading-relaxed">
+                Tras retirar el exceso y aplicar revelador blanco, cualquier poro o grieta aflora de inmediato en rojo intenso antes de aprobar la pieza.
+              </p>
+            </div>
+            <div className="p-5 rounded-xl bg-slate-50 border border-slate-200/70">
+              <span className="text-xs font-black text-blue-600 uppercase">03 · Liberación PT-OK</span>
+              <h3 className="font-bold text-slate-900 text-sm mt-1">Trazabilidad por Punto</h3>
+              <p className="text-slate-600 text-xs mt-1.5 leading-relaxed">
+                Cada unión inspeccionada se marca y registra como aprobada (PT-OK) previo al recubrimiento anticorrosivo y envío a obra.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <figure className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+              <img
+                src="/calidad-ndt/pt-01-placa-base.jpg"
+                alt="Prueba de líquidos penetrantes PT-01 en soldadura de placa base y cartabones"
+                loading="lazy"
+                className="w-full h-56 object-cover"
+              />
+              <figcaption className="p-3.5 text-xs text-slate-700">
+                <strong className="block text-slate-900">PT-01 · Placa Base y Cartabones</strong>
+                Aplicación de penetrante en unión estructural de placa de anclaje.
+              </figcaption>
+            </figure>
+            <figure className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+              <img
+                src="/calidad-ndt/pt-05-penetrante.jpg"
+                alt="Inspección con líquido penetrante rojo PT-05 en cordón de soldadura"
+                loading="lazy"
+                className="w-full h-56 object-cover"
+              />
+              <figcaption className="p-3.5 text-xs text-slate-700">
+                <strong className="block text-slate-900">PT-05 · Cordón de Unión</strong>
+                Verificación de penetración continua y ausencia de socavaciones.
+              </figcaption>
+            </figure>
+            <figure className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+              <img
+                src="/calidad-ndt/pt-02-ok.jpg"
+                alt="Soldadura liberada PT-02 OK con revelador blanco sin discontinuidades"
+                loading="lazy"
+                className="w-full h-56 object-cover"
+              />
+              <figcaption className="p-3.5 text-xs text-slate-700">
+                <strong className="block text-slate-900">PT-02 OK · Liberación</strong>
+                Cordón uniforme tras revelador blanco, cero fisuras ni porosidad.
+              </figcaption>
+            </figure>
+            <figure className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+              <img
+                src="/calidad-ndt/pt-13-ok.jpg"
+                alt="Empalme telescópico aprobado PT-13 OK mediante líquidos penetrantes"
+                loading="lazy"
+                className="w-full h-56 object-cover"
+              />
+              <figcaption className="p-3.5 text-xs text-slate-700">
+                <strong className="block text-slate-900">PT-13 OK · Empalme de Fuste</strong>
+                Unión circunferencial entre secciones aprobada antes de pintura.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       {/* Fichas Técnicas y Planos Descargables (PDF) */}
       <section className="py-16 bg-slate-900 text-white border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-6 md:px-12">

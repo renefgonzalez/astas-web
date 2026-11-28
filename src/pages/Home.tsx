@@ -198,6 +198,73 @@ const Projects = () => {
   );
 };
 
+const QualityNDT = () => {
+  return (
+    <section className="bg-white py-24 border-t border-slate-100">
+      <div className="max-w-7xl mx-auto px-6 md:px-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="max-w-2xl">
+            <span className="text-accent-blue text-[10px] font-bold uppercase tracking-[0.3em] block mb-3">
+              Control de Calidad en Planta · AWS D1.1
+            </span>
+            <h2 className="font-headline text-3xl md:text-4xl font-black text-primary-navy tracking-tighter uppercase">
+              Soldadura Verificada con Líquidos Penetrantes
+            </h2>
+            <p className="text-on-surface-variant text-sm mt-3 leading-relaxed">
+              Inspeccionamos nuestras soldaduras críticas con pruebas no destructivas (NDT) antes de pintar cada asta, garantizando uniones libres de fisuras y porosidad.
+            </p>
+          </div>
+          <Link
+            to="/fabricacion-astas-bandera-mexico#calidad-ndt"
+            className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-accent-blue hover:underline shrink-0"
+          >
+            Ver protocolo y fichas técnicas <ArrowRight className="w-4 h-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+            <img
+              src="/calidad-ndt/pt-01-placa-base.jpg"
+              alt="Prueba de líquidos penetrantes en placa base de asta bandera"
+              loading="lazy"
+              className="w-full h-56 object-cover"
+            />
+            <div className="p-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-accent-blue">PT-01 · Placa Base</span>
+              <p className="text-xs text-slate-600 mt-1">Inspección de soldadura en placa de anclaje y cartabones de refuerzo.</p>
+            </div>
+          </div>
+          <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+            <img
+              src="/calidad-ndt/pt-05-penetrante.jpg"
+              alt="Aplicación de líquido penetrante rojo en cordón de soldadura"
+              loading="lazy"
+              className="w-full h-56 object-cover"
+            />
+            <div className="p-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-accent-blue">PT-05 · Penetrante Rojo</span>
+              <p className="text-xs text-slate-600 mt-1">Detección capilar de discontinuidades superficiales en cordones críticos.</p>
+            </div>
+          </div>
+          <div className="rounded-xl overflow-hidden border border-slate-200 bg-slate-50">
+            <img
+              src="/calidad-ndt/pt-02-ok.jpg"
+              alt="Cordón de soldadura liberado PT-02 OK con revelador blanco"
+              loading="lazy"
+              className="w-full h-56 object-cover"
+            />
+            <div className="p-4">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-accent-blue">PT-02 OK · Aprobado</span>
+              <p className="text-xs text-slate-600 mt-1">Liberación con revelador blanco antes del recubrimiento anticorrosivo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -539,6 +606,7 @@ const homeSchema = {
       <Hero />
       <Services />
       <Projects />
+      <QualityNDT />
       <FAQ />
       <Contact />
     </>
